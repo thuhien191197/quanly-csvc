@@ -1,66 +1,80 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
+
 import './SideBar.css';
 
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
+
+const mapUrlToId = {
+	donvi: 2,
+
+}
+
+const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
+
 class SlideBar extends Component {
-	constructor(props) {
-		super(props);
-	   
-		this.state = {
-			itemsUsers: [],
-			itemsDanhMuc: [],
-			tree : [
-				{
-					id: 0,
-					name: "Home",
-					isOpen: false,
-				},
-				{
-					id: 1,
-					name: "User",
-					isOpen: false,
-				},
-				{
-					id: 2,
-					name: "Đơn vị",
-					isOpen: false,
-					// children: [
-					// 	{
-					// 		name: "Khoa CNTT",
-					// 		id: 0,
-					// 	},
-					// 	{
-					// 		name: "Khoa Hóa",
-					// 		id: 1,
-					// 	},
-					// 	{
-					// 		name: "Phòng Đào tạo",
-					// 		id: 2,
-					// 	}
-					// ]
-				},
-				{
-					id: 3,
-					name: "Danh mục",
-					isOpen: false,
-				},
-				{
-					id: 4,
-					name: "Tài sản",
-					isOpen: false,
-				},
-				{
-					id: 5,
-					name: "Kế hoạch",
-					isOpen: false,
-				}
-			]
-		};
-	}
+
+	state = {
+		itemsUsers: [],
+		itemsDanhMuc: [],
+		tree : [
+			{
+				id: 0,
+				name: "Home",
+				isOpen: false,
+			},
+			{
+				id: 1,
+				name: "User",
+				isOpen: false,
+			},
+			{
+				id: 2,
+				name: "Đơn vị",
+				isOpen: false,
+				// children: [
+				// 	{
+				// 		name: "Khoa CNTT",
+				// 		id: 0,
+				// 	},
+				// 	{
+				// 		name: "Khoa Hóa",
+				// 		id: 1,
+				// 	},
+				// 	{
+				// 		name: "Phòng Đào tạo",
+				// 		id: 2,
+				// 	}
+				// ]
+			},
+			{
+				id: 3,
+				name: "Danh mục",
+				isOpen: false,
+			},
+			{
+				id: 4,
+				name: "Tài sản",
+				isOpen: false,
+			},
+			{
+				id: 5,
+				name: "Kế hoạch",
+				isOpen: false,
+			}
+		]
+	};
 
 	componentDidMount(){
+		const { location } = this.props
+		console.log('>Location', location)
+		const parentId = getParentPath(location.pathname)
+		const id = mapUrlToId[parentId]
+		console.log(">>>>id : " +id)
+		this.toggleDropdown(id)
+
 		fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/donvi')
 			.then(res => res.json())
 			.then(json => {
@@ -82,6 +96,9 @@ class SlideBar extends Component {
 		// console.log("id" + id);
 		// console.log("key" + key);
 		var { tree } = this.state
+		if(!id){
+			return
+		}
 		tree[id].isOpen = !tree[id].isOpen
 		// console.log("isOpen" + tree[id].isOpen );
 		this.setState({
@@ -149,10 +166,17 @@ class SlideBar extends Component {
 											{itemsUsers.map(item => (
 												<li className="li" key={item.id_donvi}>
 													{/* <Link to={`${match.url}/rendering`}> */}
-													<a className="s-sidebar__nav-linksub" href="#0">
+													{/* <a className="s-sidebar__nav-linksub" href="#0">
 														<i class="fas fa-angle-right"></i><em>{item.name}</em>
-													</a>
+													</a> */}
 													{/* </Link> */}
+													{/* <MenuLink className="s-sidebar__nav-linksub" to={`donvi/${item.name}`} label={item.name} nameIcon="fas fa-landmark" /> */}
+													<MenuLink className="s-sidebar__nav-linksub" to={{
+														pathname: '/donvi' + '/' + item.name + '/' + item.id_donvi + '/',
+
+													}} label={item.name} nameIcon="fas fa-landmark" />
+
+												
 												</li>
 											))}
 										</ul>
@@ -267,4 +291,4 @@ class SlideBar extends Component {
 	}
 }
 
-export default SlideBar;
+export default withRouter(SlideBar);

@@ -9,15 +9,16 @@ import Kehoach from "../Kehoach/Kehoach";
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class Content extends Component {
+	
 	render() {
 		return (
 			<div>
-					<Route exact path="/" component={Home} />
-					<Route path="/user" component={User}></Route>
-					<Route path="/donvi" component={Donvi}></Route>
-					<Route path="/danhmuc" component={Danhmuc}></Route>
-					<Route path="/taisan" component={Taisan}></Route>
-					<Route path="/kehoach" component={Kehoach}></Route>
+				<Route exact path="/" component={Home} />
+				<Route path="/user" component={User}></Route>
+				<Route path="/donvi/:name/:id" component={Donvi}></Route>
+				<Route path="/danhmuc" component={Danhmuc}></Route>
+				<Route path="/taisan" component={Taisan}></Route>
+				<Route path="/kehoach" component={Kehoach}></Route>
 			</div>
 		);
 	}
