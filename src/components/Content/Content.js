@@ -4,9 +4,15 @@ import Home from "../Home/Home";
 import User from "../User/User";
 import Donvi from "../Donvi/Donvi";
 import Danhmuc from "../Danhmuc/Danhmuc";
-import Taisan from "../Taisan/Taisan";
+import Taisan from "../Taisan/Taisan/Taisan";
 import Kehoach from "../Kehoach/Kehoach";
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import LoaiTaiSan from '../Danhmuc/LoaiTaiSan';
+import NguonKinhPhi from '../Danhmuc/NguonKinhPhi';
+import DieuChuyenTaiSan from '../Taisan/DieuChuyenTaiSan/DieuChuyenTaiSan';
+import ThanhLy from '../Taisan/ThanhLy/ThanhLy';
+import ThongKe from '../Taisan/ThongKe/ThongKe';
+import VanBanMau from '../Kehoach/VanBanMau';
 
 class Content extends Component {
 	
@@ -16,9 +22,16 @@ class Content extends Component {
 				<Route exact path="/" component={Home} />
 				<Route path="/user" component={User}></Route>
 				<Route path="/donvi/:name/:id" component={Donvi}></Route>
-				<Route path="/danhmuc" component={Danhmuc}></Route>
-				<Route path="/taisan" component={Taisan}></Route>
-				<Route path="/kehoach" component={Kehoach}></Route>
+				<Route exact path='/danhmuc' render={() => <Danhmuc />} />
+				<Route exact path='/danhmuc/:name' render={() => <NguonKinhPhi />} />
+				<Route exact path='/danhmuc/:name/:id' render={() => <LoaiTaiSan />} />
+
+				<Route exact path="/taisan" render={() => <Taisan />} />
+				<Route exact path="/taisan/:name" render={() => <DieuChuyenTaiSan />} />
+				<Route exact path="/taisan/:name/:id1" render={() => <ThanhLy />} />
+				<Route exact path="/taisan/:name/:id1/:id2" render={() => <ThongKe />} />
+				<Route exact path="/kehoach" component={Kehoach}></Route>
+				<Route path="/kehoach/:name" component={VanBanMau}></Route>
 			</div>
 		);
 	}

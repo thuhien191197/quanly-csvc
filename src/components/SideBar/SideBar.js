@@ -9,6 +9,7 @@ import MenuLink from "../../general/MenuLink";
 
 const mapUrlToId = {
 	donvi: 2,
+	danhmuc: 3,
 
 }
 
@@ -69,7 +70,7 @@ class SlideBar extends Component {
 
 	componentDidMount(){
 		const { location } = this.props
-		console.log('>Location', location)
+		// console.log('>Location', location)
 		const parentId = getParentPath(location.pathname)
 		const id = mapUrlToId[parentId]
 		console.log(">>>>id : " +id)
@@ -125,25 +126,35 @@ class SlideBar extends Component {
 						<div className="s-sidebar__trigger" href="#0">
 							<i className="fa fa-bars"></i>
 							<ul className="pull-right">
+								<li className="rad-dropdown no-color bell">
+									<a href="#">
+										<i className="fas fa-bell"></i>
+									</a>
+								</li>
 								<li className="rad-dropdown no-color">
 									<a href="#">
-										<img class="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
+										<img className="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
 									</a>
 									
 								</li>
 								<li className="rad-dropdown no-color">
 									<a href="#">
-										<i class="fa fa-cog"></i>
+										<i className="fa fa-cog"></i>
 									</a>
 								</li>
+								
 							</ul>
 						</div>
 						
-						<nav className="s-sidebar__nav">
+						<nav className="s-sidebar__nav" id="style-4">
+      						<div className="force-overflow"></div>
+							
 							<div className="s-sidebar__nav-avartar">
+								
 								<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
 								{/* style={{width:'55px', height:'55px' }} */}
 								<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
+								
 							</div>
 							<ul>
 								<li>
@@ -173,8 +184,7 @@ class SlideBar extends Component {
 													{/* <MenuLink className="s-sidebar__nav-linksub" to={`donvi/${item.name}`} label={item.name} nameIcon="fas fa-landmark" /> */}
 													<MenuLink className="s-sidebar__nav-linksub" to={{
 														pathname: '/donvi' + '/' + item.name + '/' + item.id_donvi + '/',
-
-													}} label={item.name} nameIcon="fas fa-landmark" />
+													}} label={item.name} nameIcon="fas fa-angle-right" />
 
 												
 												</li>
@@ -187,30 +197,36 @@ class SlideBar extends Component {
 								</li>
 								<li>
 									<div onClick={() => this.toggleDropdown(3,3)}>
-										<Link to="/danhmuc" className="s-sidebar__nav-link">
+										<MenuLink className="s-sidebar__nav-link" to="/danhmuc" label="Danh mục" nameIcon="fas fa-list-ul" />
+										{/* <Link to="/danhmuc" className="s-sidebar__nav-link">
 											<i className="fas fa-list-ul"></i><em>Danh mục</em>
-										</Link>
+										</Link> */}
 									</div>
 									{tree[3].isOpen
 									?
 									<ul>
 										<li className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
+											<MenuLink className="s-sidebar__nav-linksub" to="/danhmuc" label="Quản lý danh mục" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
 												<i class="fas fa-angle-right"></i><em>Quản lý danh mục</em>
-											</a>
+											</a> */}
 										</li>
 										{itemsDanhMuc.map(item => (
 											<li className="li" key={item.id_danhmuc}>
-												<a className="s-sidebar__nav-linksub" href="#0">
+													<MenuLink className="s-sidebar__nav-linksub" to={{
+														pathname: '/danhmuc' + '/' + item.name + '/' + item.id_danhmuc + '/',
+													}} label={item.name} nameIcon="fas fa-angle-right" />
+												{/* <a className="s-sidebar__nav-linksub" href="#0">
 													<i class="fas fa-angle-right"></i><em>{item.name}</em>
-												</a>
+												</a> */}
 											</li>
 										))}
 									
 										<li className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
+										<MenuLink className="s-sidebar__nav-linksub" to="/danhmuc/nguonkinhphi" label="Ngườn kinh phí" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
 												<i className="fa fa-home"></i><em>Ngườn kinh phí</em>
-											</a>
+											</a> */}
 										</li>
 									</ul>
 									:
@@ -219,32 +235,43 @@ class SlideBar extends Component {
 								</li>
 								<li>
 									<div onClick={() => this.toggleDropdown(4,4)}>
-										<Link to="/taisan" className="s-sidebar__nav-link">
-											<i class="fas fa-warehouse"></i><em>Tài sản</em>
-										</Link>
+										<MenuLink className="s-sidebar__nav-link" to="/taisan" label="Tài sản" nameIcon="fas fa-warehouse" />
+										{/* <Link to="/taisan" className="s-sidebar__nav-link">
+											<i className="fas fa-warehouse"></i><em>Tài sản</em>
+										</Link> */}
 									</div>
 									{tree[4].isOpen
 									?
 									<ul>
 										<li className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
-												<i class="fas fa-angle-right"></i><em>Quản lý tài sản</em>
-											</a>
+										<MenuLink className="s-sidebar__nav-linksub" to="/taisan" label="Quản lý tài sản" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
+												<i className="fas fa-angle-right"></i><em>Quản lý tài sản</em>
+											</a> */}
 										</li>
 										<li  className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
-												<i class="fas fa-angle-right"></i><em>Điều chuyển tài sản</em>
-											</a>
+											<MenuLink className="s-sidebar__nav-linksub" to={{
+														pathname: '/taisan/Điều chuyển tài sản' ,
+											}} label="Điều chuyển tài sản" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
+												<i className="fas fa-angle-right"></i><em>Điều chuyển tài sản</em>
+											</a> */}
 										</li>
 										<li  className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
-												<i class="fas fa-angle-right"></i><em>Thanh lý</em>
-											</a>
+											<MenuLink className="s-sidebar__nav-linksub" to={{
+														pathname: '/taisan/Thanh lý/1' ,
+													}} label="Thanh lý" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
+												<i className="fas fa-angle-right"></i><em>Thanh lý</em>
+											</a> */}
 										</li>
 										<li  className="li">
-											<a className="s-sidebar__nav-linksub" href="#0">
-												<i class="fas fa-angle-right"></i><em>Thống kê</em>
-											</a>
+											<MenuLink className="s-sidebar__nav-linksub" to={{
+														pathname: '/taisan/Thống kê/1/2' ,
+											}} label="Thống kê" nameIcon="fas fa-angle-right" />
+											{/* <a className="s-sidebar__nav-linksub" href="#0">
+												<i className="fas fa-angle-right"></i><em>Thống kê</em>
+											</a> */}
 										</li>
 									</ul>
 									:
@@ -253,22 +280,29 @@ class SlideBar extends Component {
 								</li>
 								<li >
 									<div onClick={() => this.toggleDropdown(5,5)}>
-										<Link to="/kehoach" className="s-sidebar__nav-link">
-											<i class="fas fa-book"></i><em>Kế hoạch</em>
-										</Link>
+									<MenuLink className="s-sidebar__nav-link" activeOnlyWhenExact={true} to="/kehoach" label="Kế hoạch" nameIcon="fas fa-book" />
+										{/* <Link to="/kehoach" className="s-sidebar__nav-link">
+											<i className="fas fa-book"></i><em>Kế hoạch</em>
+										</Link> */}
 									</div>
 									{tree[5].isOpen
 									?
 										<ul>
 											<li className="li">
-												<a className="s-sidebar__nav-linksub" href="#0">
-													<i class="fas fa-angle-right"></i><em>Kế hoạch</em>
-												</a>
+												<MenuLink className="s-sidebar__nav-linksub" to={{
+															pathname: '/kehoach' ,
+												}} label="Kế hoạch" nameIcon="fas fa-angle-right" />
+												{/* <a className="s-sidebar__nav-linksub" href="#0">
+													<i className="fas fa-angle-right"></i><em>Kế hoạch</em>
+												</a> */}
 											</li>
 											<li  className="li">
-												<a className="s-sidebar__nav-linksub" href="#0">
-													<i class="fas fa-angle-right"></i><em>Văn bản mẫu</em>
-												</a>
+												<MenuLink className="s-sidebar__nav-linksub" to={{
+															pathname: '/kehoach/Văn bản mẫu' ,
+												}} label="Văn bản mẫu" nameIcon="fas fa-angle-right" />
+												{/* <a className="s-sidebar__nav-linksub" href="#0">
+													<i className="fas fa-angle-right"></i><em>Văn bản mẫu</em>
+												</a> */}
 											</li>
 										</ul>
 									:

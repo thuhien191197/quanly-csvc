@@ -9,6 +9,7 @@
 	color: #333;
 	margin-left: 1em;
 	margin-right: 1em;
+	background-color: #efefef;
  }
  
  h1 {
@@ -48,14 +49,16 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 4em;
+	height: 3em;
 	background: #192b3c;
+
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
  }
 
  
  .s-sidebar__trigger > i {
 	display: inline-block;
-	margin: 1.5em 0 0 1.5em;
+	margin: 1.0em 0 0 1.0em;
 	color: #f07ab0;
  }
  
@@ -71,8 +74,35 @@
 	color: rgba(255, 255, 255, 0.7);
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
-	transition: "left .1s ease-out, right .1s ease-out"
+	transition: "left .1s ease-out, right .1s ease-out";
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+	font-size: 0.8em;
  }
+ #style-4::-webkit-scrollbar-track
+ {
+	 /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+	 background-color: #243e56;
+	 /* padding-right: 12px; */
+	 /* #243e56 */
+	 /* opacity: 1; */
+ }
+ 
+ #style-4::-webkit-scrollbar
+ {
+	 width: 5px;
+	 background-color: #F5F5F5;
+	 
+	 
+ }
+
+ #style-4::-webkit-scrollbar-thumb
+{
+	background-color: rgba(0, 0, 0, 0.2)
+	
+	/* border: 2px solid #555555; */
+	
+}
+
 
 .s-sidebar__nav-avartar{
 	color: aliceblue;
@@ -212,7 +242,7 @@
 @media (min-width: 42em) {
 	.s-layout__content {
 	   /* margin-left: 4em; */
-	   margin-left: 4.5em;
+	   margin-left: 3.5em;
 	   word-wrap: break-word;
 	}
 	
@@ -236,9 +266,10 @@
  @media (min-width: 68em) {
 	.s-layout__content {
 	   /* margin-left: 15em; */
-	   margin-left: 13.5em;
+	   margin-left: 10.5em;
 	   word-wrap: break-word;
-
+	   margin-top: 4em;
+		
 	}
 	
 	.s-sidebar__trigger {
@@ -258,10 +289,10 @@
  .pull-right{
 	color: azure;
 	float: right!important;
-	margin-right: 15px;
+	margin: 0.6em 1.0em 0 1.0em;
  }
  .pull-right > li{
-	margin-left: 30px
+	margin-left: 1.0em ;
  }
  .rad-dropdown {
 	display: inline-block;
@@ -282,15 +313,20 @@
     width: 30px !important;
  }
 .s-sidebar__nav-avartar-csvc{
-	width: 115px;
+	width: 7em;
 	height: 4em;
 	float: left;
 	text-align: center;
 	margin-top: 12px;
 	margin-left: 6px;
+	font-size: 0.9em;
 }
 .s-sidebar__nav-avartar-image{
 	float: left;
-	width: 4em;
-	height:4em;
+	width: 3em;
+	height:3em;
+}
+.bell{
+	-webkit-animation: pulsate 1s ease-out;
+	-webkit-animation-iteration-count: infinite;
 }

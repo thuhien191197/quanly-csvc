@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import './Donvi.css';
-import PropTypes from "prop-types";
+import './ThanhLy.css';
+import { withRouter } from "react-router";
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
-class Donvi extends Component {
+class ThanhLy extends Component {
 	
 	render() {
 		const { match } = this.props
 		// console.log("match :" , match)
 		return (
 			<div>
+				ThanhLy
 				{getParentPath(match.url)}
 			</div>
 		);
 	}
 }
 
-export default Donvi;
+export default withRouter(ThanhLy);

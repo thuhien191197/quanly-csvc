@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './Taisan.css';
+// import './VanBanMau.css';
 
-
-class Taisan extends Component {
+class VanBanMau extends Component {
 	render() {
 		return (
 			<div>
+				VanBanMau
 					Hello! Looks like you’re enjoying the discussion, but you haven’t signed up for an account yet.
 					When you create an account, we remember exactly what you’ve read, so you always come right back where you left off. You also get notifications, here and via email, whenever someone replies to you. And you can like posts to share the love.
 			</div>
@@ -13,4 +13,4 @@ class Taisan extends Component {
 	}
 }
 
-export default Taisan;
+export default VanBanMau;
