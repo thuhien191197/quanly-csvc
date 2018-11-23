@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import './Taisan.css';
 // import Table from './component/Table';
 import Table1 from '../../../general/Table/Table'
+import * as R from 'ramda';
 
 class Taisan extends Component {
 	state = {
 		rows : [
-			{ id: 'id_taisan', numeric: true, disablePadding: false, label: 'Id' },
+			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
 			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
 			{ id: 'dongia', numeric: false, disablePadding: false, label: 'Đơn giá' },
 			{ id: 'soluong', numeric: false, disablePadding: true, label: 'Số lượng' },
@@ -25,7 +26,7 @@ class Taisan extends Component {
 			.then(json => {
 				var b =[]
 				{json.map(item => {
-					const a = {'id_taisan' :item.id_taisan, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
+					const a = {'id' :item.id_taisan, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
 					// const a = [item.id_taisan, item.name, item.dongia, item.soluong, item.ngaynhap, item.id_loaitaisan, item.id_donvi, item.id_user]
 					b.push(a);
 				})}
@@ -40,6 +41,41 @@ class Taisan extends Component {
 		
 	}
 
+	// handleDelete(selected){
+	// 	const data = this.state.itemsTable.filter(i => 
+	// 		selected.filter(j => i.id === j)
+	// 	)
+	// 	this.setState({items : data})
+	// }
+
+	handleDelete = (selected) => {
+		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, this.state.itemsTable)
+		console.log("dataDeleted:",dataDeleted )
+		this.setState({ itemsTable: dataDeleted, selected: [] })
+		console.log(">>><<<>>selected:",selected )
+		console.log(">>><<<>>selected:",selected )
+		
+		// selected.map((select, idRow) => {
+		// 	fetch('https://5bf551f82a6f080013a34e67.mockapi.io/api/taisan/'+ select, {
+		// 		method: 'DELETE'
+		// 	});
+		// })
+		// for(var select  in selected){
+		// 	fetch('https://5bf551f82a6f080013a34e67.mockapi.io/api/taisan/'+ select, {
+		// 		method: 'DELETE'
+		// 	});
+		// }
+		selected.forEach(function(select, i) {
+			
+			console.log("-------->select:::",select)
+			setTimeout(() => {
+				fetch('https://5bf551f82a6f080013a34e67.mockapi.io/api/taisan/'+ select, {
+				method: 'DELETE'
+			});
+			}, i*100)
+		});
+    }
+
 	render() {
 		
 		// console.log("DATA:",this.state);
@@ -48,7 +84,7 @@ class Taisan extends Component {
 		return (
 			
 			<div>Taisan
-				<Table1 rows={this.state.rows} items={itemsTable}/>
+				<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}/>
 			</div>
 		);
 	}

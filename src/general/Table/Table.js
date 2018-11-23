@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Table.css';
 
-// import classNames from 'classnames';
+import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -12,15 +12,16 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { Checkbox } from '@material-ui/core';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-// import Toolbar from '@material-ui/core/Toolbar';
-// import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 // import Checkbox from '@material-ui/core/Checkbox';
-// import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-// // import DeleteIcon from '@material-ui/icons/Delete';
-// import FilterListIcon from '@material-ui/icons/FilterList';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
+
 
 
 // const rows = [
@@ -33,7 +34,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 
 function desc(a, b, orderBy){
-	console.log('A, B', a,b, orderBy)
+	//console.log('A, B', a,b, orderBy)
 	if(b[orderBy] <  a[orderBy]){
 		return -1;
 	}
@@ -63,7 +64,8 @@ class Table1 extends Component {
 		order: 'asc',
 		orderBy: '',
 		page: 0,
-  		rowsPerPage: 5,
+		rowsPerPage: 5,
+		selected: [],
 	}
 
 	handleRequestSort = (event, property) => {
@@ -91,19 +93,149 @@ class Table1 extends Component {
 		this.setState({ rowsPerPage: event.target.value });
 	};
 
+	handleSelectAllClick = event => {
+		const { items } = this.props;
+		const { selected } = this.state;
+		if (event.target.checked) {
+		 	var idArray = items.map((n) => n.id);
+		  	this.setState(state => ({ selected: idArray }));
+			// console.log("selected:",idArray)
+		  return;
+		}
+		this.setState({ selected: [] });
+		
+	};
+
+	// EnhancedTableToolbar = props => {
+	// 	const { classes, selected } = this.state;
+	// 	return (
+	// 		<Toolbar
+	// 			className={classNames(classes.root, {
+	// 				[classes.highlight]: selected.length > 0,
+	// 		  	})}
+	// 		>
+	// 			<div  className={classes.title}>
+	// 			  {selected.length > 0 
+	// 			  ? 
+	// 			  (
+	// 				<Typography color="inherit" variant="subtitle1">
+	// 					{selected.length} selected
+	// 				</Typography>
+	// 			  )
+	// 			  :
+	// 			  (
+	// 				<Typography variant="h6" id="tableTitle">
+	// 				  List
+	// 				</Typography>
+	// 			  )
+	// 			}
+
+	// 			</div>
+	// 			<div className={classes.spacer} />
+	// 			<div className={classes.actions}>
+	// 				{selected.length > 0 ? (
+	// 				<Tooltip title="Delete">
+	// 					<IconButton aria-label="Delete">
+						
+	// 					<FilterListIcon />
+	// 					</IconButton>
+	// 				</Tooltip>
+	// 				) : (
+	// 				<Tooltip title="Filter list">
+	// 					<IconButton aria-label="Filter list">
+						
+	// 					<FilterListIcon />
+	// 					</IconButton>
+	// 				</Tooltip>
+	// 				)}
+	// 			</div>
+
+	// 		</Toolbar>
+	// 	)
+	// }	
+
+	isSelected = id => this.state.selected.indexOf(id) !== -1;
+	
+	handleClick = (event, id) => {
+		const { selected } = this.state;
+		const selectedIndex = selected.indexOf(id);
+		let newSelected = [];
+	
+		if (selectedIndex === -1) {
+		  newSelected = newSelected.concat(selected, id);
+		} else if (selectedIndex === 0) {
+		  newSelected = newSelected.concat(selected.slice(1));
+		} else if (selectedIndex === selected.length - 1) {
+		  newSelected = newSelected.concat(selected.slice(0, -1));
+		} else if (selectedIndex > 0) {
+		  newSelected = newSelected.concat(
+			selected.slice(0, selectedIndex),
+			selected.slice(selectedIndex + 1),
+		  );
+		}
+	
+		this.setState({ selected: newSelected });
+	};
+
+	
 	render() {
-		const {rows, items} = this.props;
-		const {page, rowsPerPage, orderBy, order} = this.state;
+		const {rows, items, numSelected} = this.props;
+		const {page, rowsPerPage, orderBy, order, selected} = this.state;
 		const emptyRows =rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
-		console.log('render', this.state)
+		// console.log('render', this.state)
+		
 		return (
 			<div>
 				<Paper>
+					<Toolbar>
+						<div >
+						{selected.length > 0 
+						? 
+						(
+							<Typography color="inherit" variant="subtitle1">
+								{selected.length} selected
+							</Typography>
+						)
+						:
+						(
+							<Typography variant="h6" id="tableTitle">
+							Danh sách
+							</Typography>
+						)
+						}
+
+						</div>
+						<div/>
+						<div>
+							{selected.length > 0 ? (
+							<Tooltip title="Delete">
+								<IconButton aria-label="Delete">
+									<DeleteIcon 
+										onClick = {() => this.props.handleDelete(selected)}
+									/>
+								</IconButton>
+							</Tooltip>
+							) : (
+							<Tooltip title="Filter list">
+								<IconButton aria-label="Filter list">
+								
+								<FilterListIcon />
+								</IconButton>
+							</Tooltip>
+							)}
+						</div>
+					</Toolbar>
 					<Table aria-labelledby="tableTitle">
+						
 						<TableHead>
 							<TableRow>
 								<TableCell padding="checkbox">
-									<Checkbox/>
+									<Checkbox
+										indeterminate={numSelected > 0 && selected.length < items.length}
+										checked={selected.length === items.length}
+										onChange={this.handleSelectAllClick}
+										// onClick={this.isSelected}
+									/>
 								</TableCell>
 								{rows.map((row, idRow) => {
 									return(
@@ -138,11 +270,23 @@ class Table1 extends Component {
 							.map((item, idItem) => {
 
 							// {items.map((item, idItem) => {
-								// console.log("item[id]:",item[1])
+								console.log("item:", item)
+								const isSelected = this.isSelected(item.id);
+								console.log(">>>>isSelected:", isSelected)
 								return(
-									<TableRow key={idItem}>
+									<TableRow 
+										hover
+										key={item.id}
+										aria-checked={isSelected}
+										selected={isSelected}
+										role="checkbox"
+										tabIndex={-1}
+										onClick={event => this.handleClick(event, item.id)}
+									>
 										<TableCell padding="checkbox">
-											<Checkbox/>
+											<Checkbox
+												checked={isSelected}
+											/>
 										</TableCell>
 										{rows.map((row, idRow) => {
 											return(
