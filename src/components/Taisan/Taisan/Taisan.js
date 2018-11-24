@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Taisan.css';
 // import Table from './component/Table';
 import Table1 from '../../../general/Table/Table'
+// import App from './component/App/App'
 import * as R from 'ramda';
 
 class Taisan extends Component {
@@ -17,7 +18,8 @@ class Taisan extends Component {
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
 		],
 		itemsTaisan: [],
-		itemsTable:[]
+		itemsTable:[],
+		selectApp : 'AppTS',
 	}
 
 	componentDidMount(){
@@ -84,7 +86,7 @@ class Taisan extends Component {
 		return (
 			
 			<div>Taisan
-				<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}/>
+				<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}  selectApp={this.state.selectApp}/>
 			</div>
 		);
 	}

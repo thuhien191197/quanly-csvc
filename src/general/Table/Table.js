@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Table.css';
 
 import classNames from 'classnames';
-// import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,24 +15,24 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
+import { withRouter } from "react-router";
+import AppTS from '../../components/Taisan/Taisan/component/App/AppTS'
 
 
 
-// const rows = [
-// 	{ id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-// 	{ id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-// 	{ id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-// 	{ id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-// 	{ id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
-// ];
+const toolbarStyles = theme => ({
+	btnAdd: {
+		position: 'inherit',
+	},
 
-
+});
 function desc(a, b, orderBy){
 	//console.log('A, B', a,b, orderBy)
 	if(b[orderBy] <  a[orderBy]){
@@ -106,53 +106,6 @@ class Table1 extends Component {
 		
 	};
 
-	// EnhancedTableToolbar = props => {
-	// 	const { classes, selected } = this.state;
-	// 	return (
-	// 		<Toolbar
-	// 			className={classNames(classes.root, {
-	// 				[classes.highlight]: selected.length > 0,
-	// 		  	})}
-	// 		>
-	// 			<div  className={classes.title}>
-	// 			  {selected.length > 0 
-	// 			  ? 
-	// 			  (
-	// 				<Typography color="inherit" variant="subtitle1">
-	// 					{selected.length} selected
-	// 				</Typography>
-	// 			  )
-	// 			  :
-	// 			  (
-	// 				<Typography variant="h6" id="tableTitle">
-	// 				  List
-	// 				</Typography>
-	// 			  )
-	// 			}
-
-	// 			</div>
-	// 			<div className={classes.spacer} />
-	// 			<div className={classes.actions}>
-	// 				{selected.length > 0 ? (
-	// 				<Tooltip title="Delete">
-	// 					<IconButton aria-label="Delete">
-						
-	// 					<FilterListIcon />
-	// 					</IconButton>
-	// 				</Tooltip>
-	// 				) : (
-	// 				<Tooltip title="Filter list">
-	// 					<IconButton aria-label="Filter list">
-						
-	// 					<FilterListIcon />
-	// 					</IconButton>
-	// 				</Tooltip>
-	// 				)}
-	// 			</div>
-
-	// 		</Toolbar>
-	// 	)
-	// }	
 
 	isSelected = id => this.state.selected.indexOf(id) !== -1;
 	
@@ -178,15 +131,36 @@ class Table1 extends Component {
 	};
 
 	
+	
 	render() {
-		const {rows, items, numSelected} = this.props;
+		const {rows, items, numSelected, classes, selectApp} = this.props;
 		const {page, rowsPerPage, orderBy, order, selected} = this.state;
 		const emptyRows =rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 		// console.log('render', this.state)
-		
+		const { match } = this.props
+		console.log(">>>match:",match)
+
+
+		const App = props => <Link to={`${match.url}add`} {...props} />
+
 		return (
 			<div>
+				<div className="divAdd">
+					<Tooltip title="Add" className={classes.btnAdd}>
+						<Button 
+							variant="fab" 
+							color="primary" 
+							aria-label="Add"
+							component={App}
+						>
+							<AddIcon  />
+						</Button>
+					</Tooltip>
+				</div>
 				<Paper>
+				
+				
+
 					<Toolbar>
 						<div >
 						{selected.length > 0 
@@ -198,7 +172,7 @@ class Table1 extends Component {
 						)
 						:
 						(
-							<Typography variant="h6" id="tableTitle">
+							<Typography variant="h7" id="tableTitle">
 							Danh sách
 							</Typography>
 						)
@@ -234,7 +208,6 @@ class Table1 extends Component {
 										indeterminate={numSelected > 0 && selected.length < items.length}
 										checked={selected.length === items.length}
 										onChange={this.handleSelectAllClick}
-										// onClick={this.isSelected}
 									/>
 								</TableCell>
 								{rows.map((row, idRow) => {
@@ -328,4 +301,5 @@ class Table1 extends Component {
 	}
 }
 
-export default Table1;
+export default withRouter(withStyles(toolbarStyles)(Table1));
+
