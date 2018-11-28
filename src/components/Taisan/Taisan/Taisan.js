@@ -26,30 +26,19 @@ class Taisan extends Component {
 	}
 
 	componentDidMount(){
-		// fetch('https://5bf551f82a6f080013a34e67.mockapi.io/api/taisan')
-		// .then(res => res.json())
-		// .then(json => {
-		// 	var b =[]
-		// 	{json.map(item => {
-		// 		const a = {'id' :item.id_taisan, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
-		// 		// const a = [item.id_taisan, item.name, item.dongia, item.soluong, item.ngaynhap, item.id_loaitaisan, item.id_donvi, item.id_user]
-		// 		b.push(a);
-		// 	})}
-		// 		// console.log("json:",json)
-		// 		this.setState({
-		// 			itemsTaisan: json,
-		// 			itemsTable: b
-				
-		// 		})
-		// });
-
-
 		fetch('http://localhost:5500/taisan')
 		.then(res => res.json())
 		.then(json => {
-			this.setState({
-				itemsTaisan : json
-			})
+			var b =[]
+			{json.map(item => {
+				const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
+				b.push(a);
+			})}
+				this.setState({
+					itemsTaisan: json,
+					itemsTable: b
+				
+				})
 		});
 		
 	}
@@ -87,7 +76,6 @@ class Taisan extends Component {
 			})
 			
 			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': this.state.loaitaisan, 'id_donvi':this.state.donvi, 'id_user': this.state.user};
-			// const a = [item.id_taisan, item.name, item.dongia, item.soluong, item.ngaynhap, item.id_loaitaisan, item.id_donvi, item.id_user]
 			b.push(a);
 		})
 		this.setState({
@@ -128,9 +116,6 @@ class Taisan extends Component {
     }
 
 	render() {
-		
-		// console.log("DATA:",this.state);
-		// console.log("<<<<<<<<  loaitaisan:",this.state.loaitaisan)
 		const { itemsTable } = this.state;
 		console.log("-------->itemsTaiSan",this.state.itemsTaisan)
 		// this.handleGetListTable(this.state.itemsTaisan)
