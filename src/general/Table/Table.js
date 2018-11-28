@@ -64,7 +64,7 @@ class Table1 extends Component {
 		order: 'asc',
 		orderBy: '',
 		page: 0,
-		rowsPerPage: 5,
+		rowsPerPage: 10,
 		selected: [],
 	}
 
@@ -138,7 +138,8 @@ class Table1 extends Component {
 		const emptyRows =rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 		// console.log('render', this.state)
 		const { match } = this.props
-		console.log(">>>match:",match)
+		// console.log(">>>match:",match)
+		// console.log("items:"+ items);
 
 
 		const App = props => <Link to={`${match.url}add`} {...props} />
@@ -158,9 +159,6 @@ class Table1 extends Component {
 					</Tooltip>
 				</div>
 				<Paper>
-				
-				
-
 					<Toolbar>
 						<div >
 						{selected.length > 0 
@@ -243,9 +241,9 @@ class Table1 extends Component {
 							.map((item, idItem) => {
 
 							// {items.map((item, idItem) => {
-								console.log("item:", item)
+								//console.log("items:", items)
 								const isSelected = this.isSelected(item.id);
-								console.log(">>>>isSelected:", isSelected)
+							//	console.log(">>>>isSelected:", isSelected)
 								return(
 									<TableRow 
 										hover

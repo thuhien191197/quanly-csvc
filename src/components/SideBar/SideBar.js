@@ -18,7 +18,7 @@ const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 class SlideBar extends Component {
 
 	state = {
-		itemsUsers: [],
+		itemsDonvi: [],
 		itemsDanhMuc: [],
 		tree : [
 			{
@@ -76,14 +76,29 @@ class SlideBar extends Component {
 		console.log(">>>>id : " +id)
 		this.toggleDropdown(id)
 
-		fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/donvi')
-			.then(res => res.json())
-			.then(json => {
-				this.setState({
-					itemsUsers: json
-				})
-			});
-		fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/danhmuc')
+		// fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/donvi')
+		// 	.then(res => res.json())
+		// 	.then(json => {
+		// 		this.setState({
+		// 			itemsDonvi: json
+		// 		})
+		// 	});
+
+		fetch('http://localhost:5500/donvi')
+		.then(res => res.json())
+		.then(json => {
+			this.setState({
+				itemsDonvi: json
+			})
+		});
+		// fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/danhmuc')
+		// 	.then(res => res.json())
+		// 	.then(json => {
+		// 		this.setState({
+		// 			itemsDanhMuc: json
+		// 	})
+		// })
+		fetch('http://localhost:5500/danhmuc')
 			.then(res => res.json())
 			.then(json => {
 				this.setState({
@@ -116,7 +131,7 @@ class SlideBar extends Component {
 	// }
 
 	render() {
-		var {tree, itemsUsers, itemsDanhMuc} = this.state;
+		var {tree, itemsDonvi, itemsDanhMuc} = this.state;
 		
 		return (
 			<div>
@@ -174,8 +189,8 @@ class SlideBar extends Component {
 									{tree[2].isOpen
 									?
 										<ul>
-											{itemsUsers.map(item => (
-												<li className="li" key={item.id_donvi}>
+											{itemsDonvi.map(item => (
+												<li className="li" key={item.id}>
 													{/* <Link to={`${match.url}/rendering`}> */}
 													{/* <a className="s-sidebar__nav-linksub" href="#0">
 														<i class="fas fa-angle-right"></i><em>{item.name}</em>
@@ -183,7 +198,7 @@ class SlideBar extends Component {
 													{/* </Link> */}
 													{/* <MenuLink className="s-sidebar__nav-linksub" to={`donvi/${item.name}`} label={item.name} nameIcon="fas fa-landmark" /> */}
 													<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/donvi' + '/' + item.name + '/' + item.id_donvi + '/',
+														pathname: '/donvi' + '/' + item.name + '/' + item.id + '/',
 													}} label={item.name} nameIcon="fas fa-angle-right" />
 
 												
@@ -212,9 +227,9 @@ class SlideBar extends Component {
 											</a> */}
 										</li>
 										{itemsDanhMuc.map(item => (
-											<li className="li" key={item.id_danhmuc}>
+											<li className="li" key={item.id}>
 													<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/danhmuc' + '/' + item.name + '/' + item.id_danhmuc + '/',
+														pathname: '/danhmuc' + '/' + item.name + '/' + item.id + '/',
 													}} label={item.name} nameIcon="fas fa-angle-right" />
 												{/* <a className="s-sidebar__nav-linksub" href="#0">
 													<i class="fas fa-angle-right"></i><em>{item.name}</em>
