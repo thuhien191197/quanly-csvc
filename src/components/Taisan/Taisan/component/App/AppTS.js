@@ -1,49 +1,132 @@
 import React, { Component } from 'react';
-// import './Taisan.css';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
+import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 
-const currencies = [
+const itemsTinhtrang = [
 	{
-	  value: 'USD',
-	  label: '$',
+	  id: 0,
+	  name: 'Còn sử dụng',
 	},
 	{
-	  value: 'EUR',
-	  label: '€',
-	},
-	{
-	  value: 'BTC',
-	  label: '฿',
-	},
-	{
-	  value: 'JPY',
-	  label: '¥',
-	},
-  ];
+    id: 1,
+    name: 'Không còn sử dụng',
+	}
+];
+
+  
 
 
 class AppTS extends Component {
 	state = {
-		name: '',
-		dongia: '',
-		soluong:'',
-		ngaynhap:'1997-11-19',
-		hansudung:'1997-11-19',
-		ghichu: '',
-		loaitaisan:'',
-		multiline: 'Controlled',
-		currency: 'EUR',
+
+
+    name: '',
+    dongia: 0,
+    soluong: 0,
+    ngaynhap: '19/11/1997',
+    hansudung: '23/7/2021',
+    ghichu: '',
+    id_loaitaisan: '',
+    id_donvi: '',
+    id_kinhphi: '',
+    id_phong: '',
+    id_user: '',
+    status: 0,
+
+
+    multiline: 'Controlled',
+    itemsDonvi:[],
+		itemsLoaitaisan:[],
+		itemsKinhphi:[],
+		itemsPhong:[],
+		itemsUser:[]
+		
 	};
+
+	componentDidMount(){
+		axios.get('http://localhost:5500/donvi')
+		.then((res) => {
+			this.setState({itemsDonvi: res.data});
+		});
+		axios.get('http://localhost:5500/loaitaisan')
+		.then((res) => {
+			this.setState({itemsLoaitaisan: res.data});
+		});
+		axios.get('http://localhost:5500/nguonkinhphi')
+		.then((res) => {
+			this.setState({itemsKinhphi: res.data});
+		});
+		axios.get('http://localhost:5500/nguonkinhphi')
+		.then((res) => {
+			this.setState({itemsKinhphi: res.data});
+		});
+		axios.get('http://localhost:5500/phong')
+		.then((res) => {
+			this.setState({itemsPhong: res.data});
+		});
+		axios.get('http://localhost:5500/user')
+		.then((res) => {
+			this.setState({itemsUser: res.data});
+		});
+	}
+
+
+  handleSubmit = (event,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
+    event.preventDefault();
+    console.log("clicked submit");
+    var id = parseInt(this.props.itemsTaisan[this.props.itemsTaisan.length - 1].id) + 1;
+    // var dongia = parseInt(dongia);
+    
+    this.props.addTs(
+      id,
+      name,
+      dongia,
+      soluong,
+      ngaynhap,
+      hansudung,
+      ghichu,
+      id_loaitaisan,
+      id_donvi,
+      id_kinhphi,
+      id_phong,
+      id_user,
+      status
+    )
+	}
+
+
 	handleChange = name => event => {
 		this.setState({
 		  [name]: event.target.value,
 		});
 	};
+
 	render() {
-		return (
+		console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
+    const {
+      name,
+      dongia,
+      soluong,
+      ngaynhap,
+      hansudung,
+      ghichu,
+      id_loaitaisan,
+      id_donvi,
+      id_kinhphi,
+      id_phong,
+      id_user,
+      status,
+      itemsUser, 
+      itemsDonvi, 
+      itemsKinhphi, 
+      itemsLoaitaisan, 
+      itemsPhong
+    } = this.state;
+		return ( 
 			<div>
 				{/* APP tài sản */}
 				<from
@@ -52,7 +135,7 @@ class AppTS extends Component {
 					<TextField
 						id="standard-name"
 						label="Tên tài sản"
-						value={this.state.name}
+						value={name}
 						placeholder="Nhập tên tài sản"
 						onChange={this.handleChange('name')}
 						style={{ marginRight: 30 }}
@@ -65,20 +148,24 @@ class AppTS extends Component {
 						id="standard-select-currency-native"
 						select
 						label="Tên người nhập"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={id_user}
+						onChange={this.handleChange('id_user')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
 							},
+            }}
+            InputLabelProps={{
+							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
-						helperText="Please select your currency"
+						helperText="Please select your name"
 						margin="normal"
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
+            {/* <option disabled="disabled" selected="true" value="">Chọn tên người nhập</option> */}
+						{itemsUser.map((item,i) => (
+							<option key={i} value={item.id}>
+							{item.fullname}
 							</option>
 						))}
 					</TextField>
@@ -86,7 +173,7 @@ class AppTS extends Component {
 					<TextField
 						id="standard-name"
 						label="Đơn giá"
-						value={this.state.dongia}
+						value={dongia}
 						placeholder="Nhập đơn giá"
 						style={{ marginRight: 30 }}
 						// fullWidth
@@ -100,11 +187,10 @@ class AppTS extends Component {
 					<TextField
 						id="standard-name"
 						label="Số lượng"
-						value={this.state.soluong}
+						value={soluong}
+						style={{ marginRight: 30 }}
 						type="number"
 						placeholder="Nhập Số lượng"
-						
-						style={{ marginRight: 30 }}
 						// fullWidth
 						helperText="tổng số lượng!"
 						onChange={this.handleChange('soluong')}
@@ -117,9 +203,9 @@ class AppTS extends Component {
 						id="date"
 						label="Ngày nhập"
 						type="date"
-						defaultValue="1997-11-19"
-						// value={this.state.ngaynhap}
-						// onChange={this.handleChange('ngaynhap')}
+						// defaultValue="1997-11-19"
+						value={ngaynhap}
+						onChange={this.handleChange('ngaynhap')}
 						// fullWidth
 						style={{ marginRight: 30 }}
 						margin="normal"
@@ -131,9 +217,9 @@ class AppTS extends Component {
 						id="date"
 						label="Hạn sử dụng"
 						type="date"
-						defaultValue="1997-11-19"
-						// value={this.state.ngaynhap}
-						// onChange={this.handleChange('ngaynhap')}
+						// defaultValue="1997-11-19"
+						value={hansudung}
+						onChange={this.handleChange('hansudung')}
 						// fullWidth
 						margin="normal"
 						InputLabelProps={{
@@ -144,7 +230,7 @@ class AppTS extends Component {
 					<TextField
 						id="standard-name"
 						label="Ghi chú"
-						value={this.state.ghichu}
+						value={ghichu}
 						placeholder="Nhập tên Ghi chú"
 						onChange={this.handleChange('ghichu')}
 						// fullWidth
@@ -158,8 +244,8 @@ class AppTS extends Component {
 						id="standard-name"
 						select
 						label="Tình trạng"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={status}
+						onChange={this.handleChange('status')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
@@ -168,9 +254,9 @@ class AppTS extends Component {
 						helperText="Please select your currency"
 						margin="normal"
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
+						{itemsTinhtrang.map((option, i) => (
+							<option key={i} value={option.id}>
+							{option.name}
 							</option>
 						))}
 					</TextField>
@@ -180,22 +266,28 @@ class AppTS extends Component {
 						id="standard-select-currency-native"
 						select
 						label="Lọai tài sản"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={id_loaitaisan}
+						onChange={this.handleChange('id_loaitaisan')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
 							},
+            }}
+            InputLabelProps={{
+							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
 						helperText="Please select your currency"
 						margin="normal"
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
-							</option>
-						))}
+            {itemsLoaitaisan.map((item, i) => {
+              console.log("item:",item.id)
+              return(
+                <option key={i} value={item.id}>
+                {item.name}
+                </option>
+              )
+            })}
 					</TextField>
 
 					
@@ -203,20 +295,23 @@ class AppTS extends Component {
 						id="standard-select-currency-native"
 						select
 						label="Nguồn Kinh phí"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={id_kinhphi}
+						onChange={this.handleChange('id_kinhphi')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
 							},
+            }}
+            InputLabelProps={{
+							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
 						helperText="Please select your currency"
 						margin="normal"
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
+						{itemsKinhphi.map((item, i) => (
+							<option key={i} value={item.id}>
+							{item.name}
 							</option>
 						))}
 					</TextField>
@@ -224,12 +319,15 @@ class AppTS extends Component {
 						id="standard-name"
 						select
 						label="Đơn vị"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={id_donvi}
+						onChange={this.handleChange('id_donvi')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
 							},
+            }}
+            InputLabelProps={{
+							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
 						helperText="Please select your currency"
@@ -237,9 +335,9 @@ class AppTS extends Component {
 
 						
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
+						{itemsDonvi.map((item, i) => (
+							<option key={i} value={item.id}>
+							{item.name}
 							</option>
 						))}
 					</TextField>
@@ -247,24 +345,47 @@ class AppTS extends Component {
 						id="standard-name"
 						select
 						label="Phòng"
-						value={this.state.currency}
-						onChange={this.handleChange('currency')}
+						value={id_phong}
+						onChange={this.handleChange('id_phong')}
 						SelectProps={{
 							native: true,
 							MenuProps: {
 							},
+            }}
+            InputLabelProps={{
+							shrink: true,
 						}}
 						helperText="Please select your currency"
 						margin="normal"
 					>
-						{currencies.map(option => (
-							<option key={option.value} value={option.value}>
-							{option.label}
+            {itemsPhong.map((item, i) => {
+              // console.log("phòng: ", item.id)
+            return(
+							<option key={i} value={item.id}>
+							{item.name}
 							</option>
-						))}
+						)})}
 					</TextField>
 					<br />
-					
+					<Button variant="contained" color="primary" 
+            onClick={(event) => this.handleSubmit(
+              event,
+              name,
+              dongia,
+              soluong,
+              ngaynhap,
+              hansudung,
+              ghichu,
+              id_loaitaisan,
+              id_donvi,
+              id_kinhphi,
+              id_phong,
+              id_user,
+              status
+            )}
+					>
+						Thêm 
+					</Button>
 				</from>
 			</div>
 		);

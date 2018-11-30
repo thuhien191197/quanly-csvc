@@ -4,6 +4,14 @@ import './Taisan.css';
 import Table1 from '../../../general/Table/Table'
 // import App from './component/App/App'
 import * as R from 'ramda';
+import { Switch, Route } from 'react-router-dom'
+import AppTS from './component/App/AppTS';
+import DieuChuyenTaiSan from '../DieuChuyenTaiSan/DieuChuyenTaiSan';
+import ThanhLy from '../ThanhLy/ThanhLy';
+import ThongKe from '../ThongKe/ThongKe';
+import axios from 'axios';
+export const itemsTaisan = [];
+
 
 class Taisan extends Component {
 	state = {
@@ -82,7 +90,9 @@ class Taisan extends Component {
 			itemsTable: b
 		})
 	}
-
+	addTaiSan = (data) => {
+		console.log('ADD TS', data)
+	}
 	// handleDelete(selected){
 	// 	const data = this.state.itemsTable.filter(i => 
 	// 		selected.filter(j => i.id === j)
@@ -115,17 +125,50 @@ class Taisan extends Component {
 		});
     }
 
-	render() {
+	render1 = () => {
 		const { itemsTable } = this.state;
 		console.log("-------->itemsTaiSan",this.state.itemsTaisan)
 		// this.handleGetListTable(this.state.itemsTaisan)
 		return (
 			
 			<div>Taisan
-				
-				<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}  selectApp={this.state.selectApp}/>
+		
+					<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}  selectApp={this.state.selectApp}/>
+
 			</div>
 		);
+	}
+	addTs = (id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
+		// const {itemsTaisan} = this.state
+
+
+		// var items = itemsTaisan;
+		// var length = itemsTaisan.length;
+		// // items[length] = data;
+		// this.setState({
+		// 	// itemsTaisan: items
+		// })
+
+	  axios.post(`http://localhost:5500/taisan`, { id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status})
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+      
+	}
+	render() {
+		return (
+			<div>
+				<Switch>
+					<Route path="/taisan" exact render={this.render1}></Route>
+					<Route path="/taisan/add" component={() => <AppTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
+					<Route exact path="/taisan/Điều chuyển tài sản" render={() => <DieuChuyenTaiSan />} />
+					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
+					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
+				</Switch>
+			</div>
+		)
+		
 	}
 }
 
