@@ -142,7 +142,7 @@ class Table1 extends Component {
 		// console.log("items:"+ items);
 
 
-		const App = props => <Link to={`${match.url}add`} {...props} />
+		const App = props => <Link to={`${match.url}/add`} {...props} />
 
 		return (
 			<div>
@@ -264,6 +264,7 @@ class Table1 extends Component {
 												<TableCell key={idRow} component="th" scope="row" padding="none">
 													{item[row.id]}
 												</TableCell>
+												
 											)})}
 									</TableRow>
 								// )})}

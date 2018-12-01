@@ -24,6 +24,7 @@ class Taisan extends Component {
 			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
 		],
 		itemsTaisan: [],
 		itemsTable:[],
@@ -157,11 +158,12 @@ class Taisan extends Component {
       
 	}
 	render() {
+		console.log(">> [TaiSan] itemsTaisan: ", this.state.itemsTaisan);
 		return (
 			<div>
 				<Switch>
 					<Route path="/taisan" exact render={this.render1}></Route>
-					<Route path="/taisan/add" component={() => <AppTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
+					<Route exact path="/taisan/add" component={() => <AppTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
 					<Route exact path="/taisan/Điều chuyển tài sản" render={() => <DieuChuyenTaiSan />} />
 					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />

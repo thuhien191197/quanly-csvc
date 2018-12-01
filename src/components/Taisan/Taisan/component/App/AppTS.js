@@ -17,9 +17,6 @@ const itemsTinhtrang = [
 	}
 ];
 
-  
-
-
 class AppTS extends Component {
 	state = {
 
@@ -75,27 +72,30 @@ class AppTS extends Component {
 	}
 
 
-  handleSubmit = (event,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
-    event.preventDefault();
-    console.log("clicked submit");
-    var id = parseInt(this.props.itemsTaisan[this.props.itemsTaisan.length - 1].id) + 1;
-    // var dongia = parseInt(dongia);
-    
-    this.props.addTs(
-      id,
-      name,
-      dongia,
-      soluong,
-      ngaynhap,
-      hansudung,
-      ghichu,
-      id_loaitaisan,
-      id_donvi,
-      id_kinhphi,
-      id_phong,
-      id_user,
-      status
-    )
+  	handleSubmit = (event,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
+		event.preventDefault();
+		console.log("clicked submit");
+		// console.log(">> [ADDTS] itemsTaisan: ", this.props.itemsTaisan);
+		var id = parseInt(this.props.itemsTaisan[this.props.itemsTaisan.length - 1].id) + 1;
+		// console.log(">> [ADDTS] item handle submit: ", name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status);
+		
+		var dongia = parseInt(dongia);
+		
+		this.props.addTs(
+			id,
+			name,
+			dongia,
+			soluong,
+			ngaynhap,
+			hansudung,
+			ghichu,
+			id_loaitaisan,
+			id_donvi,
+			id_kinhphi,
+			id_phong,
+			id_user,
+			status
+		)
 	}
 
 
@@ -106,7 +106,7 @@ class AppTS extends Component {
 	};
 
 	render() {
-		console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
+		// console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
     const {
       name,
       dongia,
@@ -281,7 +281,7 @@ class AppTS extends Component {
 						margin="normal"
 					>
             {itemsLoaitaisan.map((item, i) => {
-              console.log("item:",item.id)
+            //   console.log("item:",item.id)
               return(
                 <option key={i} value={item.id}>
                 {item.name}

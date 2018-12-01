@@ -274,7 +274,7 @@ class SlideBar extends Component {
 										</li>
 										<li  className="li">
 											<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/taisan/Thanh lý/1' ,
+														pathname: '/taisan/Thanh lý' ,
 													}} label="Thanh lý" nameIcon="fas fa-angle-right" />
 											{/* <a className="s-sidebar__nav-linksub" href="#0">
 												<i className="fas fa-angle-right"></i><em>Thanh lý</em>
@@ -282,7 +282,7 @@ class SlideBar extends Component {
 										</li>
 										<li  className="li">
 											<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/taisan/Thống kê/1/2' ,
+														pathname: '/taisan/Thống kê' ,
 											}} label="Thống kê" nameIcon="fas fa-angle-right" />
 											{/* <a className="s-sidebar__nav-linksub" href="#0">
 												<i className="fas fa-angle-right"></i><em>Thống kê</em>
