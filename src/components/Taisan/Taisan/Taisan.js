@@ -24,7 +24,7 @@ class Taisan extends Component {
 			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', "add"] },
 		],
 		itemsTaisan: [],
 		itemsTable:[],

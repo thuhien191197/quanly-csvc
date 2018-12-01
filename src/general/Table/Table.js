@@ -31,6 +31,10 @@ const toolbarStyles = theme => ({
 	btnAdd: {
 		position: 'inherit',
 	},
+	btnEdit: {
+		height: '10px',
+		width:'35px'
+	},
 
 });
 function desc(a, b, orderBy){
@@ -260,11 +264,34 @@ class Table1 extends Component {
 											/>
 										</TableCell>
 										{rows.map((row, idRow) => {
+											console.log("[Table] row: ", row.function);
+											var funcs = row.function;
 											return(
 												<TableCell key={idRow} component="th" scope="row" padding="none">
-													{item[row.id]}
+													{row.id !== "function"
+													?
+													item[row.id]
+													
+													:
+													funcs.map((func, i) => {
+														console.log("func:",func)
+															return(
+																// {item == "edit"?'':''}
+																<Button 
+																	className={classes.btnEdit}
+																	variant="fab" 
+																	color="primary" 
+																	aria-label="Add"
+																	component={App}
+																>
+																	
+																	<AddIcon  />
+																</Button>
+															)
+														})
+														
+													}
 												</TableCell>
-												
 											)})}
 									</TableRow>
 								// )})}
