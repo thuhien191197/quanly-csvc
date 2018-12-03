@@ -24,7 +24,8 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router";
-import AppTS from '../../components/Taisan/Taisan/component/App/AppTS'
+import AddTS from '../../components/Taisan/Taisan/component/AddTS/AddTS'
+import EditTS from '../../components/Taisan/Taisan/component/EditTS/EditTS';
 
 
 
@@ -147,8 +148,8 @@ class Table1 extends Component {
 		// console.log("items:"+ items);
 
 
-		const App = props => <Link to={`${match.url}/add`} {...props} />
-
+		const Add = props => <Link to={`${match.url}/add`} {...props} />
+		
 		return (
 			<div>
 				<div className="divAdd">
@@ -157,7 +158,7 @@ class Table1 extends Component {
 							variant="fab" 
 							color="primary" 
 							aria-label="Add"
-							component={App}
+							component={Add}
 						>
 							<AddIcon  />
 						</Button>
@@ -246,9 +247,9 @@ class Table1 extends Component {
 							.map((item, idItem) => {
 
 							// {items.map((item, idItem) => {
-								//console.log("items:", items)
+								console.log("[Table] item Id:", item.id)
 								const isSelected = this.isSelected(item.id);
-							//	console.log(">>>>isSelected:", isSelected)
+								const Edit = props => <Link to={`${match.url}/edit/${item.id}`} {...props} />
 								return(
 									<TableRow 
 										hover
@@ -284,7 +285,7 @@ class Table1 extends Component {
 																		variant="fab" 
 																		// color="secondary" 
 																		aria-label="Add"
-																		component={App}
+																		component={Edit}
 																	>
 																		
 																		<EditIcon />

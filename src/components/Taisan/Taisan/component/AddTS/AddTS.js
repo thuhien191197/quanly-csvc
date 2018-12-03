@@ -17,7 +17,7 @@ const itemsTinhtrang = [
 	}
 ];
 
-class AppTS extends Component {
+class AddTS extends Component {
 	state = {
 
 
@@ -52,10 +52,6 @@ class AppTS extends Component {
 		axios.get('http://localhost:5500/loaitaisan')
 		.then((res) => {
 			this.setState({itemsLoaitaisan: res.data});
-		});
-		axios.get('http://localhost:5500/nguonkinhphi')
-		.then((res) => {
-			this.setState({itemsKinhphi: res.data});
 		});
 		axios.get('http://localhost:5500/nguonkinhphi')
 		.then((res) => {
@@ -365,21 +361,21 @@ class AppTS extends Component {
 					</TextField>
 					<br />
 					<Button variant="contained" color="primary" 
-            onClick={(event) => this.handleSubmit(
-              event,
-              name,
-              dongia,
-              soluong,
-              ngaynhap,
-              hansudung,
-              ghichu,
-              id_loaitaisan,
-              id_donvi,
-              id_kinhphi,
-              id_phong,
-              id_user,
-              status
-            )}
+						onClick={(event) => this.handleSubmit(
+						event,
+						name,
+						dongia,
+						soluong,
+						ngaynhap,
+						hansudung,
+						ghichu,
+						id_loaitaisan,
+						id_donvi,
+						id_kinhphi,
+						id_phong,
+						id_user,
+						status
+						)}
 					>
 						Thêm 
 					</Button>
@@ -389,4 +385,4 @@ class AppTS extends Component {
 	}
 }
 
-export default AppTS;
+export default AddTS;

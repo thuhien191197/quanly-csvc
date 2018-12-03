@@ -5,11 +5,12 @@ import Table1 from '../../../general/Table/Table'
 // import App from './component/App/App'
 import * as R from 'ramda';
 import { Switch, Route } from 'react-router-dom'
-import AppTS from './component/App/AppTS';
 import DieuChuyenTaiSan from '../DieuChuyenTaiSan/DieuChuyenTaiSan';
 import ThanhLy from '../ThanhLy/ThanhLy';
 import ThongKe from '../ThongKe/ThongKe';
 import axios from 'axios';
+import AddTS from './component/AddTS/AddTS';
+import EditTS from './component/EditTS/EditTS';
 export const itemsTaisan = [];
 
 
@@ -24,11 +25,11 @@ class Taisan extends Component {
 			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', "add"] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
 		],
 		itemsTaisan: [],
 		itemsTable:[],
-		selectApp : 'AppTS',
+		selectApp : 'AddTS',
 		loaitaisan: '',
 		donvi:'',
 		user:''
@@ -163,10 +164,12 @@ class Taisan extends Component {
 			<div>
 				<Switch>
 					<Route path="/taisan" exact render={this.render1}></Route>
-					<Route exact path="/taisan/add" component={() => <AppTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
+					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
 					<Route exact path="/taisan/Điều chuyển tài sản" render={() => <DieuChuyenTaiSan />} />
 					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
+
+					<Route exact path="/taisan/edit/:id" render={() => <EditTS item={this.state.itemsTaisan} />} />
 				</Switch>
 			</div>
 		)

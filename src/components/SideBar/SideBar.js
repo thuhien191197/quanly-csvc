@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router";
 
 import './SideBar.css';
-
+import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
@@ -35,20 +35,6 @@ class SlideBar extends Component {
 				id: 2,
 				name: "Đơn vị",
 				isOpen: false,
-				// children: [
-				// 	{
-				// 		name: "Khoa CNTT",
-				// 		id: 0,
-				// 	},
-				// 	{
-				// 		name: "Khoa Hóa",
-				// 		id: 1,
-				// 	},
-				// 	{
-				// 		name: "Phòng Đào tạo",
-				// 		id: 2,
-				// 	}
-				// ]
 			},
 			{
 				id: 3,
@@ -67,46 +53,20 @@ class SlideBar extends Component {
 			}
 		]
 	};
-
-	componentDidMount(){
+	async componentDidMount () {
+		// Handle silebar clicked
 		const { location } = this.props
-		// console.log('>Location', location)
 		const parentId = getParentPath(location.pathname)
 		const id = mapUrlToId[parentId]
-		console.log(">>>>id : " +id)
 		this.toggleDropdown(id)
-
-		// fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/donvi')
-		// 	.then(res => res.json())
-		// 	.then(json => {
-		// 		this.setState({
-		// 			itemsDonvi: json
-		// 		})
-		// 	});
-
-		fetch('http://localhost:5500/donvi')
-		.then(res => res.json())
-		.then(json => {
-			this.setState({
-				itemsDonvi: json
-			})
-		});
-		// fetch('https://5be3c0cfd53daf0013250f97.mockapi.io/api/danhmuc')
-		// 	.then(res => res.json())
-		// 	.then(json => {
-		// 		this.setState({
-		// 			itemsDanhMuc: json
-		// 	})
-		// })
-		fetch('http://localhost:5500/danhmuc')
-			.then(res => res.json())
-			.then(json => {
-				this.setState({
-					itemsDanhMuc: json
-			})
+		
+		// Handle Fetch
+		const donvi = await axios.get('http://localhost:5500/donvi')
+		const danhmuc = await axios.get('http://localhost:5500/danhmuc')
+		this.setState({
+			itemsDonvi: donvi.data,
+			itemsDanhMuc: danhmuc.data
 		})
-
-			
 	}
 	toggleDropdown = (id, key) => {
 		// console.log("id" + id);
