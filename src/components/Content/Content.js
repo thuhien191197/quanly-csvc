@@ -15,7 +15,6 @@ import ThongKe from '../Taisan/ThongKe/ThongKe';
 import VanBanMau from '../Kehoach/VanBanMau';
 
 class Content extends Component {
-	
 	render() {
 		return (
 			<div>

@@ -7,97 +7,217 @@ import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
 
-const mapUrlToId = {
-	donvi: 2,
-	danhmuc: 3,
+const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
+
+export const resource = {
+	user:[],
+	role:[],
+	danhmuc:[],
+	loaitaisan:[],
+	donvi:[],
+	phong:[],
+	nguonkinhphi:[],
+	taisan:[],
+	chuyentaisan:[],
+	thanhly:[],
 }
 
-const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
+// Creact Context
+export const QLCSVCContext = React.createContext(
+	resource,
+);
+
+
 
 class SlideBar extends Component {
 
 	state = {
-		itemsDonvi: [],
-		itemsDanhMuc: [],
-		tree : [
-			{
+
+		resource: {
+			user: resource.user,
+			role: resource.role,
+			danhmuc: resource.danhmuc,
+			loaitaisan:resource.loaitaisan,
+			donvi:resource.donvi,
+			phong:resource.phong,
+			nguonkinhphi:resource.nguonkinhphi,
+			taisan:resource.taisan,
+			chuyentaisan:resource.chuyentaisan,
+			thanhly:resource.thanhly,
+		},
+
+		sidebar : {
+			home:{
 				id: 0,
 				name: "Home",
+				route: '/home',
 				isOpen: false,
+				icon:'fa fa-home',
+				children: {}
 			},
-			{
+			user:{
 				id: 1,
 				name: "User",
+				route: '/user',
 				isOpen: false,
+				icon:'fa fa-user',
+				children: {}
 			},
-			{
+			donvi:{
 				id: 2,
 				name: "Đơn vị",
+				route: '/donvi',
 				isOpen: false,
+				icon:'fas fa-landmark',
+				children: {
+					icon:'fas fa-angle-right',
+				}
 			},
-			{
+			danhmuc:{
 				id: 3,
 				name: "Danh mục",
+				route: '/danhmuc',
 				isOpen: false,
+				icon:'fas fa-list-ul',
+				children: {
+					icon:'fas fa-angle-right',
+					quanlydanhmuc:{
+						name: 'Quản Lý Danh Mục',
+						route: '/quanlydanhmuc',
+					},
+					nguonkinhphi:{
+						name: 'Nguồn Kinh Phí',
+						route: '/nguonkinhphi',
+					},
+				}
 			},
-			{
+			taisan:{
 				id: 4,
 				name: "Tài sản",
+				route: '/taisan',
 				isOpen: false,
+				icon:'fas fa-warehouse',
+				children: {
+					icon:'fas fa-angle-right',
+					taisan:{
+						name: 'Tài Sản',
+						route: '/taisan',
+					},
+					dieuchinhtaisan:{
+						name: 'Điều Chuyển Tài Sản',
+						route: '/dieuchinhtaisan',
+					},
+					thanhly:{
+						name: 'Thanh Lý',
+						route: '/thanhly',
+					},
+					thongke:{
+						name: 'Thống Kê',
+						route: '/thongke',
+					},
+				}
 			},
-			{
+			kehoach:{
 				id: 5,
 				name: "Kế hoạch",
+				route: '/kehoach',
 				isOpen: false,
+				icon:'fas fa-book',
+				children: {}
 			}
-		]
+		}
 	};
+
+
+	addChildren(key, children) {
+		const childrenObj = Object.assign({}, children)
+		this.setState(({sidebar}) => ({
+			sidebar: {
+				...sidebar,
+				[key]: {
+					...sidebar[key],
+					children: {
+						...sidebar[key].children,
+						...childrenObj,
+					},
+				}
+			}
+		})
+	)}
+
+	addResource(key, children) {
+		this.setState(({resource}) => ({
+			resource: {
+				...resource,
+				[key]: children
+			}
+		})
+	)}
+
+
+
+
 	async componentDidMount () {
 		// Handle silebar clicked
 		const { location } = this.props
 		const parentId = getParentPath(location.pathname)
-		const id = mapUrlToId[parentId]
-		this.toggleDropdown(id)
+		console.log("location:",location)
+		console.log("parentId:",parentId)
+		this.toggleDropdown(parentId)
 		
-		// Handle Fetch
+		// Handle Axios
+		const user = await axios.get('http://localhost:5500/user')
+		const role = await axios.get('http://localhost:5500/role')
 		const donvi = await axios.get('http://localhost:5500/donvi')
 		const danhmuc = await axios.get('http://localhost:5500/danhmuc')
-		this.setState({
-			itemsDonvi: donvi.data,
-			itemsDanhMuc: danhmuc.data
-		})
+		const phong = await axios.get('http://localhost:5500/phong')
+		const chuyentaisan = await axios.get('http://localhost:5500/chuyentaisan')
+		const thanhly = await axios.get('http://localhost:5500/thanhly')
+		const taisan = await axios.get('http://localhost:5500/taisan')
+		const loaitaisan = await axios.get('http://localhost:5500/loaitaisan')
+		const nguonkinhphi = await axios.get('http://localhost:5500/nguonkinhphi')
+	
+		
+		// Add Children
+		this.addChildren('donvi', donvi.data);
+		this.addChildren('danhmuc', danhmuc.data);
+		
+		// Add Resource
+		this.addResource('user', user.data);
+		this.addResource('role', role.data);
+		this.addResource('danhmuc', danhmuc.data);
+		this.addResource('loaitaisan', loaitaisan.data);
+		this.addResource('donvi', donvi.data);
+		this.addResource('phong', phong.data);
+		this.addResource('nguonkinhphi', nguonkinhphi.data);
+		this.addResource('taisan', taisan.data);
+		this.addResource('chuyentaisan', chuyentaisan.data);
+		this.addResource('thanhly', thanhly.data);
 	}
-	toggleDropdown = (id, key) => {
-		// console.log("id" + id);
-		// console.log("key" + key);
-		var { tree } = this.state
-		if(!id){
+	
+	toggleDropdown = (key) => {
+		var { sidebar } = this.state
+		if(!key){
 			return
 		}
-		tree[id].isOpen = !tree[id].isOpen
-		// console.log("isOpen" + tree[id].isOpen );
+		sidebar[key].isOpen = !sidebar[key].isOpen
 		this.setState({
-			tree: tree
+			sidebar: sidebar
 		})
 		
 	  }
 
-	// toggleDropdown(id) {
-	// 	this.setState({
-	// 	  isOpen: !this.state.isOpen
-	// 	});
-
-	// }
-
 	render() {
-		var {tree, itemsDonvi, itemsDanhMuc} = this.state;
+		var {sidebar, itemsDonvi, itemsDanhMuc} = this.state;
+		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
+		// console.log("addResource", this.state.resource);
 		
+		// console.log("[SideBar] sidebar:",sidebar)
 		return (
 			<div>
 				<div className="s-layout">
 					<div className="s-layout__sidebar">
-						
 						<div className="s-sidebar__trigger" href="#0">
 							<i className="fa fa-bars"></i>
 							<ul className="pull-right">
@@ -110,189 +230,76 @@ class SlideBar extends Component {
 									<a href="#">
 										<img className="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
 									</a>
-									
 								</li>
 								<li className="rad-dropdown no-color">
 									<a href="#">
 										<i className="fa fa-cog"></i>
 									</a>
 								</li>
-								
 							</ul>
 						</div>
 						
 						<nav className="s-sidebar__nav" id="style-4">
       						<div className="force-overflow"></div>
-							
 							<div className="s-sidebar__nav-avartar">
-								
 								<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
 								{/* style={{width:'55px', height:'55px' }} */}
 								<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
 								
 							</div>
+							{/* List SideBar */}
 							<ul>
-								<li>
-									<MenuLink className="s-sidebar__nav-link" activeOnlyWhenExact={true} to="/" label="Home" nameIcon="fa fa-home" />
-								</li>
-								<li>
-									<MenuLink className="s-sidebar__nav-link" to="/user" label="User" nameIcon="fa fa-user" />
-								</li>
-								<li >
-									<div onClick={() => this.toggleDropdown(2,2)}>
-										{/* <Link to="/donvi" className="s-sidebar__nav-link">
-											<i class="fas fa-landmark"></i><em>Đơn vị</em>
-										</Link> */}
-										<MenuLink className="s-sidebar__nav-link" to="/donvi" label="Đơn vị" nameIcon="fas fa-landmark" />
-									</div>
+								{parentKey.map((key) => {
+									const childrenKeys = Object.keys(sidebar[key].children) //{ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} }
 									
-									{tree[2].isOpen
-									?
-										<ul>
-											{itemsDonvi.map(item => (
-												<li className="li" key={item.id}>
-													{/* <Link to={`${match.url}/rendering`}> */}
-													{/* <a className="s-sidebar__nav-linksub" href="#0">
-														<i class="fas fa-angle-right"></i><em>{item.name}</em>
-													</a> */}
-													{/* </Link> */}
-													{/* <MenuLink className="s-sidebar__nav-linksub" to={`donvi/${item.name}`} label={item.name} nameIcon="fas fa-landmark" /> */}
-													<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/donvi' + '/' + item.name + '/' + item.id + '/',
-													}} label={item.name} nameIcon="fas fa-angle-right" />
-
-												
-												</li>
-											))}
-										</ul>
-									:
-										''
-									}
-									
-								</li>
-								<li>
-									<div onClick={() => this.toggleDropdown(3,3)}>
-										<MenuLink className="s-sidebar__nav-link" to="/danhmuc" label="Danh mục" nameIcon="fas fa-list-ul" />
-										{/* <Link to="/danhmuc" className="s-sidebar__nav-link">
-											<i className="fas fa-list-ul"></i><em>Danh mục</em>
-										</Link> */}
-									</div>
-									{tree[3].isOpen
-									?
-									<ul>
-										<li className="li">
-											<MenuLink className="s-sidebar__nav-linksub" to="/danhmuc" label="Quản lý danh mục" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i class="fas fa-angle-right"></i><em>Quản lý danh mục</em>
-											</a> */}
+									return(
+										<li>
+											<div onClick={() => this.toggleDropdown(key)}>
+												<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
+											</div>
+											{childrenKeys!== null
+											?
+												sidebar[key].isOpen ?
+													<ul>
+														{childrenKeys.map((keyChild, idChild) => {
+															// console.log("[SideBar] childrenKeys:",childrenKeys);
+															// console.log("[SideBar] sidebar[key][keyChild].name:",sidebar[key].children[keyChild].name);
+															return (
+																keyChild!=='icon'
+																?
+																<li className="li" key={idChild}>
+																	<MenuLink className="s-sidebar__nav-linksub" to={{
+																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} 
+																/>
+																</li>
+																:
+																''
+														)})}
+													</ul>
+												:
+												''
+											:
+											''
+											}
 										</li>
-										{itemsDanhMuc.map(item => (
-											<li className="li" key={item.id}>
-													<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/danhmuc' + '/' + item.name + '/' + item.id + '/',
-													}} label={item.name} nameIcon="fas fa-angle-right" />
-												{/* <a className="s-sidebar__nav-linksub" href="#0">
-													<i class="fas fa-angle-right"></i><em>{item.name}</em>
-												</a> */}
-											</li>
-										))}
-									
-										<li className="li">
-										<MenuLink className="s-sidebar__nav-linksub" to="/danhmuc/nguonkinhphi" label="Ngườn kinh phí" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i className="fa fa-home"></i><em>Ngườn kinh phí</em>
-											</a> */}
-										</li>
-									</ul>
-									:
-									''
-									}
-								</li>
-								<li>
-									<div onClick={() => this.toggleDropdown(4,4)}>
-										<MenuLink className="s-sidebar__nav-link" to="/taisan" label="Tài sản" nameIcon="fas fa-warehouse" />
-										{/* <Link to="/taisan" className="s-sidebar__nav-link">
-											<i className="fas fa-warehouse"></i><em>Tài sản</em>
-										</Link> */}
-									</div>
-									{tree[4].isOpen
-									?
-									<ul>
-										<li className="li">
-										<MenuLink className="s-sidebar__nav-linksub" to="/taisan" label="Quản lý tài sản" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i className="fas fa-angle-right"></i><em>Quản lý tài sản</em>
-											</a> */}
-										</li>
-										<li  className="li">
-											<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/taisan/Điều chuyển tài sản' ,
-											}} label="Điều chuyển tài sản" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i className="fas fa-angle-right"></i><em>Điều chuyển tài sản</em>
-											</a> */}
-										</li>
-										<li  className="li">
-											<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/taisan/Thanh lý' ,
-													}} label="Thanh lý" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i className="fas fa-angle-right"></i><em>Thanh lý</em>
-											</a> */}
-										</li>
-										<li  className="li">
-											<MenuLink className="s-sidebar__nav-linksub" to={{
-														pathname: '/taisan/Thống kê' ,
-											}} label="Thống kê" nameIcon="fas fa-angle-right" />
-											{/* <a className="s-sidebar__nav-linksub" href="#0">
-												<i className="fas fa-angle-right"></i><em>Thống kê</em>
-											</a> */}
-										</li>
-									</ul>
-									:
-										''
-									}
-								</li>
-								<li >
-									<div onClick={() => this.toggleDropdown(5,5)}>
-									<MenuLink className="s-sidebar__nav-link" activeOnlyWhenExact={true} to="/kehoach" label="Kế hoạch" nameIcon="fas fa-book" />
-										{/* <Link to="/kehoach" className="s-sidebar__nav-link">
-											<i className="fas fa-book"></i><em>Kế hoạch</em>
-										</Link> */}
-									</div>
-									{tree[5].isOpen
-									?
-										<ul>
-											<li className="li">
-												<MenuLink className="s-sidebar__nav-linksub" to={{
-															pathname: '/kehoach' ,
-												}} label="Kế hoạch" nameIcon="fas fa-angle-right" />
-												{/* <a className="s-sidebar__nav-linksub" href="#0">
-													<i className="fas fa-angle-right"></i><em>Kế hoạch</em>
-												</a> */}
-											</li>
-											<li  className="li">
-												<MenuLink className="s-sidebar__nav-linksub" to={{
-															pathname: '/kehoach/Văn bản mẫu' ,
-												}} label="Văn bản mẫu" nameIcon="fas fa-angle-right" />
-												{/* <a className="s-sidebar__nav-linksub" href="#0">
-													<i className="fas fa-angle-right"></i><em>Văn bản mẫu</em>
-												</a> */}
-											</li>
-										</ul>
-									:
-										''
-									}
-								</li>
-								
+									)
+								})}
 							</ul>
+							{/* End List SideBar */}
+
 						</nav>
 					</div>
 
-					<main className="s-layout__content">
-						<Content />
-					</main>
-					
+					<QLCSVCContext.Provider
+						value={{
+							resource: this.state.resource
+						}}
+					>
+						<main className="s-layout__content">
+							<Content />
+						</main>
+					</QLCSVCContext.Provider>
 				</div>
 			</div>
 			

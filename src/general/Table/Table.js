@@ -76,7 +76,7 @@ class Table1 extends Component {
 
 	handleRequestSort = (event, property) => {
 		const orderBy = property;
-		console.log('Property', property)
+		// console.log('Property', property)
 		let order = this.state.order === 'asc' ? 'desc' : 'asc'; 
 	
 		// if (this.state.orderBy === property && this.state.order === 'desc') {
@@ -247,7 +247,7 @@ class Table1 extends Component {
 							.map((item, idItem) => {
 
 							// {items.map((item, idItem) => {
-								console.log("[Table] item Id:", item.id)
+								// console.log("[Table] item Id:", item.id)
 								const isSelected = this.isSelected(item.id);
 								const Edit = props => <Link to={`${match.url}/edit/${item.id}`} {...props} />
 								return(
@@ -266,7 +266,7 @@ class Table1 extends Component {
 											/>
 										</TableCell>
 										{rows.map((row, idRow) => {
-											console.log("[Table] row: ", row.function);
+											// console.log("[Table] row: ", row.function);
 											var funcs = row.function;
 											return(
 												<TableCell key={idRow} component="th" scope="row" padding="none">

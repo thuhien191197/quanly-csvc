@@ -11,6 +11,7 @@ import ThongKe from '../ThongKe/ThongKe';
 import axios from 'axios';
 import AddTS from './component/AddTS/AddTS';
 import EditTS from './component/EditTS/EditTS';
+import { QLCSVCContext, resource } from '../../SideBar/SideBar';
 export const itemsTaisan = [];
 
 
@@ -27,71 +28,39 @@ class Taisan extends Component {
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
 			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
 		],
-		itemsTaisan: [],
-		itemsTable:[],
 		selectApp : 'AddTS',
 		loaitaisan: '',
 		donvi:'',
 		user:''
 	}
 
-	componentDidMount(){
-		fetch('http://localhost:5500/taisan')
-		.then(res => res.json())
-		.then(json => {
-			var b =[]
-			{json.map(item => {
-				const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
-				b.push(a);
-			})}
-				this.setState({
-					itemsTaisan: json,
-					itemsTable: b
+	// componentDidMount(){
+	// 	fetch('http://localhost:5500/taisan')
+	// 	.then(res => res.json())
+	// 	.then(json => {
+	// 		var b =[]
+	// 		{json.map(item => {
+	// 			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
+	// 			b.push(a);
+	// 		})}
+	// 			this.setState({
+	// 				itemsTaisan: json,
+	// 				itemsTable: b
 				
-				})
-		});
+	// 			})
+	// 	});
 		
-	}
+	// }
 
 	handleGetListTable = (itemsTaisan) =>{
 		var b =[]
-		
 		itemsTaisan.map(item => {
-			
-			fetch('http://localhost:5500/loaitaisan/'+ item.id_loaitaisan)
-				.then(res => res.json())
-				.then(json1 => {
-					this.setState({
-						loaitaisan : json1.name
-					})
-					
-					
-			})
-			
-			fetch('http://localhost:5500/donvi/'+ item.id_donvi)
-				.then(res => res.json())
-				.then(json2 => {
-					this.setState({
-						donvi : json2.name
-					})
-			})
-			
-
-			fetch('http://localhost:5500/user/'+ item.id_user)
-				.then(res => res.json())
-				.then(json3 => {
-					this.setState({
-						user : json3.fullname
-					})
-			})
-			
-			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': this.state.loaitaisan, 'id_donvi':this.state.donvi, 'id_user': this.state.user};
+			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan, 'id_donvi':item.id_donvi, 'id_user': item.id_user};
 			b.push(a);
 		})
-		this.setState({
-			itemsTable: b
-		})
+		return b;
 	}
+
 	addTaiSan = (data) => {
 		console.log('ADD TS', data)
 	}
@@ -106,7 +75,7 @@ class Taisan extends Component {
 		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, this.state.itemsTable)
 		// console.log("dataDeleted:",dataDeleted )
 		this.setState({ itemsTable: dataDeleted, selected: [] })
-		console.log(">>><<<>>selected:",selected )
+		// console.log(">>><<<>>selected:",selected )
 		
 		// selected.forEach(function(select, i) {
 		// 	// console.log("-------->select:::",select)
@@ -118,58 +87,61 @@ class Taisan extends Component {
 		// });
 
 		selected.forEach(function(select, i) {
-			// console.log("-------->select:::",select)
-			setTimeout(() => {
-				fetch('http://localhost:5500/taisan/'+ select, {
+			fetch('http://localhost:5500/taisan/'+ select, {
 				method: 'DELETE'
 			});
-			})
 		});
     }
 
 	render1 = () => {
-		const { itemsTable } = this.state;
-		console.log("-------->itemsTaiSan",this.state.itemsTaisan)
-		// this.handleGetListTable(this.state.itemsTaisan)
 		return (
-			
-			<div>Taisan
-		
-					<Table1 rows={this.state.rows} items={itemsTable} handleDelete={this.handleDelete}  selectApp={this.state.selectApp}/>
-
-			</div>
+			<QLCSVCContext.Consumer>
+				{({ resource }) => {
+					const data = this.handleGetListTable(resource.taisan);
+					console.log("data:",data)
+					return (
+						<div>Taisan
+							<Table1 
+								rows={this.state.rows} 
+								items={data} 
+								handleDelete={this.handleDelete}  
+								selectApp={this.state.selectApp}
+							/>
+						</div>
+					)
+				}}
+			</QLCSVCContext.Consumer>
 		);
 	}
-	addTs = (id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
-		// const {itemsTaisan} = this.state
 
+	addTs = (name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
+		axios.post(`http://localhost:5500/taisan`, { name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status})
+		.then(res => {
+			// console.log(res);
+			// console.log(res.data);
+		})
+      
+	}
 
-		// var items = itemsTaisan;
-		// var length = itemsTaisan.length;
-		// // items[length] = data;
-		// this.setState({
-		// 	// itemsTaisan: items
-		// })
-
-	  axios.post(`http://localhost:5500/taisan`, { id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status})
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      })
+	editTs = (id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status) => {
+		axios.put(`http://localhost:5500/taisan/${id}`, {id, name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status})
+		.then(res => {
+			// console.log(res);
+			// console.log(res.data);
+		})
       
 	}
 	render() {
-		console.log(">> [TaiSan] itemsTaisan: ", this.state.itemsTaisan);
+		// console.log(">> [TaiSan] itemsTaisan: ", this.state.itemsTaisan);
 		return (
 			<div>
 				<Switch>
 					<Route path="/taisan" exact render={this.render1}></Route>
-					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} itemsTaisan ={this.state.itemsTaisan}/>}></Route>
+					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
 					<Route exact path="/taisan/Điều chuyển tài sản" render={() => <DieuChuyenTaiSan />} />
 					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
-
-					<Route exact path="/taisan/edit/:id" render={() => <EditTS item={this.state.itemsTaisan} />} />
+					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
 				</Switch>
 			</div>
 		)
