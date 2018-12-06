@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
-import { QLCSVCContext } from '../../../../SideBar/SideBar';
+import { QLCSVCContext } from '../../../../Main/Main';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
@@ -23,7 +23,7 @@ class Child extends Component {
 		dongia: 0,
 		soluong: 0,
 		ngaynhap: '19/11/1997',
-		hansudung: '23/7/2021',
+		hansudung: '19/11/2080',
 		ghichu: '',
 		id_loaitaisan: '',
 		id_donvi: '',
@@ -37,14 +37,13 @@ class Child extends Component {
 	componentDidMount() {
 	}
 
-
 	handleSubmit = (itemsTaisan, event, id, name, dongia, soluong, ngaynhap, hansudung, ghichu, id_loaitaisan, id_donvi, id_kinhphi, id_phong, id_user, status) => {
 		event.preventDefault();
 		// console.log("clicked submit");
 		// var id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1;
 		var dongia = parseInt(dongia);
-		
-		this.props.editTs(
+
+		this.props.editContextTS({
 			id,
 			name,
 			dongia,
@@ -58,9 +57,24 @@ class Child extends Component {
 			id_phong,
 			id_user,
 			status
+		})
+		
+		this.props.editTs(
+			{id,
+			name,
+			dongia,
+			soluong,
+			ngaynhap,
+			hansudung,
+			ghichu,
+			id_loaitaisan,
+			id_donvi,
+			id_kinhphi,
+			id_phong,
+			id_user,
+			status}
 		)
 	}
-
 
 	handleChange = name => event => {
 		this.setState({
@@ -88,7 +102,7 @@ class Child extends Component {
 		
 		return (
 		<div>
-			{/* APP tài sản */}
+			{/* Edit tài sản */}
 			<form
 				noValidate autoComplete="off"
 			>
@@ -241,7 +255,6 @@ class Child extends Component {
 					margin="normal"
 				>
 					{resource.loaitaisan.map((item, i) => {
-						console.log("item:", item.id)
 						return (
 							<option key={i} value={item.id}>
 								{item.name}
@@ -315,7 +328,6 @@ class Child extends Component {
 					margin="normal"
 				>
 					{resource.phong.map((item, i) => {
-						// console.log("phòng: ", item.id)
 						return (
 							<option key={i} value={item.id}>
 								{item.name}
@@ -352,30 +364,30 @@ class Child extends Component {
 }
 
 
-
-
 class EditTS extends Component {
 	render() {
+		const { resource } = this.props;
+		const itemsTaisan = resource.taisan;
+		const currentId = getParentPath(this.props.match.url);
+		let itemTS = itemsTaisan.find((item) => { return item.id == currentId });;
+
 		return (
-			<QLCSVCContext.Consumer>
-				{({ resource }) => {
-					var itemsTaisan = resource.taisan;
-					var itemTS;
-					itemsTaisan.map(item => {
-
-						// console.log("[EditTS]  itenm.id:",typeof item.id.toString())
-						console.log("[EditTS]  getParentPath(match.url:",getParentPath(this.props.match.url))
-						item.id == getParentPath(this.props.match.url)
-						? itemTS = item
-						: itemTS = undefined
-						
-					})
-					return <Child itemTS={itemTS} editTs={this.props.editTs} resource={resource} />
-				}}
-			</QLCSVCContext.Consumer>
+			<Child itemTS={itemTS} editTs={this.props.editTs} resource={resource} editContextTS={this.props.editContextTS}/>
 		)
-		
-
 	}
 }
-export default withRouter(EditTS);
+
+
+class EditTSWrap extends Component {
+	render() {
+		return(
+			<QLCSVCContext.Consumer>
+				{({ resource, editContextTS }) => <EditTS editTs={this.props.editTs} resource={resource} match={this.props.match} editContextTS={editContextTS} />}
+			</QLCSVCContext.Consumer>
+		)
+	}
+
+}
+
+
+export default withRouter(EditTSWrap);

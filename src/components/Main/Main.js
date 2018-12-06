@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 
-import './SideBar.css';
+import _ from 'lodash';
+
+import './Main.css';
 import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -23,17 +25,23 @@ export const resource = {
 	thanhly:[],
 }
 
+const editContextTS = () => {};
+const addContextTS = () => {};
+const deleteContextTS = () => {};
+
 // Creact Context
 export const QLCSVCContext = React.createContext(
 	resource,
+	editContextTS,
+	addContextTS,
+	deleteContextTS
 );
 
 
 
-class SlideBar extends Component {
+class Main extends Component {
 
 	state = {
-
 		resource: {
 			user: resource.user,
 			role: resource.role,
@@ -129,6 +137,56 @@ class SlideBar extends Component {
 		}
 	};
 
+	editContextTS = (item) => {
+		// console.log('Edit Item context', this.state.resource.taisan);
+		this.setState(prev => {
+			const newTaiSan = [...prev.resource.taisan];
+			// console.log('[Main] newTaiSan:',newTaiSan );
+			const changeIndex = _.findIndex(newTaiSan, {id: item.id})
+			newTaiSan[changeIndex] = item;
+
+			console.log('Edit context', {
+				...prev.resource,
+				taisan: newTaiSan,
+			});
+
+			return {
+				resource: {
+					...prev.resource,
+					taisan: newTaiSan,
+				}
+			}
+		})
+	}
+	
+	addContextTS = (item) => {
+		this.setState(prev =>{
+			const newTaiSan = [...prev.resource.taisan];
+			newTaiSan.push(item);
+			console.log('[Main] newTaiSan:',newTaiSan );
+			return {
+				resource: {
+					...prev.resource,
+					taisan: newTaiSan
+				}
+			}
+		})
+	}
+
+	deleteContextTS = (item) => {
+		this.setState(prev =>{
+			return {
+				resource: {
+					...prev.resource,
+					taisan: item
+				}
+			}
+		})
+	}
+
+
+
+
 
 	addChildren(key, children) {
 		const childrenObj = Object.assign({}, children)
@@ -162,8 +220,8 @@ class SlideBar extends Component {
 		// Handle silebar clicked
 		const { location } = this.props
 		const parentId = getParentPath(location.pathname)
-		console.log("location:",location)
-		console.log("parentId:",parentId)
+		// console.log("location:",location)
+		// console.log("parentId:",parentId)
 		this.toggleDropdown(parentId)
 		
 		// Handle Axios
@@ -211,9 +269,10 @@ class SlideBar extends Component {
 	render() {
 		var {sidebar, itemsDonvi, itemsDanhMuc} = this.state;
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
+		// console.log('Rerender', this.state.resource.taisan);
 		// console.log("addResource", this.state.resource);
 		
-		// console.log("[SideBar] sidebar:",sidebar)
+		// console.log("[Main] sidebar:",sidebar)
 		return (
 			<div>
 				<div className="s-layout">
@@ -249,11 +308,11 @@ class SlideBar extends Component {
 							</div>
 							{/* List SideBar */}
 							<ul>
-								{parentKey.map((key) => {
+								{parentKey.map((key, i) => {
 									const childrenKeys = Object.keys(sidebar[key].children) //{ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} }
 									
 									return(
-										<li>
+										<li key={i}>
 											<div onClick={() => this.toggleDropdown(key)}>
 												<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
 											</div>
@@ -293,7 +352,10 @@ class SlideBar extends Component {
 
 					<QLCSVCContext.Provider
 						value={{
-							resource: this.state.resource
+							resource: this.state.resource,
+							editContextTS: this.editContextTS,
+							addContextTS: this.addContextTS,
+							deleteContextTS: this.deleteContextTS
 						}}
 					>
 						<main className="s-layout__content">
@@ -307,4 +369,4 @@ class SlideBar extends Component {
 	}
 }
 
-export default withRouter(SlideBar);
+export default withRouter(Main);

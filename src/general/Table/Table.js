@@ -20,12 +20,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-// import { lighten } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import { withRouter } from "react-router";
-import AddTS from '../../components/Taisan/Taisan/component/AddTS/AddTS'
-import EditTS from '../../components/Taisan/Taisan/component/EditTS/EditTS';
 
 
 
@@ -34,13 +32,13 @@ const toolbarStyles = theme => ({
 		position: 'inherit',
 	},
 	btnEdit: {
+		position: 'inherit',
 		height: '10px',
 		width:'35px'
 	},
 
 });
 function desc(a, b, orderBy){
-	//console.log('A, B', a,b, orderBy)
 	if(b[orderBy] <  a[orderBy]){
 		return -1;
 	}
@@ -65,13 +63,20 @@ function stableSort(items, cmp) {
 	return stabilizedThis.map(el => el[0]);
 }
 
+export const selected = []
+
+// Creact Context
+export const SelectedContext = React.createContext(
+	selected
+);
+
 class Table1 extends Component {
 	state={
 		order: 'asc',
 		orderBy: '',
 		page: 0,
 		rowsPerPage: 10,
-		selected: [],
+		selected: selected,
 	}
 
 	handleRequestSort = (event, property) => {
@@ -87,7 +92,6 @@ class Table1 extends Component {
 	};
 
 	createSortHandler = property => event => {
-		console.log('Sorting')
 		this.handleRequestSort(event, property);
 	};
 
@@ -101,11 +105,9 @@ class Table1 extends Component {
 
 	handleSelectAllClick = event => {
 		const { items } = this.props;
-		const { selected } = this.state;
 		if (event.target.checked) {
 		 	var idArray = items.map((n) => n.id);
 		  	this.setState(state => ({ selected: idArray }));
-			// console.log("selected:",idArray)
 		  return;
 		}
 		this.setState({ selected: [] });
@@ -117,6 +119,7 @@ class Table1 extends Component {
 	
 	handleClick = (event, id) => {
 		const { selected } = this.state;
+		console.log("[Table] selected:",selected)
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 	
@@ -145,12 +148,16 @@ class Table1 extends Component {
 		// console.log('render', this.state)
 		const { match } = this.props
 		// console.log(">>>match:",match)
-		// console.log("items:"+ items);
-
+		console.log("[Table] selected:"+ selected);
 
 		const Add = props => <Link to={`${match.url}/add`} {...props} />
 		
 		return (
+			<SelectedContext.Provider
+				value={{
+					selected: this.state.selected,
+				}}
+			>
 			<div>
 				<div className="divAdd">
 					<Tooltip title="Add" className={classes.btnAdd}>
@@ -176,8 +183,8 @@ class Table1 extends Component {
 						)
 						:
 						(
-							<Typography variant="h7" id="tableTitle">
-							Danh sách
+							<Typography variant="h10" id="tableTitle">
+							Chức năng
 							</Typography>
 						)
 						}
@@ -185,21 +192,47 @@ class Table1 extends Component {
 						</div>
 						<div/>
 						<div>
-							{selected.length > 0 ? (
-							<Tooltip title="Delete">
-								<IconButton aria-label="Delete">
-									<DeleteIcon 
-										onClick = {() => this.props.handleDelete(selected)}
-									/>
-								</IconButton>
-							</Tooltip>
-							) : (
-							<Tooltip title="Filter list">
-								<IconButton aria-label="Filter list">
-								
-								<FilterListIcon />
-								</IconButton>
-							</Tooltip>
+							{selected.length > 0 
+							? (
+								<div>
+									<Tooltip title="Delete">
+										<IconButton aria-label="Delete">
+											<DeleteIcon 
+												// className={classes.icon}
+												onClick = {() => this.props.handleDelete(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+									<Tooltip title="Điều chuyển tài sản">
+										<IconButton aria-label="Điều chuyển">
+											<ThreeSixtyIcon 
+												className={classes.icon} 
+												onClick = {() => this.props.handleClickOpen(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+								</div>
+							) 
+							: (
+								// <Tooltip title="Filter list">
+								// 	<IconButton aria-label="Filter list">
+								// 	<FilterListIcon />
+								// 	</IconButton>
+								// </Tooltip>
+								<div>
+									<Tooltip disabled title="Delete">
+										<IconButton aria-label="Delete">
+											<DeleteIcon 
+												onClick = {() => this.props.handleDelete(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+									<Tooltip disabled title="Điều chuyển tài sản">
+										<IconButton aria-label="Điều chuyển">
+											<ThreeSixtyIcon className={classes.icon} />
+										</IconButton>
+									</Tooltip>
+								</div>
 							)}
 						</div>
 					</Toolbar>
@@ -276,7 +309,7 @@ class Table1 extends Component {
 													
 													:
 													funcs.map((func, i) => {
-														console.log("func:",func)
+														// console.log("func:",func)
 															return(
 																func === "edit"
 																?
@@ -330,6 +363,7 @@ class Table1 extends Component {
 				
 				</Paper>
 			</div>
+			</SelectedContext.Provider>
 		);
 	}
 }
