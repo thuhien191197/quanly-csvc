@@ -26,18 +26,24 @@ const styles = theme => ({
 });
 
 class SelectDieuChuyen extends Component {
+	
 	state = {
+		chuyenTS:[],
+
 		ngayCTS:'2018-11-19',
-		soluong:0,
+		soluong: 0,
 		id_taisan: '',
 		id_phong:'',
-		id_donvi:''
+		id_donvi:'',
+
+		arrSoLuong:[]
 	};
-	handleChange = name => event => {
-		this.setState({
-			[name]: event.target.value,
-		});
+	handleChange = (name) => event => {
+		 this.setState({
+			[name]: event.target.value
+		})
 	};
+
 
 	handleName = (item) => {
 		var getTaiSan = []
@@ -49,24 +55,36 @@ class SelectDieuChuyen extends Component {
 	}
 
 	render() {
-		const { classes, match,ngayCTS, id_phong, id_donvi } = this.props;
+		const { classes, match } = this.props;
+		const { 
+			chuyenTS,
+			ngayCTS,
+			soluong,
+			id_taisan,
+			id_phong,
+			id_donvi,
+
+			arrSoLuong
+
+		} = this.state;
 		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
+		console.log("[SelectDieuChuyen] arrSoLuong:",arrSoLuong)
 		return (
 			<Dialog
 				open={this.props.openDieuChuyen}
 				onClose={this.props.handleCloseDieuChuyen}
 				aria-labelledby="form-dialog-title"
 			>
+			<form noValidate autoComplete="off">
 				<DialogTitle id="form-dialog-title">Điều chuyển tài sản</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
 						Hãy điều chỉnh số lượng của các tài sản
-						<form noValidate autoComplete="off">
+						
 							<Paper className={classes.root}>
 								{this.props.selectedTS.map((item, i) => {
-									console.log("[SelectDieuChuyen] this.handleName(item)[1]:", this.handleName(item)[1])
 									return(
-										<div>
+										<div key={i}>
 											<Chip
 												key={i}
 												label={this.handleName(item)[0]}
@@ -88,7 +106,9 @@ class SelectDieuChuyen extends Component {
 								id="standard-name"
 								select
 								label="Đơn vị nhận"
-								value={id_donvi}
+								value={
+									id_donvi
+								}
 								onChange={this.handleChange('id_donvi')}
 								SelectProps={{
 									native: true,
@@ -151,22 +171,22 @@ class SelectDieuChuyen extends Component {
 								}}
 							/>
 
-						</form>
-					</DialogContentText>
-					<DialogActions>
-						<Button 
-							// onClick={this.props.handleCloseDieuChuyen} 
-							color="primary"
-							component={DieuChuyenTS}
-						>
-							Chuyển
-						</Button>
-						<Button onClick={this.props.handleCloseDieuChuyen} color="primary">
-							Cancel
-						</Button>
-					</DialogActions>
-
-				</DialogContent>
+						
+						</DialogContentText>
+						<DialogActions>
+							<Button 
+								// onClick={this.props.handleCloseDieuChuyen} 
+								color="primary"
+								component={DieuChuyenTS}
+							>
+								Chuyển
+							</Button>
+							<Button onClick={this.props.handleCloseDieuChuyen} color="primary">
+								Cancel
+							</Button>
+						</DialogActions>
+					</DialogContent>
+				</form>
 			</Dialog>	
 		);
 	}

@@ -13,6 +13,7 @@ import { QLCSVCContext } from '../../Main/Main';
 import { withRouter } from "react-router";
 import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
 import DieuChuyenTS from './component/DieuChuyenTS/DieuChuyenTS';
+import SelectDieuChuyenNhieu from './component/SelectDieuChuyen/SelectDieuChuyenNhieu';
 
 export const itemsTaisan = [];
 
@@ -24,6 +25,7 @@ class TableComponent extends Component {
 		this.state = {
 			data,
 			openDieuChuyen: false,
+			openDieuChuyenNhieu: false,
 			selectedTS: []
 		}
 	}
@@ -75,19 +77,30 @@ class TableComponent extends Component {
 			openDieuChuyen: true 
 		});
 	};
-
 	
 	handleCloseDieuChuyen = () => {
 		this.setState({ openDieuChuyen: false });
 	};
 
-	handleSelectDieuChuyen = (selected) => {
+	handleClickOpenNhieu = (selected) => {
+		console.log("[TaiSan] Im here:")
+		this.setState({ 
+			selectedTS: selected, 
+			openDieuChuyenNhieu: true 
+		});
+	};
+	
+	handleCloseDieuChuyenNhieu = () => {
+		this.setState({ openDieuChuyenNhieu: false });
+	};
+
+	// handleSelectDieuChuyen = (selected) => {
 		
-		return(
-			<>
-			</>
-		)
-	}
+	// 	return(
+	// 		<>
+	// 		</>
+	// 	)
+	// }
 
 	handleDeleteSelect = data => () => {
 		// if (data.label === 'React') {
@@ -118,12 +131,19 @@ class TableComponent extends Component {
 					handleCloseDieuChuyen={this.handleCloseDieuChuyen} 
 					handleDeleteSelect={this.handleDeleteSelect} 
 				/>
+				<SelectDieuChuyenNhieu 
+					selectedTS= {this.state.selectedTS} 
+					resource = {this.props.resource}
+					openDieuChuyenNhieu = {this.state.openDieuChuyenNhieu} 
+					handleCloseDieuChuyenNhieu ={this.handleCloseDieuChuyenNhieu} 
+					handleDeleteSelect={this.handleDeleteSelect} 
+				/>
 				<Table1 
 					rows={rows} 
 					items={data} 
 					handleDelete = {this.handleDelete}  
-					handleDieuChuyen = {this.handleDieuChuyen}
 					handleClickOpen = {this.handleClickOpen}
+					handleClickOpenNhieu = {this.handleClickOpenNhieu}
 					selectApp={selectApp}
 				/>
 			</div>

@@ -23,6 +23,8 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { withRouter } from "react-router";
 
 
@@ -36,6 +38,10 @@ const toolbarStyles = theme => ({
 		height: '10px',
 		width:'35px'
 	},
+	menuDC: {
+		color:'red',
+		left: '50px',
+	}
 
 });
 function desc(a, b, orderBy){
@@ -63,12 +69,6 @@ function stableSort(items, cmp) {
 	return stabilizedThis.map(el => el[0]);
 }
 
-export const selected = []
-
-// Creact Context
-export const SelectedContext = React.createContext(
-	selected
-);
 
 class Table1 extends Component {
 	state={
@@ -76,7 +76,8 @@ class Table1 extends Component {
 		orderBy: '',
 		page: 0,
 		rowsPerPage: 10,
-		selected: selected,
+		selected: [],
+		anchorEl: null
 	}
 
 	handleRequestSort = (event, property) => {
@@ -139,6 +140,13 @@ class Table1 extends Component {
 		this.setState({ selected: newSelected });
 	};
 
+	handleClickDC = event => {
+		this.setState({ anchorEl: event.currentTarget });
+	};
+
+	handleCloseDC = () => {
+		this.setState({ anchorEl: null });
+	};
 	
 	
 	render() {
@@ -153,11 +161,6 @@ class Table1 extends Component {
 		const Add = props => <Link to={`${match.url}/add`} {...props} />
 		
 		return (
-			<SelectedContext.Provider
-				value={{
-					selected: this.state.selected,
-				}}
-			>
 			<div>
 				<div className="divAdd">
 					<Tooltip title="Add" className={classes.btnAdd}>
@@ -196,7 +199,9 @@ class Table1 extends Component {
 							? (
 								<div>
 									<Tooltip title="Delete">
-										<IconButton aria-label="Delete">
+										<IconButton 
+											aria-label="Delete"
+										>
 											<DeleteIcon 
 												// className={classes.icon}
 												onClick = {() => this.props.handleDelete(selected)}
@@ -204,13 +209,28 @@ class Table1 extends Component {
 										</IconButton>
 									</Tooltip>
 									<Tooltip title="Điều chuyển tài sản">
-										<IconButton aria-label="Điều chuyển">
+										<IconButton 
+											aria-label="Điều chuyển"
+											aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+											onClick={this.handleClickDC}
+										>
 											<ThreeSixtyIcon 
 												className={classes.icon} 
-												onClick = {() => this.props.handleClickOpen(selected)}
+												// onClick = {() => this.props.handleClickOpen(selected)}
 											/>
 										</IconButton>
 									</Tooltip>
+
+									<Menu
+										id="simple-menu"
+										anchorEl={this.state.anchorEl}
+										open={Boolean(this.state.anchorEl)}
+										className={classes.menuDC}
+										onClose={this.handleCloseDC}
+									>
+										<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+										<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+									</Menu>
 								</div>
 							) 
 							: (
@@ -363,7 +383,6 @@ class Table1 extends Component {
 				
 				</Paper>
 			</div>
-			</SelectedContext.Provider>
 		);
 	}
 }
