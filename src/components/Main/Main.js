@@ -267,102 +267,100 @@ class Main extends Component {
 	  }
 
 	render() {
-		var {sidebar, itemsDonvi, itemsDanhMuc} = this.state;
+		var {sidebar} = this.state;
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
 		// console.log('Rerender', this.state.resource.taisan);
 		// console.log("addResource", this.state.resource);
 		
 		// console.log("[Main] sidebar:",sidebar)
 		return (
-			<div>
-				<div className="s-layout">
-					<div className="s-layout__sidebar">
-						<div className="s-sidebar__trigger" href="#0">
-							<i className="fa fa-bars"></i>
-							<ul className="pull-right">
-								<li className="rad-dropdown no-color bell">
-									<a href="#">
-										<i className="fas fa-bell"></i>
-									</a>
-								</li>
-								<li className="rad-dropdown no-color">
-									<a href="#">
-										<img className="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
-									</a>
-								</li>
-								<li className="rad-dropdown no-color">
-									<a href="#">
-										<i className="fa fa-cog"></i>
-									</a>
-								</li>
-							</ul>
+			<div className="s-layout">
+				<div className="s-layout__sidebar">
+					<div className="s-sidebar__trigger" href="#0">
+						<i className="fa fa-bars"></i>
+						<ul className="pull-right">
+							<li className="rad-dropdown no-color bell">
+								<a href="#">
+									<i className="fas fa-bell"></i>
+								</a>
+							</li>
+							<li className="rad-dropdown no-color">
+								<a href="#">
+									<img className="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
+								</a>
+							</li>
+							<li className="rad-dropdown no-color">
+								<a href="#">
+									<i className="fa fa-cog"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					
+					<nav className="s-sidebar__nav" id="style-4">
+						<div className="force-overflow"></div>
+						<div className="s-sidebar__nav-avartar">
+							<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
+							{/* style={{width:'55px', height:'55px' }} */}
+							<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
+							
 						</div>
-						
-						<nav className="s-sidebar__nav" id="style-4">
-      						<div className="force-overflow"></div>
-							<div className="s-sidebar__nav-avartar">
-								<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
-								{/* style={{width:'55px', height:'55px' }} */}
-								<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
+						{/* List SideBar */}
+						<ul>
+							{parentKey.map((key, i) => {
+								const childrenKeys = Object.keys(sidebar[key].children) //{ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} }
 								
-							</div>
-							{/* List SideBar */}
-							<ul>
-								{parentKey.map((key, i) => {
-									const childrenKeys = Object.keys(sidebar[key].children) //{ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} }
-									
-									return(
-										<li key={i}>
-											<div onClick={() => this.toggleDropdown(key)}>
-												<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
-											</div>
-											{childrenKeys!== null
-											?
-												sidebar[key].isOpen ?
-													<ul>
-														{childrenKeys.map((keyChild, idChild) => {
-															// console.log("[SideBar] childrenKeys:",childrenKeys);
-															// console.log("[SideBar] sidebar[key][keyChild].name:",sidebar[key].children[keyChild].name);
-															return (
-																keyChild!=='icon'
-																?
-																<li className="li" key={idChild}>
-																	<MenuLink className="s-sidebar__nav-linksub" to={{
-																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} 
-																/>
-																</li>
-																:
-																''
-														)})}
-													</ul>
-												:
-												''
+								return(
+									<li key={i}>
+										<div onClick={() => this.toggleDropdown(key)}>
+											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
+										</div>
+										{childrenKeys!== null
+										?
+											sidebar[key].isOpen ?
+												<ul>
+													{childrenKeys.map((keyChild, idChild) => {
+														// console.log("[SideBar] childrenKeys:",childrenKeys);
+														// console.log("[SideBar] sidebar[key][keyChild].name:",sidebar[key].children[keyChild].name);
+														return (
+															keyChild!=='icon'
+															?
+															<li className="li" key={idChild}>
+																<MenuLink className="s-sidebar__nav-linksub" to={{
+																	pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} 
+															/>
+															</li>
+															:
+															''
+													)})}
+												</ul>
 											:
 											''
-											}
-										</li>
-									)
-								})}
-							</ul>
-							{/* End List SideBar */}
+										:
+										''
+										}
+									</li>
+								)
+							})}
+						</ul>
+						{/* End List SideBar */}
 
-						</nav>
-					</div>
-
-					<QLCSVCContext.Provider
-						value={{
-							resource: this.state.resource,
-							editContextTS: this.editContextTS,
-							addContextTS: this.addContextTS,
-							deleteContextTS: this.deleteContextTS
-						}}
-					>
-						<main className="s-layout__content">
-							<Content />
-						</main>
-					</QLCSVCContext.Provider>
+					</nav>
 				</div>
+
+				<QLCSVCContext.Provider
+					value={{
+						resource: this.state.resource,
+						editContextTS: this.editContextTS,
+						addContextTS: this.addContextTS,
+						deleteContextTS: this.deleteContextTS
+					}}
+				>
+					<main className="s-layout__content">
+						<Content />
+					</main>
+				</QLCSVCContext.Provider>
 			</div>
 			
 		);

@@ -20,17 +20,25 @@ const styles = theme => ({
 	  justifyContent: 'center',
 	  flexWrap: 'wrap',
 	  padding: theme.spacing.unit / 2,
+	  width: '840px',
 	},
 	chip: {
 	  margin: theme.spacing.unit / 2,
 	},
+	soluong: {
+		width: '15%',
+	},
+	form1: {
+		width: '840px',
+		// backgroundColor: 'red'
+	}
 });
 
 class ItemDieuChuyenNhieu extends Component {
 	state = {
 		
 		ngayCTS:'2018-11-19',
-		soluong: 0,
+		soluong: this.props.soluongHienTai || 0,
 		id_taisan: '',
 		id_phong:'',
 		id_donvi:'',
@@ -43,23 +51,7 @@ class ItemDieuChuyenNhieu extends Component {
 	   })
 	};
 	
-	handleAdd = (event, ngayCTS, soluong, id_taisan, id_phong, id_donvi) => {
-		event.preventDefault();
-		const { chuyenTS } = this.props;
-		var newitem = {
-			ngayCTS: ngayCTS,
-			soluong:  soluong,
-			id_taisan: id_taisan,
-			id_phong: id_phong,
-			id_donvi: id_donvi,
-		}
-		// var length = chuyenTS.length;
-		var clone_chuyenTS = chuyenTS;
-		chuyenTS.push(newitem);
-		this.setState({
-			chuyenTS: clone_chuyenTS,
-		})
-	}
+	
 
 	render(){
 		const { 
@@ -68,37 +60,47 @@ class ItemDieuChuyenNhieu extends Component {
 			id_taisan,
 			id_phong,
 			id_donvi,
-			arrSoLuong
 		} = this.state;
 
 		const {
-			key,
+			keyTS,
 			label,
 			handleDeleteSelect,
 			item,
 			classes,
-			soluongHienTai
 		} = this.props
-		console.log("[SelectDieuChuyenNhieu] chuyenTs: ", this.state.chuyenTS)
+		
 		return (
-			<div key={key}>
+			<div key={keyTS}>
 				<form noValidate autoComplete="off">	
 					<Chip
-						key={key}
+						key={keyTS}
 						label={label}
 						onDelete={handleDeleteSelect(item)}
 						className={classes.chip}
 					/>
+					<br />
 					<TextField
-						id={`standard-name${key}`}
-						value={soluongHienTai}
+						id={`standard-name${keyTS}`}
+						label="Số lượng"
+						helperText="Tổng số lượng"
+						className={classes.soluong}
+						value={soluong <= this.props.soluongHienTai&& soluong > 0 ? soluong: this.props.soluongHienTai}
 						style={{ marginRight: 30 }}
 						type="number"
+						SelectProps={{
+							native: true,
+							MenuProps: {
+							},
+						}}
+						InputLabelProps={{
+							shrink: true,
+						}}
 						onChange={this.handleChange('soluong')}
 					/>
 
 					<TextField
-						id={`standard-name${key}`}
+						id={`standard-name${keyTS}`}
 						select
 						label="Đơn vị nhận"
 						value={id_donvi}
@@ -112,9 +114,12 @@ class ItemDieuChuyenNhieu extends Component {
 							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
-						helperText="Bạn muốn chuyển đến đâu ?"
-						margin="normal"
+						helperText="Nơi muốn chuyển"
+						// margin="normal"
 					>
+						<option  value="">
+							-- Chọn đơn vị --
+						</option>
 						{this.props.resource.donvi.map((item, i) => (
 						<option key={i} value={item.id}>
 							{item.name}
@@ -123,11 +128,12 @@ class ItemDieuChuyenNhieu extends Component {
 					</TextField>
 
 					<TextField
-						id={`standard-name${key}`}
+						id={`standard-name${keyTS}`}
 						select
 						label="Phòng"
 						value={id_phong}
 						onChange={this.handleChange('id_phong')}
+						style={{ marginRight: 30 }}
 						SelectProps={{
 							native: true,
 							MenuProps: {
@@ -136,9 +142,12 @@ class ItemDieuChuyenNhieu extends Component {
 						InputLabelProps={{
 							shrink: true,
 						}}
-						helperText="Please select your currency"
-						margin="normal"
+						helperText="Chọn phòng"
+						// margin="normal"
 					>
+						<option  value="">
+							-- Chọn phòng --
+						</option>
 						{this.props.resource.phong.map((item, i) => {
 							// console.log("phòng: ", item.id)
 							return (
@@ -150,7 +159,7 @@ class ItemDieuChuyenNhieu extends Component {
 					</TextField>
 
 					<TextField
-						id={`standard-name${key}`}
+						id={`standard-name${keyTS}`}
 						label="Ngày nhập"
 						type="date"
 						// defaultValue="1997-11-19"
@@ -158,17 +167,17 @@ class ItemDieuChuyenNhieu extends Component {
 						onChange={this.handleChange('ngayCTS')}
 						// fullWidth
 						style={{ marginRight: 30 }}
-						margin="normal"
+						// margin="normal"
 						InputLabelProps={{
 							shrink: true,
 						}}
 					/>
 
 					<Button 
-						onClick={(event) => this.handleAdd(event, key, ngayCTS, soluong, id_taisan, id_phong, id_donvi)} 
+						onClick={(event) => this.props.handleAdd(event, keyTS, ngayCTS, soluong, this.props.idTaiSan, id_phong, id_donvi)} 
 						color="primary"
 					>
-						OK
+						<i style={{ fontSize: 30 }} class="fas fa-arrow-alt-circle-right"></i>
 					</Button>
 				</form>
 			</div>
@@ -189,37 +198,67 @@ class SelectDieuChuyenNhieu extends Component {
 		return getTaiSan
 	}
 
+
+	handleAdd = (event, keyTS, ngayCTS, soluong, id_taisan, id_phong, id_donvi) => {
+		event.preventDefault();
+		const { chuyenTS } = this.state;
+		var soluong = parseInt(soluong);
+		var id_phong = parseInt(id_phong);
+		var id_donvi = parseInt(id_donvi);
+		var newitem = {
+			ngayCTS: ngayCTS,
+			soluong:  soluong,
+			id_taisan: id_taisan,
+			id_phong: id_phong,
+			id_donvi: id_donvi,
+		}
+		// var length = chuyenTS.length;
+		var clone_chuyenTS = chuyenTS;
+
+		clone_chuyenTS[keyTS] =  newitem;
+
+		
+		this.setState({
+			chuyenTS: clone_chuyenTS,
+		})
+	}
+
 	render() {
 		const { classes, match } = this.props;
-		
+		console.log("[SelectDieuChuyenNhieu] chuyenTs: ", this.state.chuyenTS)
 		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource}) => {
 					return (
+				<div >
 				<Dialog
 					open={this.props.openDieuChuyenNhieu}
 					onClose={this.props.handleCloseDieuChuyenNhieu}
-					aria-labelledby="form-dialog-title"
+					aria-labelledby="max-width-dialog-title"
+					maxWidth='xl'
 				>
 				
 					<DialogTitle id="form-dialog-title">Điều chuyển tài sản</DialogTitle>
-					<DialogContent>
+					<DialogContent
+					
+					>
 						<DialogContentText>
 							Hãy điều chỉnh số lượng của các tài sản đến các đơn vị bạn muốn
 							
-								<Paper className={classes.root}>
+								<Paper className={classes.root} >
 									{this.props.selectedTS.map((item, i) => {
 										return(
 											<ItemDieuChuyenNhieu 
-												key={i} 
+												keyTS={i} 
 												label={this.handleName(item)[0]} 
 												handleDeleteSelect = {this.props.handleDeleteSelect}	
-												item = {item}
-												soluongHienTai = {this.handleName(item)[0]}
+												idTaiSan = {item}
+												soluongHienTai = {this.handleName(item)[1]}
 												resource = {resource}
 												classes ={classes}
 												chuyenTS = {this.state.chuyenTS}
+												handleAdd ={this.handleAdd}
 											/>
 										)
 									})}
@@ -240,6 +279,7 @@ class SelectDieuChuyenNhieu extends Component {
 						</DialogContent>
 					
 				</Dialog>	
+				</div>
 			)}}
 			</QLCSVCContext.Consumer>
 		);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Table.css';
 
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -19,7 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
@@ -120,7 +120,7 @@ class Table1 extends Component {
 	
 	handleClick = (event, id) => {
 		const { selected } = this.state;
-		console.log("[Table] selected:",selected)
+		// console.log("[Table] selected:",selected)
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 	
@@ -156,7 +156,7 @@ class Table1 extends Component {
 		// console.log('render', this.state)
 		const { match } = this.props
 		// console.log(">>>match:",match)
-		console.log("[Table] selected:"+ selected);
+		// console.log("[Table] selected:"+ selected);
 
 		const Add = props => <Link to={`${match.url}/add`} {...props} />
 		
@@ -174,9 +174,8 @@ class Table1 extends Component {
 						</Button>
 					</Tooltip>
 				</div>
-				<Paper>
+				<Paper className={classes.root}>
 					<Toolbar>
-						<div >
 						{selected.length > 0 
 						? 
 						(
@@ -192,8 +191,6 @@ class Table1 extends Component {
 						)
 						}
 
-						</div>
-						<div/>
 						<div>
 							{selected.length > 0 
 							? (
