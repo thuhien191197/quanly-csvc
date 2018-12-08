@@ -43,6 +43,12 @@ class Child extends Component {
 		// console.log("clicked submit");
 		var dongia = parseInt(dongia);
 		var soluong = parseInt(soluong);
+		var id_loaitaisan = parseInt(id_loaitaisan);
+		var id_kinhphi = parseInt(id_kinhphi);
+		var id_donvi = parseInt(id_donvi);
+		var id_phong = parseInt(id_phong);
+		var id_user = parseInt(id_user);
+		var status = parseInt(status);
 
 		itemsTaisan.length!==0
 		? id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1

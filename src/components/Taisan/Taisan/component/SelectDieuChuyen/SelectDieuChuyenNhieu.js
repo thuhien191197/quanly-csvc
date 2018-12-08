@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import { QLCSVCContext } from '../../../../Main/Main';
+import axios from 'axios';
 
 const styles = theme => ({
 	root: {
@@ -174,6 +175,7 @@ class ItemDieuChuyenNhieu extends Component {
 					/>
 
 					<Button 
+						id="teoteo"
 						onClick={(event) => this.props.handleAdd(event, keyTS, ngayCTS, soluong, this.props.idTaiSan, id_phong, id_donvi)} 
 						color="primary"
 					>
@@ -181,6 +183,53 @@ class ItemDieuChuyenNhieu extends Component {
 					</Button>
 				</form>
 			</div>
+		)
+	}
+}
+
+class ButtonDieuChuyenNhieu extends Component {
+
+	handleDieuChuyen = (resource, addContextDC) =>{
+		const { chuyenTS } = this.props;
+		// const itemsChuyenTaiSan = resource.chuyentaisan
+		// var clone_chuyenTS = chuyenTS
+		// clone_chuyenTS = itemsChuyenTaiSan.concat()
+		// this.setState({
+		// 	chuyenTS: clone_chuyenTS,
+		// })
+		
+		for(var i =0; i < chuyenTS.length; i++){
+			console.log("[SelectDieuChuyenNhieu] i: ", i)
+			// addContextDC
+			axios.post(`http://localhost:5500/chuyentaisan`, chuyenTS[i])
+			.then(res => {
+			})
+		}
+		
+	}
+
+	render() {
+		const {
+			// handleDieuChuyen,
+			DieuChuyenTS,
+			handleCloseDieuChuyenNhieu,
+			resource,
+			addContextDC,
+		} = this.props
+		return (
+			<DialogActions>
+				<Button 
+					onClick={this.handleDieuChuyen(resource, addContextDC)} 
+					color="primary"
+					component={DieuChuyenTS}
+					id="teo"
+				>
+					Chuyển
+				</Button>
+				<Button onClick={handleCloseDieuChuyenNhieu} color="primary">
+					Cancel
+				</Button>
+			</DialogActions>
 		)
 	}
 }
@@ -223,29 +272,27 @@ class SelectDieuChuyenNhieu extends Component {
 		})
 	}
 
+	
+
 	render() {
 		const { classes, match } = this.props;
 		console.log("[SelectDieuChuyenNhieu] chuyenTs: ", this.state.chuyenTS)
 		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource}) => {
+				{({ resource, addContextDC}) => {
 					return (
 				<div >
-				<Dialog
-					open={this.props.openDieuChuyenNhieu}
-					onClose={this.props.handleCloseDieuChuyenNhieu}
-					aria-labelledby="max-width-dialog-title"
-					maxWidth='xl'
-				>
-				
-					<DialogTitle id="form-dialog-title">Điều chuyển tài sản</DialogTitle>
-					<DialogContent
-					
+					<Dialog
+						open={this.props.openDieuChuyenNhieu}
+						onClose={this.props.handleCloseDieuChuyenNhieu}
+						aria-labelledby="max-width-dialog-title"
+						maxWidth='xl'
 					>
-						<DialogContentText>
-							Hãy điều chỉnh số lượng của các tài sản đến các đơn vị bạn muốn
-							
+						<DialogTitle id="form-dialog-title">Điều chuyển tài sản</DialogTitle>
+						<DialogContent>
+							<DialogContentText>
+								Hãy điều chỉnh số lượng của các tài sản đến các đơn vị bạn muốn
 								<Paper className={classes.root} >
 									{this.props.selectedTS.map((item, i) => {
 										return(
@@ -264,21 +311,17 @@ class SelectDieuChuyenNhieu extends Component {
 									})}
 								</Paper>
 							</DialogContentText>
-							<DialogActions>
-								<Button 
-									// onClick={this.props.handleCloseDieuChuyen} 
-									color="primary"
-									component={DieuChuyenTS}
-								>
-									Chuyển
-								</Button>
-								<Button onClick={this.props.handleCloseDieuChuyenNhieu} color="primary">
-									Cancel
-								</Button>
-							</DialogActions>
+							<ButtonDieuChuyenNhieu 
+								handleDieuChuyen={this.handleDieuChuyen} 
+								DieuChuyenTS={DieuChuyenTS}
+								handleCloseDieuChuyenNhieu= {this.props.handleCloseDieuChuyenNhieu}
+								resource = {resource}
+								addContextDC ={addContextDC}
+								chuyenTS={this.state.chuyenTS}
+							/>
 						</DialogContent>
 					
-				</Dialog>	
+					</Dialog>	
 				</div>
 			)}}
 			</QLCSVCContext.Consumer>

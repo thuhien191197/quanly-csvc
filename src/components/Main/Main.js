@@ -28,13 +28,15 @@ export const resource = {
 const editContextTS = () => {};
 const addContextTS = () => {};
 const deleteContextTS = () => {};
+const addContextDC = () => {};
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
 	resource,
 	editContextTS,
 	addContextTS,
-	deleteContextTS
+	deleteContextTS,
+	addContextDC
 );
 
 
@@ -158,7 +160,7 @@ class Main extends Component {
 			}
 		})
 	}
-	
+	// -------------- TÀI SẢN 
 	addContextTS = (item) => {
 		this.setState(prev =>{
 			const newTaiSan = [...prev.resource.taisan];
@@ -184,7 +186,20 @@ class Main extends Component {
 		})
 	}
 
-
+	// -------------- ĐIỀU CHUYỂN
+	addContextDC = (item) => {
+		this.setState(prev =>{
+			const newDieuChuyen = [...prev.resource.chuyentaisan];
+			newDieuChuyen.push(item);
+			console.log('[Main] newDieuChuyen:',newDieuChuyen );
+			return {
+				resource: {
+					...prev.resource,
+					chuyentaisan: newDieuChuyen
+				}
+			}
+		})
+	}
 
 
 
@@ -354,7 +369,8 @@ class Main extends Component {
 						resource: this.state.resource,
 						editContextTS: this.editContextTS,
 						addContextTS: this.addContextTS,
-						deleteContextTS: this.deleteContextTS
+						deleteContextTS: this.deleteContextTS,
+						addContextDC: this.addContextDC
 					}}
 				>
 					<main className="s-layout__content">
