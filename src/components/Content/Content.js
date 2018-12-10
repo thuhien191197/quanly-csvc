@@ -13,14 +13,14 @@ import DieuChuyenTaiSan from '../Taisan/DieuChuyenTaiSan/DieuChuyenTaiSan';
 import ThanhLy from '../Taisan/ThanhLy/ThanhLy';
 import ThongKe from '../Taisan/ThongKe/ThongKe';
 import VanBanMau from '../Kehoach/VanBanMau';
-
+import { withRouter } from "react-router";
 class Content extends Component {
 	render() {
 		return (
 			<div>
 				<Route exact path="/" component={Home} />
-				<Route path="/user" component={User}></Route>
-				<Route path="/donvi/:name/:id" component={Donvi}></Route>
+				<User />
+				<Route path="/donvi/:name" component={Donvi}></Route>
 				<Route exact path='/danhmuc' render={() => <Danhmuc />} />
 				<Route exact path='/danhmuc/:name' render={() => <NguonKinhPhi />} />
 				<Route exact path='/danhmuc/:name/:id' render={() => <LoaiTaiSan />} />
@@ -30,4 +30,4 @@ class Content extends Component {
 	}
 }
 
-export default Content;
+export default withRouter(Content);

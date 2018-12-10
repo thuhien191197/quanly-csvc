@@ -29,6 +29,7 @@ const editContextTS = () => {};
 const addContextTS = () => {};
 const deleteContextTS = () => {};
 const addContextDC = () => {};
+const addContextUser = () => {};
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
@@ -36,7 +37,8 @@ export const QLCSVCContext = React.createContext(
 	editContextTS,
 	addContextTS,
 	deleteContextTS,
-	addContextDC
+	addContextDC,
+	addContextUser
 );
 
 
@@ -112,33 +114,33 @@ class Main extends Component {
 					icon:'fas fa-angle-right',
 					taisan:{
 						name: 'Tài Sản',
-						route: '/taisan',
+						route: 'taisan',
 					},
 					dieuchinhtaisan:{
-						name: 'Điều Chuyển Tài Sản',
-						route: '/dieuchinhtaisan',
+						name: 'Danh sách điều chuyển',
+						route: 'Danh sách điều chuyển',
 					},
 					thanhly:{
 						name: 'Thanh Lý',
-						route: '/thanhly',
+						route: 'Thanh lý',
 					},
 					thongke:{
 						name: 'Thống Kê',
-						route: '/thongke',
+						route: 'Thống kê',
 					},
 				}
 			},
 			kehoach:{
 				id: 5,
 				name: "Kế hoạch",
-				route: '/kehoach',
+				route: 'kehoach',
 				isOpen: false,
 				icon:'fas fa-book',
 				children: {}
 			}
 		}
 	};
-
+	// -------------- TÀI SẢN 
 	editContextTS = (item) => {
 		// console.log('Edit Item context', this.state.resource.taisan);
 		this.setState(prev => {
@@ -160,7 +162,7 @@ class Main extends Component {
 			}
 		})
 	}
-	// -------------- TÀI SẢN 
+	
 	addContextTS = (item) => {
 		this.setState(prev =>{
 			const newTaiSan = [...prev.resource.taisan];
@@ -196,6 +198,20 @@ class Main extends Component {
 				resource: {
 					...prev.resource,
 					chuyentaisan: newDieuChuyen
+				}
+			}
+		})
+	}
+	// -------------- User
+	addContextUser = (item) => {
+		this.setState(prev =>{
+			const newUser = [...prev.resource.user];
+			newUser.push(item);
+			console.log('[Main] newUser:',newUser );
+			return {
+				resource: {
+					...prev.resource,
+					user: newUser
 				}
 			}
 		})
@@ -341,10 +357,18 @@ class Main extends Component {
 															keyChild!=='icon'
 															?
 															<li className="li" key={idChild}>
-																<MenuLink className="s-sidebar__nav-linksub" to={{
-																	pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} 
-															/>
+																{key !== sidebar[key].children[keyChild].route
+																?
+																	<MenuLink className="s-sidebar__nav-linksub" to={{
+																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																:
+																	<MenuLink className="s-sidebar__nav-linksub" to={{
+																		pathname: '/'+ key,
+																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																}
+																
+															
 															</li>
 															:
 															''
@@ -370,7 +394,8 @@ class Main extends Component {
 						editContextTS: this.editContextTS,
 						addContextTS: this.addContextTS,
 						deleteContextTS: this.deleteContextTS,
-						addContextDC: this.addContextDC
+						addContextDC: this.addContextDC,
+						addContextUser: this.addContextUser
 					}}
 				>
 					<main className="s-layout__content">

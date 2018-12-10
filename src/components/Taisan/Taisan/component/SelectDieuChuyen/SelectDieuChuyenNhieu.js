@@ -43,7 +43,6 @@ class ItemDieuChuyenNhieu extends Component {
 		id_taisan: '',
 		id_phong:'',
 		id_donvi:'',
-		arrSoLuong:[]
 	};
 
 	handleChange = (name) => event => {
@@ -176,7 +175,7 @@ class ItemDieuChuyenNhieu extends Component {
 
 					<Button 
 						id="teoteo"
-						onClick={(event) => this.props.handleAdd(event, keyTS, ngayCTS, soluong, this.props.idTaiSan, id_phong, id_donvi)} 
+						onClick={(event) => this.props.handleAdd(event, keyTS, ngayCTS, soluong, this.props.item, id_phong, id_donvi)} 
 						color="primary"
 					>
 						<i style={{ fontSize: 30 }} class="fas fa-arrow-alt-circle-right"></i>
@@ -189,17 +188,103 @@ class ItemDieuChuyenNhieu extends Component {
 
 class ButtonDieuChuyenNhieu extends Component {
 
-	handleDieuChuyen = (resource, addContextDC) =>{
-		const { chuyenTS } = this.props;
+	handleDieuChuyen = (event, resource, addContextDC) =>{
+		event.preventDefault();
+		const { chuyenTS, editContextTS, addContextTS } = this.props;
 		// const itemsChuyenTaiSan = resource.chuyentaisan
 		// var clone_chuyenTS = chuyenTS
 		// clone_chuyenTS = itemsChuyenTaiSan.concat()
 		// this.setState({
 		// 	chuyenTS: clone_chuyenTS,
 		// })
-		
+		const itemsTaiSan = resource.taisan
+		var count = 0;
 		for(var i =0; i < chuyenTS.length; i++){
+			
 			console.log("[SelectDieuChuyenNhieu] i: ", i)
+			for(var j =0; j < itemsTaiSan.length; j++){
+				var item = itemsTaiSan[j]
+				// console.log("[SelectDieuChuyenNhieu] i: ", i)
+				// console.log("[SelectDieuChuyenNhieu] item.id: ", item.id)
+				// console.log("[SelectDieuChuyenNhieu] chuyenTS[i].id_taisan: ",  chuyenTS[i].id_taisan)
+				var newItemEditTS = {}
+				var newItemAddTS = {}
+				if(chuyenTS[i].id_taisan === item.id ){
+					// sửa item đó trong bản Tài sản, giảm số lượng lại
+					var id = item.id
+					var name = item.name
+					var dongia = (item.dongia / item.soluong)*(item.soluong - chuyenTS[i].soluong)
+					var soluong = (item.soluong - chuyenTS[i].soluong)
+					var ngaynhap = item.ngaynhap
+					var hansudung =  item.hansudung
+					var ghichu = item.ghichu
+					var id_loaitaisan= item.id_loaitaisan
+					var id_donvi =item.id_donvi
+					var id_kinhphi = item.id_kinhphi
+					var id_phong = item.id_phong
+					var id_user=  item.id_user
+					var status= item.status
+					newItemEditTS = {
+						id : id,
+						name: name,
+						dongia: dongia,
+						soluong:soluong,
+						ngaynhap: ngaynhap,
+						hansudung: hansudung,
+						ghichu:ghichu,
+						id_loaitaisan: id_loaitaisan,
+						id_donvi: id_donvi,
+						id_kinhphi: id_kinhphi,
+						id_phong: id_phong,
+						id_user: id_user,
+						status: status
+					}
+					// console.log("[Select điều chuyển nhiều] newItem:",newItemEditTS);
+					editContextTS(newItemEditTS)
+					axios.put(`http://localhost:5500/taisan/${id}`, newItemEditTS)
+					.then(res => {
+						console.log("Edit done");
+					})
+
+					// vì tài sản đó được tách ra cho đơn vị khác nữa, nên phải thêm vào
+					id = parseInt(itemsTaiSan[itemsTaiSan.length - 1].id) + 1 + count
+					name = item.name
+					dongia = (item.dongia / item.soluong)*chuyenTS[i].soluong
+					soluong = chuyenTS[i].soluong
+					ngaynhap = item.ngaynhap
+					hansudung =  item.hansudung
+					ghichu = item.ghichu
+					id_loaitaisan= item.id_loaitaisan
+					id_donvi = chuyenTS[i].id_donvi
+					id_kinhphi = item.id_kinhphi
+					id_phong = chuyenTS[i].id_phong
+					id_user=  item.id_user
+					status= item.status
+					newItemAddTS = {
+						id : id,
+						name: name,
+						dongia: dongia,
+						soluong:soluong,
+						ngaynhap: ngaynhap,
+						hansudung: hansudung,
+						ghichu:ghichu,
+						id_loaitaisan: id_loaitaisan,
+						id_donvi: id_donvi,
+						id_kinhphi: id_kinhphi,
+						id_phong: id_phong,
+						id_user: id_user,
+						status: status
+					}
+					// console.log("[Select điều chuyển nhiều] newItemAddTS:",newItemAddTS);
+					addContextTS(newItemAddTS)
+					axios.post(`http://localhost:5500/taisan`, newItemAddTS)
+					.then(res => {
+						console.log("Add done");
+					})
+					++count;
+				}
+			}
+		
 			// addContextDC
 			axios.post(`http://localhost:5500/chuyentaisan`, chuyenTS[i])
 			.then(res => {
@@ -215,11 +300,12 @@ class ButtonDieuChuyenNhieu extends Component {
 			handleCloseDieuChuyenNhieu,
 			resource,
 			addContextDC,
+			editContextTS
 		} = this.props
 		return (
 			<DialogActions>
 				<Button 
-					onClick={this.handleDieuChuyen(resource, addContextDC)} 
+					onClick={(event) => this.handleDieuChuyen(event, resource, addContextDC)} 
 					color="primary"
 					component={DieuChuyenTS}
 					id="teo"
@@ -249,7 +335,7 @@ class SelectDieuChuyenNhieu extends Component {
 
 
 	handleAdd = (event, keyTS, ngayCTS, soluong, id_taisan, id_phong, id_donvi) => {
-		event.preventDefault();
+		// event.preventDefault();
 		const { chuyenTS } = this.state;
 		var soluong = parseInt(soluong);
 		var id_phong = parseInt(id_phong);
@@ -277,10 +363,10 @@ class SelectDieuChuyenNhieu extends Component {
 	render() {
 		const { classes, match } = this.props;
 		console.log("[SelectDieuChuyenNhieu] chuyenTs: ", this.state.chuyenTS)
-		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
+		const DieuChuyenTS = props => <Link to={`${match.url}/Danh sách điều chuyển`} {...props} />
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, addContextDC}) => {
+				{({ resource, addContextDC, editContextTS, addContextTS}) => {
 					return (
 				<div >
 					<Dialog
@@ -300,7 +386,7 @@ class SelectDieuChuyenNhieu extends Component {
 												keyTS={i} 
 												label={this.handleName(item)[0]} 
 												handleDeleteSelect = {this.props.handleDeleteSelect}	
-												idTaiSan = {item}
+												item = {item}
 												soluongHienTai = {this.handleName(item)[1]}
 												resource = {resource}
 												classes ={classes}
@@ -318,6 +404,8 @@ class SelectDieuChuyenNhieu extends Component {
 								resource = {resource}
 								addContextDC ={addContextDC}
 								chuyenTS={this.state.chuyenTS}
+								editContextTS={editContextTS}
+								addContextTS={addContextTS}
 							/>
 						</DialogContent>
 					

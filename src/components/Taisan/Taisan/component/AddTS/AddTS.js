@@ -113,7 +113,7 @@ class Child extends Component {
 		} = this.state;
 		return (
 			<div>
-				{/* APP tài sản */}
+				{/* ADD tài sản */}
 				<form
 					noValidate autoComplete="off"
 				>

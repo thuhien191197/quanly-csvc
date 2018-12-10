@@ -14,6 +14,7 @@ import { withRouter } from "react-router";
 import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
 import DieuChuyenTS from './component/DieuChuyenTS/DieuChuyenTS';
 import SelectDieuChuyenNhieu from './component/SelectDieuChuyen/SelectDieuChuyenNhieu';
+import SelectThanhLyNhieu from './component/SelectThanhLy/SelectThanhLyNhieu';
 
 export const itemsTaisan = [];
 
@@ -26,10 +27,11 @@ class TableComponent extends Component {
 			data,
 			openDieuChuyen: false,
 			openDieuChuyenNhieu: false,
+			openThanhLyNhieu: false,
 			selectedTS: []
 		}
 	}
-
+	// Chọn dữ liệu của các trường cho bảng
 	handleGetListTable = (resourceTS) =>{
 		var itemsTaisan = resourceTS.taisan
 		var itemsLoaiTaiSan = resourceTS.loaitaisan
@@ -40,7 +42,15 @@ class TableComponent extends Component {
 			var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
 			var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
 			var getNameUser = R.filter(R.propEq("id", item.id_user))
-			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''};
+			const a = {'id' :item.id, 
+				'name': item.name, 
+				'dongia': item.dongia, 
+				'soluong': item.soluong, 
+				'ngaynhap': item.ngaynhap, 
+				'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
+				'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
+				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''
+			};
 			b.push(a);
 		})
 		return b
@@ -81,7 +91,7 @@ class TableComponent extends Component {
 	handleCloseDieuChuyen = () => {
 		this.setState({ openDieuChuyen: false });
 	};
-
+	// mở ra điều chuyển số lượng nhiều đến nhiều Đơn vị
 	handleClickOpenNhieu = (selected) => {
 		console.log("[TaiSan] Im here:")
 		this.setState({ 
@@ -94,13 +104,19 @@ class TableComponent extends Component {
 		this.setState({ openDieuChuyenNhieu: false });
 	};
 
-	// handleSelectDieuChuyen = (selected) => {
-		
-	// 	return(
-	// 		<>
-	// 		</>
-	// 	)
-	// }
+	// Mỏ ra cửa sổ để thanh lý tài sản vừa chọn
+	handleClickOpenThanhLy = (selected) => {
+		console.log("[TaiSan] Im here:")
+		this.setState({ 
+			selectedTS: selected, 
+			openThanhLyNhieu: true 
+		});
+	};
+	handleCloseThanhLyNhieu = () => {
+		this.setState({ openThanhLyNhieu: false });
+	};
+
+
 
 	handleDeleteSelect = data => () => {
 		// if (data.label === 'React') {
@@ -120,13 +136,13 @@ class TableComponent extends Component {
 	render() {
 		const { rows, selectApp } = this.props;
 		const { data } = this.state;
-		console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
+		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
 			<div>
 				Taisan
 				<SelectDieuChuyen 
 					selectedTS= {this.state.selectedTS} 
-					resource = {this.props.resource}
+					// resource = {this.props.resource}
 					openDieuChuyen = {this.state.openDieuChuyen} 
 					handleCloseDieuChuyen={this.handleCloseDieuChuyen} 
 					handleDeleteSelect={this.handleDeleteSelect} 
@@ -138,6 +154,14 @@ class TableComponent extends Component {
 					handleCloseDieuChuyenNhieu ={this.handleCloseDieuChuyenNhieu} 
 					handleDeleteSelect={this.handleDeleteSelect} 
 				/>
+
+				<SelectThanhLyNhieu
+					selectedTS= {this.state.selectedTS} 
+					resource = {this.props.resource}
+					openThanhLyNhieu = {this.state.openThanhLyNhieu} 
+					handleCloseThanhLyNhieu ={this.handleCloseThanhLyNhieu} 
+					handleDeleteSelect={this.handleDeleteSelect} 
+				/>
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -145,6 +169,7 @@ class TableComponent extends Component {
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
 					selectApp={selectApp}
+					
 				/>
 			</div>
 		)
@@ -162,33 +187,32 @@ class Taisan extends Component {
 			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit','dieuchuyen'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit','dieuchuyen','thanhly'] },
 		],
-
-		
 	}
 
-	handleGetListTable = (resourceTS) =>{
-		var itemsTaisan = resourceTS.taisan
-		var itemsLoaiTaiSan = resourceTS.loaitaisan
-		var itemsDonVi  = resourceTS.donvi
-		var itemsUser  = resourceTS.user
-		var b =[]
-		itemsTaisan.map(item => {
-			var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
-			var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-			var getNameUser = R.filter(R.propEq("id", item.id_user))
-			const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''};
-			b.push(a);
-		})
-		return b
-	}
+	// handleGetListTable = (resourceTS) =>{
+	// 	var itemsTaisan = resourceTS.taisan
+	// 	var itemsLoaiTaiSan = resourceTS.loaitaisan
+	// 	var itemsDonVi  = resourceTS.donvi
+	// 	var itemsUser  = resourceTS.user
+	// 	var b =[]
+	// 	itemsTaisan.map(item => {
+	// 		var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
+	// 		var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
+	// 		var getNameUser = R.filter(R.propEq("id", item.id_user))
+	// 		const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''};
+	// 		b.push(a);
+	// 	})
+	// 	return b
+	// }
 
 
 	render1 = () => {
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS,  addContextTS}) => {
+					
 					return (
 						<TableComponent rows={this.state.rows} resource={resource} selectApp={this.state.selectApp} deleteContextTS={deleteContextTS} />
 					)
@@ -202,7 +226,7 @@ class Taisan extends Component {
 		axios.post(`http://localhost:5500/taisan`, { name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status})
 		.then(res => {
 		})
-		console.log("[TaiSan] name:",name)
+		// console.log("[TaiSan] name:",name)
 	}
 
 	editTs = ({id,name,dongia,soluong,ngaynhap,hansudung,ghichu,id_loaitaisan,id_donvi,id_kinhphi,id_phong,id_user,status}) => {
@@ -219,11 +243,11 @@ class Taisan extends Component {
 				<Switch>
 					<Route path="/taisan" exact render={this.render1}></Route>
 					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
-					<Route exact path="/taisan/Điều chuyển tài sản" render={() => <DieuChuyenTaiSan />} />
+					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
 					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
 					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
-					<Route exact path="/taisan/dieuchuyentaisan" render={() => <DieuChuyenTS />} />
+					<Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} />
 					DieuChuyenTS
 				</Switch>
 			</div>

@@ -205,29 +205,48 @@ class Table1 extends Component {
 											/>
 										</IconButton>
 									</Tooltip>
-									<Tooltip title="Điều chuyển tài sản">
-										<IconButton 
-											aria-label="Điều chuyển"
-											aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
-											onClick={this.handleClickDC}
-										>
-											<ThreeSixtyIcon 
-												className={classes.icon} 
-												// onClick = {() => this.props.handleClickOpen(selected)}
-											/>
-										</IconButton>
-									</Tooltip>
+									{/*  icon điều chuyển  */}
 
-									<Menu
-										id="simple-menu"
-										anchorEl={this.state.anchorEl}
-										open={Boolean(this.state.anchorEl)}
-										className={classes.menuDC}
-										onClose={this.handleCloseDC}
-									>
-										<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
-										<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
-									</Menu>
+									{rows[rows.length-1].function.map((func, i) => {
+									// console.log("func:",func)
+										if(func === "dieuchuyen"){
+											return(
+												<span>
+													<Tooltip title="Điều chuyển tài sản">
+														<IconButton 
+															aria-label="Điều chuyển"
+															aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+															onClick={this.handleClickDC}
+														>
+															<i class="fas fa-exchange-alt"></i>
+														</IconButton>
+													</Tooltip>
+													<Menu
+														id="simple-menu"
+														anchorEl={this.state.anchorEl}
+														open={Boolean(this.state.anchorEl)}
+														className={classes.menuDC}
+														onClose={this.handleCloseDC}
+													>
+														<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+													</Menu>
+												</span>
+											)
+										} else if(func === "thanhly"){
+											return(
+												<Tooltip title="Thanh lý tài sản">
+													<IconButton 
+														aria-label="Điều chuyển"
+														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+													>
+														<i class="fas fa-folder-minus"></i>
+													</IconButton>
+												</Tooltip>
+											)
+										}
+										
+									})}
 								</div>
 							) 
 							: (
@@ -236,6 +255,8 @@ class Table1 extends Component {
 								// 	<FilterListIcon />
 								// 	</IconButton>
 								// </Tooltip>
+
+								
 								<div>
 									<Tooltip disabled title="Delete">
 										<IconButton aria-label="Delete">
@@ -244,11 +265,46 @@ class Table1 extends Component {
 											/>
 										</IconButton>
 									</Tooltip>
-									<Tooltip disabled title="Điều chuyển tài sản">
-										<IconButton aria-label="Điều chuyển">
-											<ThreeSixtyIcon className={classes.icon} />
-										</IconButton>
-									</Tooltip>
+									{rows[rows.length-1].function.map((func, i) => {
+									// console.log("func:",func)
+										if(func === "dieuchuyen"){
+											return(
+												<span>
+													<Tooltip disabled title="Điều chuyển tài sản">
+														<IconButton 
+															aria-label="Điều chuyển"
+															aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+															onClick={this.handleClickDC}
+														>
+															<i class="fas fa-exchange-alt"></i>
+														</IconButton>
+													</Tooltip>
+													<Menu
+														id="simple-menu"
+														anchorEl={this.state.anchorEl}
+														open={Boolean(this.state.anchorEl)}
+														className={classes.menuDC}
+														onClose={this.handleCloseDC}
+													>
+														<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+													</Menu>
+												</span>
+											)
+										} else if(func === "thanhly"){
+											return(
+												<Tooltip disabled title="Thanh lý tài sản">
+													<IconButton 
+														aria-label="Điều chuyển"
+														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+													>
+														<i class="fas fa-folder-minus"></i>
+													</IconButton>
+												</Tooltip>
+											)
+										}
+										
+									})}
 								</div>
 							)}
 						</div>
@@ -322,8 +378,9 @@ class Table1 extends Component {
 												<TableCell key={idRow} component="th" scope="row" padding="none">
 													{row.id !== "function"
 													?
-													item[row.id]
-													
+														row.id != "avatar"
+														? item[row.id]
+														: <img src={item[row.id]}/>
 													:
 													funcs.map((func, i) => {
 														// console.log("func:",func)
