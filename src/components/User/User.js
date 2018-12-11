@@ -51,6 +51,21 @@ class UserComponent extends Component {
 		})
 	}
 
+	handleDelete = (selected) => {
+		// console.log("[TaiSan] props:", this.props)
+		var itemsUser = this.props.resource.user;
+		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsUser);
+		this.props.deleteContextUser(dataDeleted);
+		
+		
+		selected.forEach(function(select, i) {
+			fetch('http://localhost:5500/user/'+ select, {
+				method: 'DELETE'
+			});
+		});
+		this.setState({selected: [] });
+	}
+
 	render() {
 		const { rows, match, resource} = this.props
 		const { data } = this.state
@@ -89,14 +104,14 @@ class User extends Component {
 		const { rows } = this.state
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, deleteContextTS,  addContextTS}) => {
+				{({ resource, deleteContextUser}) => {
 					console.log("[User] resource:",resource)
 					return (
 						<UserComponent 
 							rows={rows} 
 							match={match}
 							resource={resource} 
-							// deleteContextTS={deleteContextTS} 
+							deleteContextUser={deleteContextUser} 
 						/>
 					)
 				}}

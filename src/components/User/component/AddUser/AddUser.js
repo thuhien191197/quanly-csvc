@@ -108,7 +108,7 @@ class AddUserComponent extends Component {
 
 		let $imagePreview = null;
 		if (avatar) {
-			$imagePreview = (<img src={avatar} />);
+			$imagePreview = (<img src={avatar} style={{width:'8em'}}/>);
 		} else {
 			$imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
 		}
@@ -231,7 +231,7 @@ class AddUserComponent extends Component {
 						</Button> */}
 						<input onChange={this.handleImageChange} type="file" name="myfile" />	
 					</div>
-					<div className="imgPreview">
+					<div className="imgPreview" > 
 						{$imagePreview}
 					</div>
 

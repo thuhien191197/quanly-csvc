@@ -1,16 +1,47 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
-
 import _ from 'lodash';
-
 import './Main.css';
 import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Badge from '@material-ui/core/Badge';
+import Avatar from '@material-ui/core/Avatar';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+
+import MenuList from '@material-ui/core/MenuList';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { withStyles } from '@material-ui/core/styles';
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
+const styles = theme => ({
+	margin: {
+		margin: theme.spacing.unit * (-5),
+		color: "white",
+		marginBottom: '-8px'
+	},
+	padding: {
+	  	padding: `0 ${theme.spacing.unit * 2}px`,
+	},
+	avatar:{
+		marginTop: "-4px"
+	},
+	menuItems:{
+		width: '100%',
+		maxWidth: 360,
+		backgroundColor: theme.palette.background.paper,
+		position: 'relative',
+		overflow: 'auto',
+		maxHeight: 300,
+	}
+});
 
 export const resource = {
 	user:[],
@@ -30,6 +61,8 @@ const addContextTS = () => {};
 const deleteContextTS = () => {};
 const addContextDC = () => {};
 const addContextUser = () => {};
+const deleteContextUser = () => {};
+const editContextUser = () => {};
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
@@ -38,7 +71,9 @@ export const QLCSVCContext = React.createContext(
 	addContextTS,
 	deleteContextTS,
 	addContextDC,
-	addContextUser
+	addContextUser,
+	deleteContextUser,
+	editContextUser
 );
 
 
@@ -138,7 +173,9 @@ class Main extends Component {
 				icon:'fas fa-book',
 				children: {}
 			}
-		}
+		},
+		open: false,
+
 	};
 	// -------------- TÀI SẢN 
 	editContextTS = (item) => {
@@ -217,6 +254,40 @@ class Main extends Component {
 		})
 	}
 
+	deleteContextUser = (item) => {
+		this.setState(prev =>{
+			return {
+				resource: {
+					...prev.resource,
+					user: item
+				}
+			}
+		})
+	}
+
+	editContextUser = (item) => {
+		// console.log('Edit Item context', this.state.resource.taisan);
+		this.setState(prev => {
+			const newUser = [...prev.resource.user];
+			// console.log('[Main] newUser:',newUser );
+			const changeIndex = _.findIndex(newUser, {id: item.id})
+			newUser[changeIndex] = item;
+
+			// console.log('Edit context', {
+			// 	...prev.resource,
+			// 	user: newUser,
+			// });
+
+			return {
+				resource: {
+					...prev.resource,
+					user: newUser,
+				}
+			}
+		})
+	}
+	
+	
 
 
 	addChildren(key, children) {
@@ -295,37 +366,84 @@ class Main extends Component {
 			sidebar: sidebar
 		})
 		
-	  }
+	}
 
+	//---- menu user
+	handleToggle = () => {
+		this.setState(state => ({ open: !state.open }));
+	  };
+	
+	  handleClose = event => {
+		if (this.anchorEl.contains(event.target)) {
+		  return;
+		}
+	
+		this.setState({ open: false });
+	  };
+	
 	render() {
 		var {sidebar} = this.state;
+		const {classes } = this.props
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
-		// console.log('Rerender', this.state.resource.taisan);
-		// console.log("addResource", this.state.resource);
 		
-		// console.log("[Main] sidebar:",sidebar)
+		
 		return (
 			<div className="s-layout">
 				<div className="s-layout__sidebar">
 					<div className="s-sidebar__trigger" href="#0">
 						<i className="fa fa-bars"></i>
-						<ul className="pull-right">
+						<div className="pull-right">
+							{/* Thông báo và avatar */}
 							<li className="rad-dropdown no-color bell">
-								<a href="#">
-									<i className="fas fa-bell"></i>
-								</a>
+								<IconButton aria-label="4 pending messages" 
+									className={classes.margin}
+									buttonRef={node => {
+										this.anchorEl = node;
+									}}
+									aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+									aria-haspopup="true"
+									onClick={this.handleToggle}
+								>
+									<Badge badgeContent={4} color="primary">
+										<NotificationsIcon />
+									</Badge>
+								</IconButton>
+
+								<Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+									{({ TransitionProps, placement }) => (
+									<Grow
+										{...TransitionProps}
+										id="menu-list-grow"
+										style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+									>
+										<Paper>
+										<ClickAwayListener   onClickAway={this.handleClose}>
+											<MenuList className={classes.menuItems}>
+											<MenuItem onClick={this.handleClose}>Profile</MenuItem>
+											<MenuItem onClick={this.handleClose}>My account</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
+
+											</MenuList>
+										</ClickAwayListener>
+										</Paper>
+									</Grow>
+									)}
+								</Popper>
+
+
 							</li>
 							<li className="rad-dropdown no-color">
-								<a href="#">
-									<img className="rad-list-img sm-img" alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"/>
-								</a>
+								<Avatar  alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg" className={classes.avatar} />
 							</li>
-							<li className="rad-dropdown no-color">
-								<a href="#">
-									<i className="fa fa-cog"></i>
-								</a>
-							</li>
-						</ul>
+						</div>
+						
+						
 					</div>
 					
 					<nav className="s-sidebar__nav" id="style-4">
@@ -395,7 +513,9 @@ class Main extends Component {
 						addContextTS: this.addContextTS,
 						deleteContextTS: this.deleteContextTS,
 						addContextDC: this.addContextDC,
-						addContextUser: this.addContextUser
+						addContextUser: this.addContextUser,
+						deleteContextUser: this.deleteContextUser,
+						editContextUser: this.editContextUser
 					}}
 				>
 					<main className="s-layout__content">
@@ -408,4 +528,4 @@ class Main extends Component {
 	}
 }
 
-export default withRouter(Main);
+export default withStyles(styles)(withRouter(Main));

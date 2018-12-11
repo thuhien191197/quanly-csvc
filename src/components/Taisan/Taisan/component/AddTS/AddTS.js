@@ -379,7 +379,7 @@ class Child extends Component {
 }
 
 
-class AddTS extends Component {
+class Add extends Component {
 	render() {
 		const { resource } = this.props;
 
@@ -390,15 +390,15 @@ class AddTS extends Component {
 }
 
 
-class AddTSWrap extends Component {
+class AddTS extends Component {
 	render() {
 		return(
 			<QLCSVCContext.Consumer>
-				{({ resource, addContextTS }) => <AddTS addTs={this.props.addTs} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
+				{({ resource, addContextTS }) => <Add addTs={this.props.addTs} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
 			</QLCSVCContext.Consumer>
 		)
 	}
 
 }
 	
-	export default withRouter(AddTSWrap);
+	export default withRouter(AddTS);

@@ -12,7 +12,6 @@ import EditTS from './component/EditTS/EditTS';
 import { QLCSVCContext } from '../../Main/Main';
 import { withRouter } from "react-router";
 import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
-import DieuChuyenTS from './component/DieuChuyenTS/DieuChuyenTS';
 import SelectDieuChuyenNhieu from './component/SelectDieuChuyen/SelectDieuChuyenNhieu';
 import SelectThanhLyNhieu from './component/SelectThanhLy/SelectThanhLyNhieu';
 
@@ -33,26 +32,54 @@ class TableComponent extends Component {
 	}
 	// Chọn dữ liệu của các trường cho bảng
 	handleGetListTable = (resourceTS) =>{
+		var itemsUser  = resourceTS.user
 		var itemsTaisan = resourceTS.taisan
 		var itemsLoaiTaiSan = resourceTS.loaitaisan
 		var itemsDonVi  = resourceTS.donvi
-		var itemsUser  = resourceTS.user
+		
 		var b =[]
-		itemsTaisan.map(item => {
+		var length =itemsTaisan.length
+		for(var i = 0; i < length; i++){
+			var item = itemsTaisan[i]
+			let getNameUser = R.filter(R.propEq("id", item.id_user))
 			var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
 			var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-			var getNameUser = R.filter(R.propEq("id", item.id_user))
+			console.log("[TaiSAn] getNameUser(itemsUser)[0].fullname :", getNameUser(itemsUser)[0].fullname)
 			const a = {'id' :item.id, 
 				'name': item.name, 
 				'dongia': item.dongia, 
 				'soluong': item.soluong, 
 				'ngaynhap': item.ngaynhap, 
+				// 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
+				// 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
+				// 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
 				'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
 				'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
-				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''
+				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
+				
 			};
 			b.push(a);
-		})
+		}
+
+
+		// itemsTaisan.map(item => {
+		// 	var getNameUser = R.filter(R.propEq("id", item.id_user))
+		// 	var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
+		// 	var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
+			
+		// 	console.log("[TaiSAn] itemsUser :", itemsUser)
+		// 	console.log("[TaiSAn] getNameDonvi(itemsUser)[0]:", getNameDonvi(itemsUser)[0])
+		// 	const a = {'id' :item.id, 
+		// 		'name': item.name, 
+		// 		'dongia': item.dongia, 
+		// 		'soluong': item.soluong, 
+		// 		'ngaynhap': item.ngaynhap, 
+		// 		'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
+		// 		'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
+		// 		'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
+		// 	};
+		// 	b.push(a);
+		// })
 		return b
 	}
 
@@ -134,7 +161,7 @@ class TableComponent extends Component {
 	  };
 
 	render() {
-		const { rows, selectApp } = this.props;
+		const { rows,  } = this.props;
 		const { data } = this.state;
 		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
@@ -168,7 +195,7 @@ class TableComponent extends Component {
 					handleDelete = {this.handleDelete}  
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
-					selectApp={selectApp}
+					// selectApp={selectApp}
 					
 				/>
 			</div>
@@ -209,12 +236,19 @@ class Taisan extends Component {
 
 
 	render1 = () => {
+		const { match } = this.props
+		const { rows } = this.state
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS,  addContextTS}) => {
 					
 					return (
-						<TableComponent rows={this.state.rows} resource={resource} selectApp={this.state.selectApp} deleteContextTS={deleteContextTS} />
+						<TableComponent 
+							rows={rows} 
+							resource={resource}  
+							deleteContextTS={deleteContextTS} 
+							match={match}
+						/>
 					)
 				}}
 			</QLCSVCContext.Consumer>
@@ -239,18 +273,15 @@ class Taisan extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<Switch>
-					<Route path="/taisan" exact render={this.render1}></Route>
-					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
-					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
-					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
-					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
-					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
-					<Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} />
-					DieuChuyenTS
-				</Switch>
-			</div>
+			<Switch>
+				<Route path="/taisan" exact render={this.render1}></Route>
+				<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
+				<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
+				<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
+				<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
+				<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
+				{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
+			</Switch>
 		)
 		
 	}

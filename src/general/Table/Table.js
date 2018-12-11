@@ -41,6 +41,11 @@ const toolbarStyles = theme => ({
 	menuDC: {
 		color:'red',
 		left: '50px',
+	},
+	imgUser: {
+		width:'4em',
+		height:'4em',
+		borderRadius: '100%',
 	}
 
 });
@@ -380,7 +385,7 @@ class Table1 extends Component {
 													?
 														row.id != "avatar"
 														? item[row.id]
-														: <img src={item[row.id]}/>
+														: <img className={classes.imgUser} src={item[row.id]}/>
 													:
 													funcs.map((func, i) => {
 														// console.log("func:",func)
@@ -388,6 +393,7 @@ class Table1 extends Component {
 																func === "edit"
 																?
 																	<Button 
+																		key={i}
 																		className={classes.btnEdit}
 																		variant="fab" 
 																		// color="secondary" 
