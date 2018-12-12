@@ -6,7 +6,8 @@ import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
-import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItemAvatar from '@material-ui/core/MenuItemAvatar';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -14,8 +15,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 import MenuList from '@material-ui/core/MenuList';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -37,9 +42,17 @@ const styles = theme => ({
 		width: '100%',
 		maxWidth: 360,
 		backgroundColor: theme.palette.background.paper,
-		position: 'relative',
-		overflow: 'auto',
+		// position: 'relative',
+		overflowX: 'auto',
+		wordBreak: "break-word",
 		maxHeight: 300,
+		// marginLeft: '-70px'
+		width: '100%',
+		maxWidth: 360,
+		opacity: "1",
+	},
+	popperUser:{
+		marginLeft: '-144px'
 	}
 });
 
@@ -392,7 +405,7 @@ class Main extends Component {
 				<div className="s-layout__sidebar">
 					<div className="s-sidebar__trigger" href="#0">
 						<i className="fa fa-bars"></i>
-						<div className="pull-right">
+						<ul className="pull-right">
 							{/* Thông báo và avatar */}
 							<li className="rad-dropdown no-color bell">
 								<IconButton aria-label="4 pending messages" 
@@ -409,27 +422,69 @@ class Main extends Component {
 									</Badge>
 								</IconButton>
 
-								<Popper open={this.state.open} anchorEl={this.anchorEl} transition disablePortal>
+								<Popper 
+									open={this.state.open} 
+									anchorEl={this.anchorEl} 
+									transition disablePortal
+									placement="bottom-end"
+									className={classes.popperUser}
+								>
 									{({ TransitionProps, placement }) => (
 									<Grow
 										{...TransitionProps}
 										id="menu-list-grow"
+										className={classes.popperUser}
 										style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
 									>
 										<Paper>
-										<ClickAwayListener   onClickAway={this.handleClose}>
-											<MenuList className={classes.menuItems}>
-											<MenuItem onClick={this.handleClose}>Profile</MenuItem>
-											<MenuItem onClick={this.handleClose}>My account</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-											<MenuItem onClick={this.handleClose}>Logout</MenuItem>
-
-											</MenuList>
+										<ClickAwayListener onClickAway={this.handleClose}>
+											<List dense className={classes.menuItems}>
+												<ListItem onClick={this.handleClose}>
+													<ListItemAvatar>
+														<Avatar
+															alt={`Avatar`}
+															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+														/>
+													</ListItemAvatar>
+													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
+												</ListItem>
+												<ListItem onClick={this.handleClose}>
+													<ListItemAvatar>
+														<Avatar
+															alt={`Avatar`}
+															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+														/>
+													</ListItemAvatar>
+													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
+												</ListItem>
+												<ListItem onClick={this.handleClose}>
+													<ListItemAvatar>
+														<Avatar
+															alt={`Avatar`}
+															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+														/>
+													</ListItemAvatar>
+													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
+												</ListItem>
+												<ListItem onClick={this.handleClose}>
+													<ListItemAvatar>
+														<Avatar
+															alt={`Avatar`}
+															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+														/>
+													</ListItemAvatar>
+													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
+												</ListItem>
+												<ListItem onClick={this.handleClose}>
+													<ListItemAvatar>
+														<Avatar
+															alt={`Avatar`}
+															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+														/>
+													</ListItemAvatar>
+													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
+												</ListItem>
+											</List>
 										</ClickAwayListener>
 										</Paper>
 									</Grow>
@@ -441,7 +496,7 @@ class Main extends Component {
 							<li className="rad-dropdown no-color">
 								<Avatar  alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg" className={classes.avatar} />
 							</li>
-						</div>
+						</ul>
 						
 						
 					</div>

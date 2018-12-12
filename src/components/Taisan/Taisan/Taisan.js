@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Taisan.css';
+import { withStyles } from '@material-ui/core/styles';
 import Table1 from '../../../general/Table/Table'
 import * as R from 'ramda';
 import { Switch, Route } from 'react-router-dom'
@@ -36,7 +37,7 @@ class TableComponent extends Component {
 		var itemsTaisan = resourceTS.taisan
 		var itemsLoaiTaiSan = resourceTS.loaitaisan
 		var itemsDonVi  = resourceTS.donvi
-		
+		console.log("[TaiSAn] itemsUser:",itemsUser)
 		var b =[]
 		var length =itemsTaisan.length
 		for(var i = 0; i < length; i++){
@@ -44,7 +45,7 @@ class TableComponent extends Component {
 			let getNameUser = R.filter(R.propEq("id", item.id_user))
 			var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
 			var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-			console.log("[TaiSAn] getNameUser(itemsUser)[0].fullname :", getNameUser(itemsUser)[0].fullname)
+			
 			const a = {'id' :item.id, 
 				'name': item.name, 
 				'dongia': item.dongia, 
@@ -139,6 +140,7 @@ class TableComponent extends Component {
 			openThanhLyNhieu: true 
 		});
 	};
+
 	handleCloseThanhLyNhieu = () => {
 		this.setState({ openThanhLyNhieu: false });
 	};
@@ -240,7 +242,7 @@ class Taisan extends Component {
 		const { rows } = this.state
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, deleteContextTS,  addContextTS}) => {
+				{({ resource, deleteContextTS}) => {
 					
 					return (
 						<TableComponent 

@@ -44,7 +44,7 @@
  
  /* Sidebar */
  .s-sidebar__trigger {
-	/* z-index: 2; */
+	z-index: 2;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -77,6 +77,7 @@
 	transition: "left .1s ease-out, right .1s ease-out";
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
 	font-size: 0.8em;
+	z-index: 3
  }
  #style-4::-webkit-scrollbar-track
  {

@@ -46,6 +46,9 @@ const toolbarStyles = theme => ({
 		width:'4em',
 		height:'4em',
 		borderRadius: '100%',
+	},
+	header:{
+		position: "initial",
 	}
 
 });
@@ -315,9 +318,8 @@ class Table1 extends Component {
 						</div>
 					</Toolbar>
 					<Table aria-labelledby="tableTitle">
-						
-						<TableHead>
-							<TableRow>
+						<TableHead >
+							<TableRow >
 								<TableCell padding="checkbox">
 									<Checkbox
 										indeterminate={numSelected > 0 && selected.length < items.length}
@@ -342,7 +344,8 @@ class Table1 extends Component {
 													active={orderBy === row.id}
 													direction={order}
 													onClick={this.createSortHandler(row.id)}
-												>
+													className={classes.header}
+												 >
 													{row.label}
 												</TableSortLabel>
 											</Tooltip>
