@@ -8,7 +8,16 @@ import { withRouter } from "react-router";
 import AddUser from './component/AddUser/AddUser';
 import EditUser from './component/EditUser/EditUser';
 import axios from 'axios';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
+
+const toolbarStyles = theme => ({
+	rootUser:{
+		// width: "100%",
+		
+	},
+});
 
 
 class UserComponent extends Component {
@@ -35,8 +44,8 @@ class UserComponent extends Component {
 						'fullname': item.fullname ,
 						'avatar': item.avatar ,
 						'phone': item.phone , 
-						'id_donvi': item.id_donvi? getNameDonvi(itemsDonVi)[0].name :'', 
-						'id_role': item.id_role?getNameRole(itemsRole)[0].name:''
+						'id_donvi': item.id_donvi ? R.path([0,'name'],getNameDonvi(itemsDonVi)) : '', 
+						'id_role': item.id_role ? R.path([0,'name'],getNameRole(itemsRole)) : ''
 					};
 			b.push(a);
 		})
@@ -136,6 +145,7 @@ class User extends Component {
 	}
 
 	render() {
+		const { classes } = this.props
 		return (
 			<div>
 				<Switch>
@@ -149,4 +159,4 @@ class User extends Component {
 	}
 }
 
-export default withRouter(User);
+export default withRouter(withStyles(toolbarStyles)(User));

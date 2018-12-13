@@ -144,8 +144,10 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import DanhSachTaiSan from './component/DanhSachTaiSan/DanhSachTaiSan';
 import QuanLyPhong from './component/QuanLyPhong/QuanLyPhong';
+import NavBar from '../../general/NavBar/NavBar';
+import AddPhong from './component/QuanLyPhong/component/AddPhong/AddPhong';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[2]
-
+const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 const styles = theme => ({
 	appBar:{
 		zIndex: "1",
@@ -181,7 +183,6 @@ const styles = theme => ({
 class Donvi extends Component {
 	state = {
 		value: 0,
-
 		navBar : {
 			danhsachTS:{
 				route:"/danhsachtaisan",
@@ -201,9 +202,15 @@ class Donvi extends Component {
 		const { value, navBar } = this.state;
 		// console.log("[DonVi] navBar:",navBar)
 		const parentKey = Object.keys(navBar)
+
+		const title = getParentPath(match.url)
+		console.log("[DonVi] getParentPathTitle(match.url):",getParentPathTitle(match.url))
+		// if(title !== ""){
+		// 	title = getParentPathTitle(match.url)
+		// }
 		return (
 			<div>
-				<AppBar className={classes.appBar} 
+				{/* <AppBar className={classes.appBar} 
 					position="static" color="default">
 					<ul>
 						<li className={classes.titleLi}>
@@ -231,13 +238,24 @@ class Donvi extends Component {
 							</Tabs>
 						</li>
 					</ul>
-				</AppBar>
+				</AppBar> */}
+				<NavBar 
+					match={match}
+					classes={classes}
+					value={value}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {title}
+
+				/>
+				{/* aBC
+				{getParentPath(match.url)} */}
+				{/* const { match, classes, value, parentKey } = this.props */}
 				<Switch>
 					<Route exact path="/donvi/:name/danhsachtaisan" render={() => <DanhSachTaiSan />}></Route>
-// 					<Route exact path="/donvi/:name/quanlyphong" render={() => <QuanLyPhong />}></Route>
+ 					<QuanLyPhong />
 				</Switch>
-				aBC
-				{getParentPath(match.url)}
+				
 			</div>
 		);
 	}

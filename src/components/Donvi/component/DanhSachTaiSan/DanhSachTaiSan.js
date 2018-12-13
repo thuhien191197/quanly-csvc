@@ -26,6 +26,7 @@ class DSTSComponent extends Component {
 	}
 
 	getIDDonViCurrent = (resourceTS, nameDVCurrent) =>{
+		console.log("[DanhSachTaiSan] nameDVCurrent:",nameDVCurrent)
 		var itemsDonVi  = resourceTS.donvi
 		var lengthDV  = itemsDonVi.length
 		var idDonVi = 0
@@ -92,7 +93,6 @@ class DSTSComponent extends Component {
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
 					// selectApp={selectApp}
-					
 				/>
 			</div>
 		)

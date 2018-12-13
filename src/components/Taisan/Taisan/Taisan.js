@@ -15,9 +15,10 @@ import { withRouter } from "react-router";
 import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
 import SelectDieuChuyenNhieu from './component/SelectDieuChuyen/SelectDieuChuyenNhieu';
 import SelectThanhLyNhieu from './component/SelectThanhLy/SelectThanhLyNhieu';
+import NavBar from '../../../general/NavBar/NavBar';
 
 export const itemsTaisan = [];
-
+const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
 class TableComponent extends Component {
 	constructor(props) {
@@ -218,6 +219,14 @@ class Taisan extends Component {
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
 			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit','dieuchuyen','thanhly'] },
 		],
+
+		navBar : {
+			danhsachTS:{
+				route:"/taisan",
+				title: "Danh sách tài sản",
+				// component: "DanhSachTaiSan"
+			},
+		}
 	}
 
 	// handleGetListTable = (resourceTS) =>{
@@ -274,16 +283,32 @@ class Taisan extends Component {
       
 	}
 	render() {
+		const { match, classes } = this.props
+		const { value, navBar } = this.state;
+		const parentKey = Object.keys(navBar)
+		const title = getParentPathTitle(match.url)
 		return (
-			<Switch>
-				<Route path="/taisan" exact render={this.render1}></Route>
-				<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
-				<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
-				<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
-				<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
-				<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
-				{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
-			</Switch>
+			<div>
+				<NavBar
+						match={match}
+						classes={classes}
+						value={value}
+						parentKey={parentKey}
+						navBar={navBar}
+						title= {title}
+
+				/>
+				<Switch>
+					<Route path="/taisan" exact render={this.render1}></Route>
+					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
+					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
+					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
+					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
+					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
+					{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
+				</Switch>
+			</div>
+			
 		)
 		
 	}

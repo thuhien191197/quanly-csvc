@@ -15,20 +15,19 @@ import ThongKe from '../Taisan/ThongKe/ThongKe';
 import VanBanMau from '../Kehoach/VanBanMau';
 import { withRouter } from "react-router";
 import DanhSachTaiSan from '../Donvi/component/DanhSachTaiSan/DanhSachTaiSan';
+import AddPhong from '../Donvi/component/QuanLyPhong/component/AddPhong/AddPhong';
 class Content extends Component {
 	render() {
 		return (
-			<div>
+			<div style={{ width: "100%" }}>
 				<Route exact path="/" component={Home} />
 				<User />
-				{/* <Donvi /> */}
-				<Route exact path='/danhmuc' render={() => <Danhmuc />} />
-				<Route exact path='/danhmuc/:name' render={() => <NguonKinhPhi />} />
-				<Route exact path='/danhmuc/:name/:id' render={() => <LoaiTaiSan />} />
+				<Danhmuc />
 				<Taisan />
 				<Switch>
-// 					<Route path="/donvi/:name" exact component={() => <Donvi />}></Route>
-					<Route path="/donvi/:name/:id" exact component={() => <Donvi />}></Route>
+					
+					<Route path="/donvi/:name/:id" component={() => <Donvi />}></Route>
+ 					<Route path="/donvi/:name" exact component={() => <Donvi />}></Route>
 					{/* <Route exact path="/donvi/:name" component={() => <DanhSachTaiSan />}></Route>  */}
 {/* // 					<Route exact path="/donvi/:name/quanlyphong" render={() => <QuanLyPhong />} /> */}
 // 					{/* <Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />

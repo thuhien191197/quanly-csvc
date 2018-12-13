@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import { QLCSVCContext } from '../../../Main/Main';
 import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const styles = theme => ({
@@ -13,9 +14,10 @@ const styles = theme => ({
 	  flexWrap: 'wrap',
 	  padding: theme.spacing.unit / 2,
 	},
-	chip: {
-	  margin: theme.spacing.unit / 2,
-	},
+	form:{
+		
+	}
+	
 });
 
 class AddUserComponent extends Component {
@@ -119,7 +121,9 @@ class AddUserComponent extends Component {
 		return(
 			<div>
 				{/* ADD user */}
+				<Paper className={classes.root}>
 				<form
+					className={classes.form}
 					noValidate autoComplete="off"
 				>
 					<TextField
@@ -147,7 +151,7 @@ class AddUserComponent extends Component {
 							shrink: true,
 						}}
 					/>
-
+					<br />
 					<TextField
 						id="standard-name"
 						label="Fullname"
@@ -173,7 +177,7 @@ class AddUserComponent extends Component {
 							shrink: true,
 						}}
 					/>
-
+					<br />
 					<TextField
 						id="standard-name"
 						select
@@ -254,6 +258,7 @@ class AddUserComponent extends Component {
 						Thêm
 					</Button>
 				</form>
+				</Paper>
 			</div>
 		)
 	}
@@ -269,7 +274,7 @@ class Add extends Component {
 				resource={resource} 
 				addContextUser={this.props.addContextUser}
 				match={match} 
-				// classes= {classes}
+				classes= {classes}
 			/>
 		)
 	}
@@ -287,7 +292,7 @@ class AddUser extends Component {
 						addAPIUser={this.props.addAPIUser} 
 						resource={resource} 
 						match={match} 
-						// classes= {classes}
+						classes= {classes}
 						addContextUser={addContextUser} />
 			}
 			</QLCSVCContext.Consumer>
@@ -295,4 +300,4 @@ class AddUser extends Component {
 	}
 }
 
-export default withRouter(AddUser)
+export default withRouter(withStyles(styles)(AddUser));

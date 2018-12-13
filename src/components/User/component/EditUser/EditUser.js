@@ -136,7 +136,7 @@ class EditUserComponent extends Component {
 							shrink: true,
 						}}
 					/>
-
+					<br />
 					<TextField
 						id="standard-name"
 						label="Fullname"
@@ -162,7 +162,7 @@ class EditUserComponent extends Component {
 							shrink: true,
 						}}
 					/>
-
+					<br />
 					<TextField
 						id="standard-name"
 						select
@@ -240,7 +240,7 @@ class EditUserComponent extends Component {
 						)}
 						href="http://localhost:3000/user"
 					>
-						Thêm
+						Sửa
 					</Button>
 			</form>
 		)

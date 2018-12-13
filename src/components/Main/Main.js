@@ -23,6 +23,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
+import Taisan from '../Taisan/Taisan/Taisan';
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -50,6 +51,7 @@ const styles = theme => ({
 		width: '100%',
 		maxWidth: 360,
 		opacity: "1",
+		backgroundColor: theme.palette.background.paper,
 	},
 	popperUser:{
 		marginLeft: '-144px'
@@ -67,6 +69,7 @@ export const resource = {
 	taisan:[],
 	chuyentaisan:[],
 	thanhly:[],
+	thongbao:[]
 }
 
 const editContextTS = () => {};
@@ -76,6 +79,13 @@ const addContextDC = () => {};
 const addContextUser = () => {};
 const deleteContextUser = () => {};
 const editContextUser = () => {};
+const addContextPhong = () => {};
+const deleteContextPhong = () => {};
+const editContextPhong = () => {};
+const addContextThongBao = () => {};
+const addContextDanhMuc = () => {};
+const editContextDanhMuc = () => {};
+const deleteContextDanhMuc = () => {};
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
@@ -86,7 +96,14 @@ export const QLCSVCContext = React.createContext(
 	addContextDC,
 	addContextUser,
 	deleteContextUser,
-	editContextUser
+	editContextUser,
+	addContextPhong,
+	deleteContextPhong,
+	editContextPhong,
+	addContextThongBao,
+	addContextDanhMuc,
+	editContextDanhMuc,
+	deleteContextDanhMuc
 );
 
 
@@ -105,6 +122,7 @@ class Main extends Component {
 			taisan:resource.taisan,
 			chuyentaisan:resource.chuyentaisan,
 			thanhly:resource.thanhly,
+			thongbao:resource.thongbao
 		},
 
 		sidebar : {
@@ -143,8 +161,8 @@ class Main extends Component {
 				children: {
 					icon:'fas fa-angle-right',
 					quanlydanhmuc:{
-						name: 'Quản Lý Danh Mục',
-						route: '/quanlydanhmuc',
+						name: 'Danh mục',
+						route: '/danhmuc',
 					},
 					nguonkinhphi:{
 						name: 'Nguồn Kinh Phí',
@@ -299,9 +317,104 @@ class Main extends Component {
 			}
 		})
 	}
-	
-	
+	//-------------------------Phong
+	addContextPhong = (item) => {
+		this.setState(prev =>{
+			const newPhong = [...prev.resource.phong];
+			newPhong.push(item);
+			console.log('[Main] newPhong:',newPhong );
+			return {
+				resource: {
+					...prev.resource,
+					phong: newPhong
+				}
+			}
+		})
+	}
 
+	deleteContextPhong = (item) => {
+		this.setState(prev =>{
+			return {
+				resource: {
+					...prev.resource,
+					phong: item
+				}
+			}
+		})
+	}
+
+	//------------------ Thông báo
+	addContextThongBao = (item) => {
+		this.setState(prev =>{
+			const newTB = [...prev.resource.thongbao];
+			newTB.push(item);
+			console.log('[Main] newTB:',newTB );
+			return {
+				resource: {
+					...prev.resource,
+					thongbao: newTB
+				}
+			}
+		})
+	}
+
+
+
+	editContextPhong = (item) => {
+		// console.log('Edit Item context', this.state.resource.taisan);
+		this.setState(prev => {
+			const newPhong = [...prev.resource.phong];
+			// console.log('[Main] newPhong:',newPhong );
+			const changeIndex = _.findIndex(newPhong, {id: item.id})
+			newPhong[changeIndex] = item;
+			return {
+				resource: {
+					...prev.resource,
+					phong: newPhong,
+				}
+			}
+		})
+	}
+	
+	//------------------ Danh mục
+	addContextDanhMuc = (item) => {
+		this.setState(prev =>{
+			const newDM = [...prev.resource.danhmuc];
+			newDM.push(item);
+			console.log('[Main] newDM:',newDM );
+			return {
+				resource: {
+					...prev.resource,
+					danhmuc: newDM
+				}
+			}
+		})
+	}
+	
+	editContextDanhMuc = (item) => {
+		this.setState(prev => {
+			const newDM = [...prev.resource.danhmuc];
+			const changeIndex = _.findIndex(newDM, {id: item.id})
+			newDM[changeIndex] = item;
+			return {
+				resource: {
+					...prev.resource,
+					danhmuc: newDM,
+				}
+			}
+		})
+	}
+
+	deleteContextDanhMuc = (item) => {
+		this.setState(prev =>{
+			return {
+				resource: {
+					...prev.resource,
+					danhmuc: item
+				}
+			}
+		})
+	}
 
 	addChildren(key, children) {
 		const childrenObj = Object.assign({}, children)
@@ -350,7 +463,8 @@ class Main extends Component {
 		const taisan = await axios.get('http://localhost:5500/taisan')
 		const loaitaisan = await axios.get('http://localhost:5500/loaitaisan')
 		const nguonkinhphi = await axios.get('http://localhost:5500/nguonkinhphi')
-	
+		const thongbao = await axios.get('http://localhost:5500/thongbao')
+		
 		
 		// Add Children
 		this.addChildren('donvi', donvi.data);
@@ -367,6 +481,7 @@ class Main extends Component {
 		this.addResource('taisan', taisan.data);
 		this.addResource('chuyentaisan', chuyentaisan.data);
 		this.addResource('thanhly', thanhly.data);
+		this.addResource('thongbao', thongbao.data);
 	}
 	
 	toggleDropdown = (key) => {
@@ -390,16 +505,13 @@ class Main extends Component {
 		if (this.anchorEl.contains(event.target)) {
 		  return;
 		}
-	
 		this.setState({ open: false });
 	  };
-	
 	render() {
 		var {sidebar} = this.state;
 		const {classes } = this.props
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
-		
-		
+		// console.log("[Main] resource: ", this.state.resource);
 		return (
 			<div className="s-layout">
 				<div className="s-layout__sidebar">
@@ -417,7 +529,7 @@ class Main extends Component {
 									aria-haspopup="true"
 									onClick={this.handleToggle}
 								>
-									<Badge badgeContent={4} color="primary">
+									<Badge badgeContent={`${this.state.resource.thongbao.length}`} color="primary">
 										<NotificationsIcon />
 									</Badge>
 								</IconButton>
@@ -439,51 +551,20 @@ class Main extends Component {
 										<Paper>
 										<ClickAwayListener onClickAway={this.handleClose}>
 											<List dense className={classes.menuItems}>
-												<ListItem onClick={this.handleClose}>
-													<ListItemAvatar>
-														<Avatar
-															alt={`Avatar`}
-															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
-														/>
-													</ListItemAvatar>
-													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
-												</ListItem>
-												<ListItem onClick={this.handleClose}>
-													<ListItemAvatar>
-														<Avatar
-															alt={`Avatar`}
-															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
-														/>
-													</ListItemAvatar>
-													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
-												</ListItem>
-												<ListItem onClick={this.handleClose}>
-													<ListItemAvatar>
-														<Avatar
-															alt={`Avatar`}
-															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
-														/>
-													</ListItemAvatar>
-													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
-												</ListItem>
-												<ListItem onClick={this.handleClose}>
-													<ListItemAvatar>
-														<Avatar
-															alt={`Avatar`}
-															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
-														/>
-													</ListItemAvatar>
-													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
-												</ListItem>
-												<ListItem onClick={this.handleClose}>
-													<ListItemAvatar>
-														<Avatar
-															alt={`Avatar`}
-															src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
-														/>
-													</ListItemAvatar>
-													<ListItemText primary={`Line item 1ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss`} />
-												</ListItem>
+											{ this.state.resource.thongbao.map((item, i) => {
+												return(
+													<ListItem button divider>
+														<ListItemAvatar>
+															<Avatar
+																alt={`Avatar`}
+																src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg"
+															/>
+														</ListItemAvatar>
+														<ListItemText primary={`[Thông báo] ${item.name}`} />
+													</ListItem>
+												)
+											})}
+												
 											</List>
 										</ClickAwayListener>
 										</Paper>
@@ -570,7 +651,14 @@ class Main extends Component {
 						addContextDC: this.addContextDC,
 						addContextUser: this.addContextUser,
 						deleteContextUser: this.deleteContextUser,
-						editContextUser: this.editContextUser
+						editContextUser: this.editContextUser,
+						addContextPhong: this.addContextPhong,
+						deleteContextPhong: this.deleteContextPhong,
+						editContextPhong: this.editContextPhong,
+						addContextThongBao: this.addContextThongBao,
+						addContextDanhMuc: this.addContextDanhMuc,
+						editContextDanhMuc: this.editContextDanhMuc,
+						deleteContextDanhMuc: this.deleteContextDanhMuc
 					}}
 				>
 					<main className="s-layout__content">

@@ -30,6 +30,10 @@ import { withRouter } from "react-router";
 
 
 const toolbarStyles = theme => ({
+	root:{
+		// width: "100%",
+		
+	},
 	btnAdd: {
 		position: 'inherit',
 	},
@@ -317,7 +321,7 @@ class Table1 extends Component {
 							)}
 						</div>
 					</Toolbar>
-					<Table aria-labelledby="tableTitle">
+					<Table aria-labelledby="tableTitle" >
 						<TableHead >
 							<TableRow >
 								<TableCell padding="checkbox">

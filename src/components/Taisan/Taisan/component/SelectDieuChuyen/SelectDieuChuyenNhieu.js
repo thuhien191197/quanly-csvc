@@ -191,6 +191,8 @@ class ButtonDieuChuyenNhieu extends Component {
 	handleDieuChuyen = (event, resource, addContextDC) =>{
 		event.preventDefault();
 		const { chuyenTS, editContextTS, addContextTS } = this.props;
+		let sumSoLuong = 0
+		let idTS = 0
 		// const itemsChuyenTaiSan = resource.chuyentaisan
 		// var clone_chuyenTS = chuyenTS
 		// clone_chuyenTS = itemsChuyenTaiSan.concat()
@@ -275,18 +277,30 @@ class ButtonDieuChuyenNhieu extends Component {
 						id_user: id_user,
 						status: status
 					}
+
 					// console.log("[Select điều chuyển nhiều] newItemAddTS:",newItemAddTS);
 					addContextTS(newItemAddTS)
 					axios.post(`http://localhost:5500/taisan`, newItemAddTS)
 					.then(res => {
 						console.log("Add done");
 					})
+					idTS = chuyenTS[i].id_taisan
+					sumSoLuong = item.soluong
 					++count;
 				}
 			}
 		
 			// addContextDC
 			axios.post(`http://localhost:5500/chuyentaisan`, chuyenTS[i])
+			.then(res => {
+			})
+
+			//
+			let name = "Tài sản "+ name + " được chuyển cho đơn vị " + id_donvi + " với số lượng " +  chuyenTS[i].soluong + " / " + sumSoLuong
+			let link = "/taisan"
+			let count = 0
+			this.props.addContextThongBao({name, link,count})
+			axios.post(`http://localhost:5500/thongbao`, {name, link,count})
 			.then(res => {
 			})
 		}
@@ -366,7 +380,7 @@ class SelectDieuChuyenNhieu extends Component {
 		const DieuChuyenTS = props => <Link to={`${match.url}/Danh sách điều chuyển`} {...props} />
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, addContextDC, editContextTS, addContextTS}) => {
+				{({ resource, addContextDC, editContextTS, addContextTS, addContextThongBao}) => {
 					return (
 				<div >
 					<Dialog
@@ -406,6 +420,7 @@ class SelectDieuChuyenNhieu extends Component {
 								chuyenTS={this.state.chuyenTS}
 								editContextTS={editContextTS}
 								addContextTS={addContextTS}
+								addContextThongBao={addContextThongBao}
 							/>
 						</DialogContent>
 					
