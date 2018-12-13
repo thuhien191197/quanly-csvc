@@ -10,20 +10,22 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox, Icon } from '@material-ui/core';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-// import { lighten } from '@material-ui/core/styles/colorManipulator';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { withRouter } from "react-router";
-import AppTS from '../../components/Taisan/Taisan/component/App/AppTS'
 
 
 
@@ -31,10 +33,18 @@ const toolbarStyles = theme => ({
 	btnAdd: {
 		position: 'inherit',
 	},
+	btnEdit: {
+		position: 'inherit',
+		height: '10px',
+		width:'35px'
+	},
+	menuDC: {
+		color:'red',
+		left: '50px',
+	}
 
 });
 function desc(a, b, orderBy){
-	//console.log('A, B', a,b, orderBy)
 	if(b[orderBy] <  a[orderBy]){
 		return -1;
 	}
@@ -59,6 +69,7 @@ function stableSort(items, cmp) {
 	return stabilizedThis.map(el => el[0]);
 }
 
+
 class Table1 extends Component {
 	state={
 		order: 'asc',
@@ -66,11 +77,12 @@ class Table1 extends Component {
 		page: 0,
 		rowsPerPage: 10,
 		selected: [],
+		anchorEl: null
 	}
 
 	handleRequestSort = (event, property) => {
 		const orderBy = property;
-		console.log('Property', property)
+		// console.log('Property', property)
 		let order = this.state.order === 'asc' ? 'desc' : 'asc'; 
 	
 		// if (this.state.orderBy === property && this.state.order === 'desc') {
@@ -81,7 +93,6 @@ class Table1 extends Component {
 	};
 
 	createSortHandler = property => event => {
-		console.log('Sorting')
 		this.handleRequestSort(event, property);
 	};
 
@@ -95,11 +106,9 @@ class Table1 extends Component {
 
 	handleSelectAllClick = event => {
 		const { items } = this.props;
-		const { selected } = this.state;
 		if (event.target.checked) {
 		 	var idArray = items.map((n) => n.id);
 		  	this.setState(state => ({ selected: idArray }));
-			// console.log("selected:",idArray)
 		  return;
 		}
 		this.setState({ selected: [] });
@@ -111,6 +120,7 @@ class Table1 extends Component {
 	
 	handleClick = (event, id) => {
 		const { selected } = this.state;
+		console.log("[Table] selected:",selected)
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 	
@@ -130,6 +140,13 @@ class Table1 extends Component {
 		this.setState({ selected: newSelected });
 	};
 
+	handleClickDC = event => {
+		this.setState({ anchorEl: event.currentTarget });
+	};
+
+	handleCloseDC = () => {
+		this.setState({ anchorEl: null });
+	};
 	
 	
 	render() {
@@ -139,11 +156,10 @@ class Table1 extends Component {
 		// console.log('render', this.state)
 		const { match } = this.props
 		// console.log(">>>match:",match)
-		// console.log("items:"+ items);
+		console.log("[Table] selected:"+ selected);
 
-
-		const App = props => <Link to={`${match.url}add`} {...props} />
-
+		const Add = props => <Link to={`${match.url}/add`} {...props} />
+		
 		return (
 			<div>
 				<div className="divAdd">
@@ -152,7 +168,7 @@ class Table1 extends Component {
 							variant="fab" 
 							color="primary" 
 							aria-label="Add"
-							component={App}
+							component={Add}
 						>
 							<AddIcon  />
 						</Button>
@@ -170,8 +186,8 @@ class Table1 extends Component {
 						)
 						:
 						(
-							<Typography variant="h7" id="tableTitle">
-							Danh sách
+							<Typography variant="h10" id="tableTitle">
+							Chức năng
 							</Typography>
 						)
 						}
@@ -179,21 +195,64 @@ class Table1 extends Component {
 						</div>
 						<div/>
 						<div>
-							{selected.length > 0 ? (
-							<Tooltip title="Delete">
-								<IconButton aria-label="Delete">
-									<DeleteIcon 
-										onClick = {() => this.props.handleDelete(selected)}
-									/>
-								</IconButton>
-							</Tooltip>
-							) : (
-							<Tooltip title="Filter list">
-								<IconButton aria-label="Filter list">
-								
-								<FilterListIcon />
-								</IconButton>
-							</Tooltip>
+							{selected.length > 0 
+							? (
+								<div>
+									<Tooltip title="Delete">
+										<IconButton 
+											aria-label="Delete"
+										>
+											<DeleteIcon 
+												// className={classes.icon}
+												onClick = {() => this.props.handleDelete(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+									<Tooltip title="Điều chuyển tài sản">
+										<IconButton 
+											aria-label="Điều chuyển"
+											aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+											onClick={this.handleClickDC}
+										>
+											<ThreeSixtyIcon 
+												className={classes.icon} 
+												// onClick = {() => this.props.handleClickOpen(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+
+									<Menu
+										id="simple-menu"
+										anchorEl={this.state.anchorEl}
+										open={Boolean(this.state.anchorEl)}
+										className={classes.menuDC}
+										onClose={this.handleCloseDC}
+									>
+										<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+										<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+									</Menu>
+								</div>
+							) 
+							: (
+								// <Tooltip title="Filter list">
+								// 	<IconButton aria-label="Filter list">
+								// 	<FilterListIcon />
+								// 	</IconButton>
+								// </Tooltip>
+								<div>
+									<Tooltip disabled title="Delete">
+										<IconButton aria-label="Delete">
+											<DeleteIcon 
+												onClick = {() => this.props.handleDelete(selected)}
+											/>
+										</IconButton>
+									</Tooltip>
+									<Tooltip disabled title="Điều chuyển tài sản">
+										<IconButton aria-label="Điều chuyển">
+											<ThreeSixtyIcon className={classes.icon} />
+										</IconButton>
+									</Tooltip>
+								</div>
 							)}
 						</div>
 					</Toolbar>
@@ -241,9 +300,9 @@ class Table1 extends Component {
 							.map((item, idItem) => {
 
 							// {items.map((item, idItem) => {
-								//console.log("items:", items)
+								// console.log("[Table] item Id:", item.id)
 								const isSelected = this.isSelected(item.id);
-							//	console.log(">>>>isSelected:", isSelected)
+								const Edit = props => <Link to={`${match.url}/edit/${item.id}`} {...props} />
 								return(
 									<TableRow 
 										hover
@@ -260,9 +319,38 @@ class Table1 extends Component {
 											/>
 										</TableCell>
 										{rows.map((row, idRow) => {
+											// console.log("[Table] row: ", row.function);
+											var funcs = row.function;
 											return(
 												<TableCell key={idRow} component="th" scope="row" padding="none">
-													{item[row.id]}
+													{row.id !== "function"
+													?
+													item[row.id]
+													
+													:
+													funcs.map((func, i) => {
+														// console.log("func:",func)
+															return(
+																func === "edit"
+																?
+																	<Button 
+																		className={classes.btnEdit}
+																		variant="fab" 
+																		// color="secondary" 
+																		aria-label="Add"
+																		component={Edit}
+																	>
+																		
+																		<EditIcon />
+																	</Button>
+																:
+																	''
+																
+																
+															)
+														})
+														
+													}
 												</TableCell>
 											)})}
 									</TableRow>

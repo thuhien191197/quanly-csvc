@@ -59,7 +59,7 @@ export default class Login extends Component {
           </div>
           <div className="component">
             <form id="login">
-              <input type="email" name="user" placeholder="EMAIL" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
+              <input type="text" name="user" placeholder="EMAIL" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
               <input type="password" name="password" placeholder="PASSWORD"value={this.state.usernamePassword} onChange={this.handleChangePassword} required id="password" />
               <ul className="agileinfotickwthree">
                                                                                     <li>

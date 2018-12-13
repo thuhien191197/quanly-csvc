@@ -14,10 +14,8 @@ import DieuChuyenTaiSan from '../Taisan/DieuChuyenTaiSan/DieuChuyenTaiSan';
 import ThanhLy from '../Taisan/ThanhLy/ThanhLy';
 import ThongKe from '../Taisan/ThongKe/ThongKe';
 import VanBanMau from '../Kehoach/VanBanMau';
-import AppTS from '../Taisan/Taisan/component/App/AppTS'
 
 class Content extends Component {
-	
 	render() {
 		return (
 			<div>
@@ -27,15 +25,7 @@ class Content extends Component {
 				<Route exact path='/danhmuc' render={() => <Danhmuc />} />
 				<Route exact path='/danhmuc/:name' render={() => <NguonKinhPhi />} />
 				<Route exact path='/danhmuc/:name/:id' render={() => <LoaiTaiSan />} />
-
-				<Route exact path="/taisan" render={() => <Taisan />} />
-				<Route exact path="/taisan/:name" render={() => <DieuChuyenTaiSan />} />
-				<Route exact path="/taisan/:name/:id1" render={() => <ThanhLy />} />
-				<Route exact path="/taisan/:name/:id1/:id2" render={() => <ThongKe />} />
-				<Route exact path="/kehoach" component={Kehoach}></Route>
-				<Route path="/kehoach/:name" component={VanBanMau}></Route>
-
-				<Route path="/taisanadd" component={AppTS}></Route>
+				<Taisan />
 			</div>
 		);
 	}

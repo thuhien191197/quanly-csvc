@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Sidebar from "./components/SideBar/SideBar";
+import Main from "./components/Main/Main";
 // import Home from "./components/Home/Home";
+import Sidebar from './components/Main/Main'
 import axios from 'axios';
 import Login from "./components/LoginNew/Login";
 import { 
