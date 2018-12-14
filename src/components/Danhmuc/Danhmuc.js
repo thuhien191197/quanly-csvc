@@ -109,7 +109,6 @@ class Danhmuc extends Component {
 					console.log("[Danhmuc] resource:", resource)
 					return (
 						<div>
-							
 							<NavBar
 								match={match}
 								classes={classes}
@@ -155,7 +154,7 @@ class Danhmuc extends Component {
 					<Route path="/danhmuc" exact render={this.renderDanhMuc}></Route>
 					<Route exact path="/danhmuc/add" component={() => <AddDM addAPIDanhSach={this.addAPIDanhSach} />}></Route>
 					<Route exact path="/danhmuc/edit/:id" component={() => <EditDM editAPIDanhSach={this.editAPIDanhSach} />}></Route>
-					{/* <Route exact path="/danhmuc/Loại tài sản" render={() => <LoaiTaiSan />} /> */}
+					<LoaiTaiSan />
 					{/* <Route exact path="/danhmuc/Nguồn kinh phí" render={() => <NguonKinhPhi />} /> */}
 					<NguonKinhPhi />
 				</Switch>

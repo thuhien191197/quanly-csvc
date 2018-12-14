@@ -168,11 +168,11 @@ class Main extends Component {
 					icon:'fas fa-angle-right',
 					quanlydanhmuc:{
 						name: 'Danh mục',
-						route: '/danhmuc',
+						// route: '/danhmuc',
 					},
 					nguonkinhphi:{
 						name: 'Nguồn Kinh Phí',
-						route: '/nguonkinhphi',
+						// route: '/nguonkinhphi',
 					},
 				}
 			},
@@ -463,6 +463,8 @@ class Main extends Component {
 
 	addChildren(key, children) {
 		const childrenObj = Object.assign({}, children)
+		console.log("[Main] childrenObj: ", childrenObj)
+		
 		this.setState(({sidebar}) => ({
 			sidebar: {
 				...sidebar,
@@ -556,6 +558,7 @@ class Main extends Component {
 		var {sidebar} = this.state;
 		const {classes } = this.props
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
+		console.log("[Main] sidebar: ", this.state.sidebar)
 		// console.log("[Main] resource: ", this.state.resource);
 		return (
 			<div className="s-layout">
@@ -661,10 +664,22 @@ class Main extends Component {
 																	// nếu là đơn vị thì đường link khác
 																	key !== 'donvi'
 																	?	
-																	<MenuLink className="s-sidebar__nav-linksub" to={{
-																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
-
+																		key !== 'danhmuc'
+																		?
+																			<MenuLink className="s-sidebar__nav-linksub" to={{
+																				pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																			}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																		:
+																			sidebar[key].children[keyChild].name !== "Nguồn Kinh Phí" && sidebar[key].children[keyChild].name !=='Danh mục'
+																			?
+																				<MenuLink className="s-sidebar__nav-linksub" to={{
+																					pathname: '/'+ key + '/loaitaisan/' + sidebar[key].children[keyChild].name,
+																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																				
+																			:
+																				<MenuLink className="s-sidebar__nav-linksub" to={{
+																					pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
 																	:
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name + '/danhsachtaisan',
