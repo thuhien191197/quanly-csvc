@@ -40,9 +40,9 @@ class ItemDieuChuyenNhieu extends Component {
 		
 		ngayCTS:'2018-11-19',
 		soluong: this.props.soluongHienTai || 0,
-		id_taisan: '',
-		id_phong:'',
-		id_donvi:'',
+		id_taisan: 0,
+		id_phong:0 ,
+		id_donvi:0 ,
 	};
 
 	handleChange = (name) => event => {
@@ -145,16 +145,17 @@ class ItemDieuChuyenNhieu extends Component {
 						helperText="Chọn phòng"
 						// margin="normal"
 					>
-						<option  value="">
-							-- Chọn phòng --
-						</option>
+						
+
 						{this.props.resource.phong.map((item, i) => {
 							// console.log("phòng: ", item.id)
-							return (
-								<option key={i} value={item.id}>
-									{item.name}
-								</option>
-							)
+							return   parseInt(this.state.id_donvi) === item.id_donvi
+							? <option key={i} value={item.id}>
+								{item.name}
+							</option>
+							: 
+							''
+						
 						})}
 					</TextField>
 

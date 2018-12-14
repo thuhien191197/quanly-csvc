@@ -20,8 +20,6 @@ const toolbarStyles = theme => ({
 	},
 });
 
-
-
 class UserComponent extends Component {
 	constructor(props) {
 		super(props);

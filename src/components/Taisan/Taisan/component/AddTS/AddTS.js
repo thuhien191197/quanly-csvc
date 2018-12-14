@@ -351,13 +351,18 @@ class Child extends Component {
 						helperText="Please select your currency"
 						margin="normal"
 					>
+						
 						{resource.phong.map((item, i) => {
-							// console.log("phòng: ", item.id)
-							return (
+							// console.log("this.state.id_donvi: ",typeof this.state.id_donvi)
+							// console.log("item.id_donvi: ",typeof item.id_donvi)
+							return  parseInt(this.state.id_donvi) === item.id_donvi
+							?
 								<option key={i} value={item.id}>
 									{item.name}
 								</option>
-							)
+							:
+							''
+							
 						})}
 					</TextField>
 					<br />

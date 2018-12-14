@@ -6,8 +6,10 @@ import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 // const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
-
+import * as R from 'ramda'
 const styles = theme => ({
 	root: {
 	  display: 'flex',
@@ -19,15 +21,15 @@ const styles = theme => ({
 
 class AddUserComponent extends Component {
 	state = {
-		username: '',
-		password: '',
-		fullname: '',
+		username: 'thuhien123',
+		password: '12321',
+		fullname: '213213',
 		avatar: 'https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg',
-		phone: '',
+		phone: '213213',
 		id_donvi: 0,
 		id_role: 0,
 
-		// avatar:''
+		userValidate: ''
 	};
 
 	handleChange = name => event => {
@@ -66,28 +68,66 @@ class AddUserComponent extends Component {
 		itemsUser.length!==0
 		? id = parseInt(itemsUser[itemsUser.length - 1].id) + 1
 		: id = 1
-
-		this.props.addContextUser({
-			id,
-			username,
-			password,
-			fullname,
-			avatar,
-			phone,
-			id_donvi,
-			id_role,
-		})
-
-		this.props.addAPIUser(
-			id,
-			username,
-			password,
-			fullname,
-			avatar,
-			phone,
-			id_donvi,
-			id_role,
-		)
+		const findUserName = R.findIndex((item) => item.username === username, itemsUser)
+		console.log('>>>FIND USERNAME', findUserName)
+		if (findUserName > -1 ) {
+			console.log('Found one')
+			this.setState({
+				userValidate: 'Username is exist, try another one'
+			})
+		} else {
+			console.log('Not found')
+			this.props.addContextUser({
+				id,
+				username,
+				password,
+				fullname,
+				avatar,
+				phone,
+				id_donvi,
+				id_role,
+			})
+	
+			this.props.addAPIUser(
+				id,
+				username,
+				password,
+				fullname,
+				avatar,
+				phone,
+				id_donvi,
+				id_role,
+			)
+		}
+		// for(var i = 0; i < itemsUser.length; i++) {
+		// 	var item = itemsUser[i]
+		// 	if(username != item.username){
+				// this.props.addContextUser({
+				// 	id,
+				// 	username,
+				// 	password,
+				// 	fullname,
+				// 	avatar,
+				// 	phone,
+				// 	id_donvi,
+				// 	id_role,
+				// })
+		
+				// this.props.addAPIUser(
+				// 	id,
+				// 	username,
+				// 	password,
+				// 	fullname,
+				// 	avatar,
+				// 	phone,
+				// 	id_donvi,
+				// 	id_role,
+				// )
+				
+		// 	} else {
+				
+		// 	}
+		// }
 	}
 	
 
@@ -113,7 +153,7 @@ class AddUserComponent extends Component {
 		}
 		
 		console.log("avatar: ", avatar)
-		console.log("imagePreview:  ",  $imagePreview)
+		console.log("this.state.validate.user :  ",  this.state)
 
 		return(
 			<div>
@@ -122,7 +162,9 @@ class AddUserComponent extends Component {
 				<form
 					className={classes.form}
 					noValidate autoComplete="off"
+					
 				>
+					<FormControl error aria-describedby="component-error-text">
 					<TextField
 						id="standard-name"
 						label="Username"
@@ -135,7 +177,9 @@ class AddUserComponent extends Component {
 							shrink: true,
 						}}
 					/>
-
+					
+					{this.state.userValidate && <FormHelperText id="component-error-text">{this.state.userValidate}</FormHelperText>}
+					</FormControl>
 					<TextField
 						id="standard-name"
 						label="Password"
@@ -237,7 +281,8 @@ class AddUserComponent extends Component {
 					</div>
 
 					<br />
-					<Button variant="contained" color="primary"
+					<Button 
+						variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
 							resource.user,
 							event,
@@ -250,7 +295,7 @@ class AddUserComponent extends Component {
 							id_donvi,
 							id_role,
 						)}
-						href="http://localhost:3000/user"
+						// href="http://localhost:3000/user"
 					>
 						Thêm
 					</Button>

@@ -24,15 +24,23 @@ export default class Login extends Component {
   }
 
   login() {
-     var form = new FormData()
-      form.append("username", this.state.username)
-      form.append("password", this.state.password)
-      axios({
+		let formdata = new FormData();
+		console.log(this.state.username, this.state.password)
+      	formdata.append("username", JSON.stringify(this.state.username))
+		formdata.append("password", JSON.stringify(this.state.password))
+		console.log("formdatadata", formdata)
+		axios({
           method:'post',
           url:'http://localhost:5000/login',
-          data: form
+		  data: {
+			username: this.state.username,
+			password: this.state.password
+			},
+		headers: {
+        'Content-Type': 'application/json'
+    	}
         })
-        .then(function (response) {
+        .then(function(response) {
             console.log(response)
             var d = new Date();
             d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
@@ -44,7 +52,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div >
         <title />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -55,22 +63,22 @@ export default class Login extends Component {
         <div className="w3layoutscontaineragileits">
 
           <div className="title">
-            <h2>Login</h2>
+            <h2 className="hLogin" >Login</h2>
           </div>
           <div className="component">
             <form id="login">
-              <input type="text" name="user" placeholder="USERNAME" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
-              <input type="password" name="password" placeholder="PASSWORD"value={this.state.usernamePassword} onChange={this.handleChangePassword} required id="password" />
+              <input className="userInput" type="text" name="user" placeholder="USERNAME" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
+              <input className="userInput" type="password" name="password" placeholder="PASSWORD"value={this.state.password} onChange={this.handleChangePassword} required id="password" />
               <ul className="agileinfotickwthree">
                                                                                     <li>
                   <input type="checkbox" id="brand1" defaultValue />
-                  <label htmlFor="brand1" className="remmeberMe"><span />Remember me</label>
+                  <label className="lableInput" htmlFor="brand1" className="remmeberMe"><span />Remember me</label>
                   <a href="#">Forgot password?</a>
                 </li>
               </ul>
 
               <div className="aitssendbuttonw3ls">
-                <button type="submit" value="LOGIN" id="loginbtn" className="button_Login" onClick={this.login}>
+                <button className="loginInput" type="submit" value="LOGIN" id="loginbtn" className="button_Login" onClick={this.login}>
                   Login
                 </button>
                 <div className="clear" />
