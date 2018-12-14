@@ -4,7 +4,19 @@ import TextField from '@material-ui/core/TextField';
 import { withRouter } from "react-router";
 import Button from '@material-ui/core/Button';
 import { QLCSVCContext } from '../../../../Main/Main';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import NavBar from '../../../../../general/NavBar/NavBar';
 
+const styles = theme => ({
+	root: {
+	  display: 'flex',
+	  justifyContent: 'center',
+	  flexWrap: 'wrap',
+	  padding: theme.spacing.unit * 7,
+	//   marginTop: "-8em",
+	},
+});
 
 const itemsTinhtrang = [
 	{
@@ -43,6 +55,12 @@ class Child extends Component {
 		// console.log("clicked submit");
 		var dongia = parseInt(dongia);
 		var soluong = parseInt(soluong);
+		var id_loaitaisan = parseInt(id_loaitaisan);
+		var id_kinhphi = parseInt(id_kinhphi);
+		var id_donvi = parseInt(id_donvi);
+		var id_phong = parseInt(id_phong);
+		var id_user = parseInt(id_user);
+		var status = parseInt(status);
 
 		itemsTaisan.length!==0
 		? id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1
@@ -89,7 +107,7 @@ class Child extends Component {
 	};
 
 	render() {
-		const { resource } = this.props
+		const { resource, classes } = this.props
 		const {
 			id,
 			name,
@@ -106,8 +124,8 @@ class Child extends Component {
 			status,
 		} = this.state;
 		return (
-			<div>
-				{/* APP tài sản */}
+			<Paper className={classes.root}>
+				{/* ADD tài sản */}
 				<form
 					noValidate autoComplete="off"
 				>
@@ -333,13 +351,18 @@ class Child extends Component {
 						helperText="Please select your currency"
 						margin="normal"
 					>
+						
 						{resource.phong.map((item, i) => {
-							// console.log("phòng: ", item.id)
-							return (
+							// console.log("this.state.id_donvi: ",typeof this.state.id_donvi)
+							// console.log("item.id_donvi: ",typeof item.id_donvi)
+							return  parseInt(this.state.id_donvi) === item.id_donvi
+							?
 								<option key={i} value={item.id}>
 									{item.name}
 								</option>
-							)
+							:
+							''
+							
 						})}
 					</TextField>
 					<br />
@@ -366,33 +389,59 @@ class Child extends Component {
 						Thêm
 					</Button>
 				</form>
-			</div>
+				</Paper>
 	
 			);
 	} //aaaa
 }
 
 
-class AddTS extends Component {
+class Add extends Component {
 	render() {
-		const { resource } = this.props;
+		const { resource, classes } = this.props;
 
 		return (
-			<Child  addTs={this.props.addTs} resource={resource} addContextTS={this.props.addContextTS}/>
+			<Child  
+				addTs={this.props.addTs} 
+				resource={resource} 
+				classes={classes}
+				addContextTS={this.props.addContextTS}
+			/>
 		)
 	}
 }
 
 
-class AddTSWrap extends Component {
+class AddTS extends Component {
+	state ={
+		navBar : {
+			themntaisan:{
+				route:"/taisan/add",
+				title: "",
+				// component: "DanhSachTaiSan"
+			},
+		}
+	}
 	render() {
+		const { match, classes } = this.props
+		const { navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return(
+			<div>
+				<NavBar
+					match={match}
+					classes={classes}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {"Thêm tài sản"}
+				/>
 			<QLCSVCContext.Consumer>
-				{({ resource, addContextTS }) => <AddTS addTs={this.props.addTs} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
+				{({ resource, addContextTS }) => <Add addTs={this.props.addTs} classes={classes} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
 			</QLCSVCContext.Consumer>
+			</div>
 		)
 	}
 
 }
 	
-	export default withRouter(AddTSWrap);
+	export default withRouter(withStyles(styles)(AddTS));

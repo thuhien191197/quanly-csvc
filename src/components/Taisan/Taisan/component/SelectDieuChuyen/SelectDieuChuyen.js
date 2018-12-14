@@ -12,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
+import { QLCSVCContext } from '../../../../Main/Main';
 
 const styles = theme => ({
 	root: {
@@ -25,24 +26,92 @@ const styles = theme => ({
 	},
 });
 
-class SelectDieuChuyen extends Component {
-	
-	state = {
-		chuyenTS:[],
+class SoLuongComponent extends Component {
+	state={
+		soluong: 0
+	}
+	render(){
+		const { 
+			soluong
+		} = this.state;
 
-		ngayCTS:'2018-11-19',
-		soluong: 0,
-		id_taisan: '',
-		id_phong:'',
-		id_donvi:'',
+		const {
+			i,
+			item,
+			handleName,
+			handleDeleteSelect,
+			arrSoLuong,
+			classes,
+		} = this.props
+		return(
+			<div key={i}>
+				<Chip
+					key={i}
+					label={handleName(item)[0]}
+					onDelete={handleDeleteSelect(item) }
+					className={classes.chip}
+				/>
+				<TextField
+					id="standard-name"
+					value={arrSoLuong[i]}
+					// value={this.handleName(item)[1]}
+					style={{ marginRight: 30 }}
+					type="number"
+					// onChange={this.handleChangeSoluong('soluong')}
+				/>
+			</div>
+		)
+	}
+}
 
-		arrSoLuong:[]
-	};
+class SelectDieuChuyenComponent extends Component {
+	constructor(props) {
+		super(props);
+		const arrSoLuong = this.handleGetListSoLuong(props.selectedTS, props.resource || []);
+		console.log("[SelectDieuChuyen] arrSoLuong: ", arrSoLuong)
+		
+		
+		console.log("[SelectDieuChuyen]this props.resource: ", this.props.resource)
+		this.state = {
+			chuyenTS:[],
+			ngayCTS:'2018-11-19',
+			soluong: 0,
+			id_taisan: '',
+			id_phong:'',
+			id_donvi:'',
+			arrSoLuong
+		}
+	}
+	handleGetListSoLuong = (selected, resourceTS) =>{
+
+		
+		var arr = []
+		// const {selectedTS, resource} = this.props
+		var  lengthSelect = selected.length
+		var itemsTaiSan = resourceTS.taisan
+		var lengthTS = itemsTaiSan.length
+		for(var i = 0; i< lengthSelect; i++){
+			for(var j = 0; j< lengthTS; j++){
+				if(selected[i] === itemsTaiSan[j].id){
+					arr.push(itemsTaiSan[j].soluong)
+				}
+			}
+		}
+		return arr;
+	}
+
 	handleChange = (name) => event => {
 		 this.setState({
 			[name]: event.target.value
 		})
 	};
+
+	handleChangeSoluong = (item, i) => event => {
+
+		this.setState({
+		   arrSoLuong: event.target.value
+	   })
+   };
 
 
 	handleName = (item) => {
@@ -70,6 +139,7 @@ class SelectDieuChuyen extends Component {
 		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
 		console.log("[SelectDieuChuyen] arrSoLuong:",arrSoLuong)
 		return (
+
 			<Dialog
 				open={this.props.openDieuChuyen}
 				onClose={this.props.handleCloseDieuChuyen}
@@ -84,21 +154,31 @@ class SelectDieuChuyen extends Component {
 							<Paper className={classes.root}>
 								{this.props.selectedTS.map((item, i) => {
 									return(
-										<div key={i}>
-											<Chip
-												key={i}
-												label={this.handleName(item)[0]}
-												onDelete={this.props.handleDeleteSelect(item) }
-												className={classes.chip}
-											/>
-											<TextField
-												id="standard-name"
-												value={this.handleName(item)[1]}
-												style={{ marginRight: 30 }}
-												type="number"
-												onChange={this.handleChange('soluong')}
-											/>
-										</div>
+										// <div key={i}>
+										// 	<Chip
+										// 		key={i}
+										// 		label={this.handleName(item)[0]}
+										// 		onDelete={this.props.handleDeleteSelect(item) }
+										// 		className={classes.chip}
+										// 	/>
+										// 	<TextField
+										// 		id="standard-name"
+										// 		value={arrSoLuong[i]}
+										// 		// value={this.handleName(item)[1]}
+										// 		style={{ marginRight: 30 }}
+										// 		type="number"
+										// 		onChange={this.handleChangeSoluong(item, i)}
+										// 	/>
+										// </div>
+										<SoLuongComponent 
+											i={i} 
+											item={item}
+											handleName={this.handleName} 
+											handleDeleteSelect={this.props.handleDeleteSelect}
+											arrSoLuong = {this.state.arrSoLuong}
+											// soluong = {this.state.soluong}
+											classes ={classes}
+										/>
 									)
 								})}
 							</Paper>
@@ -191,5 +271,28 @@ class SelectDieuChuyen extends Component {
 		);
 	}
 }
-
+class SelectDieuChuyen extends Component {
+	render(){
+		const { classes, match } = this.props;
+		console.log("[SelectDieuChuyen]this props.selectedTS: ", this.props.selectedTS)
+		return (
+			<QLCSVCContext.Consumer>
+				{({ resource, deleteContextTS,  addContextTS}) => {
+					return (
+						<SelectDieuChuyenComponent 
+							resource={resource} 
+							classes = {classes} 
+							match = {match}
+							selectedTS= {this.props.selectedTS} 
+							openDieuChuyen = {this.props.openDieuChuyen} 
+							handleCloseDieuChuyen={this.props.handleCloseDieuChuyen} 
+							handleDeleteSelect={this.props.handleDeleteSelect} 
+						 />
+					)
+				}}
+			</QLCSVCContext.Consumer>
+		);
+	}
+}
 export default withStyles(styles)(withRouter(SelectDieuChuyen));
+

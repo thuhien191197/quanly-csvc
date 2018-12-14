@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Table.css';
 
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -19,7 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
@@ -30,6 +30,10 @@ import { withRouter } from "react-router";
 
 
 const toolbarStyles = theme => ({
+	root:{
+		// width: "100%",
+		
+	},
 	btnAdd: {
 		position: 'inherit',
 	},
@@ -41,6 +45,14 @@ const toolbarStyles = theme => ({
 	menuDC: {
 		color:'red',
 		left: '50px',
+	},
+	imgUser: {
+		width:'4em',
+		height:'4em',
+		borderRadius: '100%',
+	},
+	header:{
+		position: "initial",
 	}
 
 });
@@ -120,7 +132,7 @@ class Table1 extends Component {
 	
 	handleClick = (event, id) => {
 		const { selected } = this.state;
-		console.log("[Table] selected:",selected)
+		// console.log("[Table] selected:",selected)
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
 	
@@ -156,7 +168,7 @@ class Table1 extends Component {
 		// console.log('render', this.state)
 		const { match } = this.props
 		// console.log(">>>match:",match)
-		console.log("[Table] selected:"+ selected);
+		// console.log("[Table] selected:"+ selected);
 
 		const Add = props => <Link to={`${match.url}/add`} {...props} />
 		
@@ -174,9 +186,8 @@ class Table1 extends Component {
 						</Button>
 					</Tooltip>
 				</div>
-				<Paper>
+				<Paper className={classes.root}>
 					<Toolbar>
-						<div >
 						{selected.length > 0 
 						? 
 						(
@@ -192,8 +203,6 @@ class Table1 extends Component {
 						)
 						}
 
-						</div>
-						<div/>
 						<div>
 							{selected.length > 0 
 							? (
@@ -208,29 +217,48 @@ class Table1 extends Component {
 											/>
 										</IconButton>
 									</Tooltip>
-									<Tooltip title="Điều chuyển tài sản">
-										<IconButton 
-											aria-label="Điều chuyển"
-											aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
-											onClick={this.handleClickDC}
-										>
-											<ThreeSixtyIcon 
-												className={classes.icon} 
-												// onClick = {() => this.props.handleClickOpen(selected)}
-											/>
-										</IconButton>
-									</Tooltip>
+									{/*  icon điều chuyển  */}
 
-									<Menu
-										id="simple-menu"
-										anchorEl={this.state.anchorEl}
-										open={Boolean(this.state.anchorEl)}
-										className={classes.menuDC}
-										onClose={this.handleCloseDC}
-									>
-										<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
-										<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
-									</Menu>
+									{rows[rows.length-1].function.map((func, i) => {
+									// console.log("func:",func)
+										if(func === "dieuchuyen"){
+											return(
+												<span>
+													<Tooltip title="Điều chuyển tài sản">
+														<IconButton 
+															aria-label="Điều chuyển"
+															aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+															onClick={this.handleClickDC}
+														>
+															<i class="fas fa-exchange-alt"></i>
+														</IconButton>
+													</Tooltip>
+													<Menu
+														id="simple-menu"
+														anchorEl={this.state.anchorEl}
+														open={Boolean(this.state.anchorEl)}
+														className={classes.menuDC}
+														onClose={this.handleCloseDC}
+													>
+														<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+													</Menu>
+												</span>
+											)
+										} else if(func === "thanhly"){
+											return(
+												<Tooltip title="Thanh lý tài sản">
+													<IconButton 
+														aria-label="Điều chuyển"
+														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+													>
+														<i class="fas fa-folder-minus"></i>
+													</IconButton>
+												</Tooltip>
+											)
+										}
+										
+									})}
 								</div>
 							) 
 							: (
@@ -239,6 +267,8 @@ class Table1 extends Component {
 								// 	<FilterListIcon />
 								// 	</IconButton>
 								// </Tooltip>
+
+								
 								<div>
 									<Tooltip disabled title="Delete">
 										<IconButton aria-label="Delete">
@@ -247,19 +277,53 @@ class Table1 extends Component {
 											/>
 										</IconButton>
 									</Tooltip>
-									<Tooltip disabled title="Điều chuyển tài sản">
-										<IconButton aria-label="Điều chuyển">
-											<ThreeSixtyIcon className={classes.icon} />
-										</IconButton>
-									</Tooltip>
+									{rows[rows.length-1].function.map((func, i) => {
+									// console.log("func:",func)
+										if(func === "dieuchuyen"){
+											return(
+												<span>
+													<Tooltip disabled title="Điều chuyển tài sản">
+														<IconButton 
+															aria-label="Điều chuyển"
+															aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+															onClick={this.handleClickDC}
+														>
+															<i class="fas fa-exchange-alt"></i>
+														</IconButton>
+													</Tooltip>
+													<Menu
+														id="simple-menu"
+														anchorEl={this.state.anchorEl}
+														open={Boolean(this.state.anchorEl)}
+														className={classes.menuDC}
+														onClose={this.handleCloseDC}
+													>
+														<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
+														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+													</Menu>
+												</span>
+											)
+										} else if(func === "thanhly"){
+											return(
+												<Tooltip disabled title="Thanh lý tài sản">
+													<IconButton 
+														aria-label="Điều chuyển"
+														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+													>
+														<i class="fas fa-folder-minus"></i>
+													</IconButton>
+												</Tooltip>
+											)
+										}
+										
+									})}
 								</div>
 							)}
 						</div>
 					</Toolbar>
-					<Table aria-labelledby="tableTitle">
-						
-						<TableHead>
-							<TableRow>
+					<Table aria-labelledby="tableTitle" >
+						<TableHead >
+							<TableRow >
 								<TableCell padding="checkbox">
 									<Checkbox
 										indeterminate={numSelected > 0 && selected.length < items.length}
@@ -284,7 +348,8 @@ class Table1 extends Component {
 													active={orderBy === row.id}
 													direction={order}
 													onClick={this.createSortHandler(row.id)}
-												>
+													className={classes.header}
+												 >
 													{row.label}
 												</TableSortLabel>
 											</Tooltip>
@@ -325,8 +390,9 @@ class Table1 extends Component {
 												<TableCell key={idRow} component="th" scope="row" padding="none">
 													{row.id !== "function"
 													?
-													item[row.id]
-													
+														row.id != "avatar"
+														? item[row.id]
+														: <img className={classes.imgUser} src={item[row.id]}/>
 													:
 													funcs.map((func, i) => {
 														// console.log("func:",func)
@@ -334,6 +400,7 @@ class Table1 extends Component {
 																func === "edit"
 																?
 																	<Button 
+																		key={i}
 																		className={classes.btnEdit}
 																		variant="fab" 
 																		// color="secondary" 

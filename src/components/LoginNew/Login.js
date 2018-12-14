@@ -27,6 +27,8 @@ export default class Login extends Component {
      var form = new FormData()
       form.append("username", this.state.username)
       form.append("password", this.state.password)
+      console.log(form.get("username"))
+      console.log(form.get("password"))
       axios({
           method:'post',
           url:'http://localhost:5000/login',

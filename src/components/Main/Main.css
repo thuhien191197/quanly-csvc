@@ -4,12 +4,12 @@
  }
  
  body {
-	font-family: sans-serif;
+	/* font-family: sans-serif;
 	font-size: 1em;
 	color: #333;
 	margin-left: 1em;
 	margin-right: 1em;
-	background-color: #efefef;
+	background-color: #efefef; */
  }
  
  h1 {
@@ -30,6 +30,15 @@
 	display: flex;
 	width: 100%;
 	min-height: 100vh;
+
+
+
+	font-family: sans-serif;
+	font-size: 1em;
+	color: #333;
+	margin-left: 1em;
+	margin-right: 1em;
+	background-color: #efefef;
  }
 
   /* Avater */
@@ -44,7 +53,7 @@
  
  /* Sidebar */
  .s-sidebar__trigger {
-	/* z-index: 2; */
+	z-index: 2;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -77,6 +86,7 @@
 	transition: "left .1s ease-out, right .1s ease-out";
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
 	font-size: 0.8em;
+	z-index: 3
  }
  #style-4::-webkit-scrollbar-track
  {
@@ -268,7 +278,7 @@
 	   /* margin-left: 15em; */
 	   margin-left: 10.5em;
 	   word-wrap: break-word;
-	   margin-top: 4em;
+	   margin-top: 8em;
 		
 	}
 	
