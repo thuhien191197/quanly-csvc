@@ -9,8 +9,8 @@ class SelectThanhLyNhieu extends Component {
 		// console.log("match :" , match)
 		return (
 			<div>
-				SelectThanhLyNhieu
-				{getParentPath(match.url)}
+				{/* SelectThanhLyNhieu */}
+				{/* {getParentPath(match.url)} */}
 			</div>
 		);
 	}

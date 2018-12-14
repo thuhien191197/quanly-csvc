@@ -12,7 +12,7 @@ import { QLCSVCContext } from '../Main/Main';
 import Table1 from '../../general/Table/Table';
 import NavBar from '../../general/NavBar/NavBar';
 import AddDM from './component/AddDM/AddDM';
-import EditDM from './component/EditTS/EditDM';
+import EditDM from './component/EditDM/EditDM';
 
 const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -72,7 +72,6 @@ class DanhmucComponent extends Component {
 		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
 			<div>
-				Taisan
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -94,26 +93,37 @@ class Danhmuc extends Component {
 		navBar : {
 			danhsachTS:{
 				route:"/danhmuc",
-				title: "Tất cả danh mục tài sản",
+				title: "Tất cả danh mục danh mục",
 				// component: "DanhSachTaiSan"
 			},
 		}
 	}
 
 	renderDanhMuc = () => {
-		const { match } = this.props
-		const { rows } = this.state
+		const { match, classes } = this.props
+		const { rows, navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextDanhMuc}) => {
 					console.log("[Danhmuc] resource:", resource)
 					return (
-						<DanhmucComponent 
-							rows={rows} 
-							resource={resource}  
-							deleteContextDanhMuc={deleteContextDanhMuc} 
-							match={match}
-						/>
+						<div>
+							
+							<NavBar
+								match={match}
+								classes={classes}
+								parentKey={parentKey}
+								navBar={navBar}
+								title= {"Danh mục"}
+							/>
+							<DanhmucComponent 
+								rows={rows} 
+								resource={resource}  
+								deleteContextDanhMuc={deleteContextDanhMuc} 
+								match={match}
+							/>
+						</div>
 					)
 				}}
 			</QLCSVCContext.Consumer>
@@ -139,24 +149,15 @@ class Danhmuc extends Component {
 	render() {
 		const { match, classes } = this.props
 		const { navBar } = this.state;
-		const parentKey = Object.keys(navBar)
-		const title = getParentPathTitle(match.url)
 		return (
 			<div>
-				<NavBar
-						match={match}
-						classes={classes}
-						parentKey={parentKey}
-						navBar={navBar}
-						title= {title}
-				/>
 				<Switch>
 					<Route path="/danhmuc" exact render={this.renderDanhMuc}></Route>
 					<Route exact path="/danhmuc/add" component={() => <AddDM addAPIDanhSach={this.addAPIDanhSach} />}></Route>
 					<Route exact path="/danhmuc/edit/:id" component={() => <EditDM editAPIDanhSach={this.editAPIDanhSach} />}></Route>
 					{/* <Route exact path="/danhmuc/Loại tài sản" render={() => <LoaiTaiSan />} /> */}
-					<Route exact path="/danhmuc/Nguồn kinh phí" render={() => <NguonKinhPhi />} />
-					
+					{/* <Route exact path="/danhmuc/Nguồn kinh phí" render={() => <NguonKinhPhi />} /> */}
+					<NguonKinhPhi />
 				</Switch>
 			</div>
 		);

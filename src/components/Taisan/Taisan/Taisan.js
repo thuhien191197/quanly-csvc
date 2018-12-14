@@ -169,7 +169,7 @@ class TableComponent extends Component {
 		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
 			<div>
-				Taisan
+				{/* Taisan */}
 				<SelectDieuChuyen 
 					selectedTS= {this.state.selectedTS} 
 					// resource = {this.props.resource}
@@ -247,19 +247,30 @@ class Taisan extends Component {
 
 
 	render1 = () => {
-		const { match } = this.props
-		const { rows } = this.state
+		const { match, classes } = this.props
+		const { rows, navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS}) => {
 					
 					return (
-						<TableComponent 
-							rows={rows} 
-							resource={resource}  
-							deleteContextTS={deleteContextTS} 
+						<div>
+							
+							<NavBar
 							match={match}
-						/>
+							classes={classes}
+							parentKey={parentKey}
+							navBar={navBar}
+							title= {"Tài sản"}
+							/>
+							<TableComponent 
+								rows={rows} 
+								resource={resource}  
+								deleteContextTS={deleteContextTS} 
+								match={match}
+							/>
+						</div>
 					)
 				}}
 			</QLCSVCContext.Consumer>
@@ -285,19 +296,10 @@ class Taisan extends Component {
 	render() {
 		const { match, classes } = this.props
 		const { value, navBar } = this.state;
-		const parentKey = Object.keys(navBar)
-		const title = getParentPathTitle(match.url)
+		
 		return (
 			<div>
-				<NavBar
-						match={match}
-						classes={classes}
-						value={value}
-						parentKey={parentKey}
-						navBar={navBar}
-						title= {title}
-
-				/>
+				
 				<Switch>
 					<Route path="/taisan" exact render={this.render1}></Route>
 					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>

@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import Table1 from '../../../general/Table/Table'
 import { QLCSVCContext } from '../../Main/Main';
 import * as R from 'ramda';
+import NavBar from '../../../general/NavBar/NavBar';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 class DieuChuyenComponent extends Component {
@@ -46,8 +47,8 @@ class DieuChuyenComponent extends Component {
 		const { data } = this.state
 		return(
 			<div>
-				DieuChuyenTaiSan
-				{getParentPath(match.url)}
+				{/* DieuChuyenTaiSan
+				{getParentPath(match.url)} */}
 				<Table1
 					rows={rows} 
 					items={data} 
@@ -69,13 +70,28 @@ class DieuChuyenTaiSan extends Component {
 			{ id: 'ngayCTS', numeric: false, disablePadding: false, label: 'Ngày chuyển' },
 			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['back'] },
 		],
+		navBar : {
+			danhsachDC:{
+				route:"/Danh sách điều chuyển",
+				title: "Danh sách điều chuyển",
+				// component: "DanhSachTaiSan"
+			},
+		}
 	}
 	render() {
 		const { match } = this.props
-		const { rows } = this.state
-		// console.log("match :" , match)
-		// handleGetListTable = 
+		const { rows, navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return (
+			<div>
+		
+			<NavBar
+			match={match}
+			parentKey={parentKey}
+			navBar={navBar}
+			title= {"Điều Chuyển"}
+			/>
+
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS,  addContextTS}) => {
 					return (
@@ -86,6 +102,7 @@ class DieuChuyenTaiSan extends Component {
 						/>
 				)}}
 			</QLCSVCContext.Consumer>
+			</div>
 		);
 	}
 }

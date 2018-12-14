@@ -4,7 +4,22 @@ import { withRouter } from "react-router";
 import { QLCSVCContext } from '../../../Main/Main';
 import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import NavBar from '../../../../general/NavBar/NavBar';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
+
+const styles = theme => ({
+	root: {
+	  display: 'flex',
+	  justifyContent: 'center',
+	  flexWrap: 'wrap',
+	  padding: theme.spacing.unit * 5,
+	},
+	form:{
+		
+	}
+	
+});
 
 class EditUserComponent extends Component {
 	state = this.props.itemUser || {
@@ -34,7 +49,7 @@ class EditUserComponent extends Component {
 					phone,
 					id_donvi,
 					id_role,) => {
-		event.preventDefault();
+		// event.preventDefault();
 		// console.log("clicked submit");
 		// var id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1;
 
@@ -108,9 +123,11 @@ class EditUserComponent extends Component {
 			$imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
 		}
 		return(
-			<form
-				noValidate autoComplete="off"
-			>
+			<Paper className={classes.root}>
+				<form
+					className={classes.form}
+					noValidate autoComplete="off"
+				>
 				<TextField
 						id="standard-name"
 						label="Username"
@@ -242,14 +259,15 @@ class EditUserComponent extends Component {
 					>
 						Sửa
 					</Button>
-			</form>
+				</form>
+			</Paper>
 		)
 	}
 }
 
 class Edit extends Component {
 	render() {
-		const { resource } = this.props;
+		const { resource, classes } = this.props;
 		const itemsUser = resource.user;
 		const currentId = getParentPath(this.props.match.url);
 		let itemUser = itemsUser.find((item) => { return item.id == currentId });;
@@ -259,26 +277,49 @@ class Edit extends Component {
 				itemUser={itemUser} 
 				editAPIUser={this.props.editAPIUser} 
 				resource={resource} 
-				editContextUser={this.props.editContextUser}/>
+				editContextUser={this.props.editContextUser}
+				classes={classes}
+			/>
+				
 		)
 	}
 }
 
 class EditUser extends Component {
+	state ={
+		navBar : {
+			suanguoidung:{
+				route:"/user/edit/:id",
+				title: "",
+				// component: "DanhSachTaiSan"
+			},
+		}
+	}
 	render() {
-		const { match } = this.props
-		// console.log("match :" , match)
+		const { match, classes } = this.props
+		const { navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return(
-			<QLCSVCContext.Consumer>
-				{({ resource, editContextUser }) => <Edit 
-													editAPIUser={this.props.editAPIUser} 
-													resource={resource} 
-													match={this.props.match} 
-													editContextUser={editContextUser} 
-													/>}
-			</QLCSVCContext.Consumer>
+			<div>
+				<NavBar
+					match={match}
+					classes={classes}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {"Thêm người dùng"}
+				/>
+				<QLCSVCContext.Consumer>
+					{({ resource, editContextUser }) => <Edit 
+														editAPIUser={this.props.editAPIUser} 
+														resource={resource} 
+														match={this.props.match} 
+														editContextUser={editContextUser} 
+														classes={classes}
+														/>}
+				</QLCSVCContext.Consumer>
+			</div>
 		)
 	}
 }
 
-export default withRouter(EditUser);
+export default withRouter(withStyles(styles)(EditUser));

@@ -86,6 +86,9 @@ const addContextThongBao = () => {};
 const addContextDanhMuc = () => {};
 const editContextDanhMuc = () => {};
 const deleteContextDanhMuc = () => {};
+const addContextKinhPhi = () => {};
+const editContextKinhPhi = () => {};
+const deleteContextKinhPhi = () => {};
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
@@ -103,7 +106,10 @@ export const QLCSVCContext = React.createContext(
 	addContextThongBao,
 	addContextDanhMuc,
 	editContextDanhMuc,
-	deleteContextDanhMuc
+	deleteContextDanhMuc,
+	addContextKinhPhi,
+	editContextKinhPhi,
+	deleteContextKinhPhi
 );
 
 
@@ -358,8 +364,6 @@ class Main extends Component {
 		})
 	}
 
-
-
 	editContextPhong = (item) => {
 		// console.log('Edit Item context', this.state.resource.taisan);
 		this.setState(prev => {
@@ -415,6 +419,47 @@ class Main extends Component {
 			}
 		})
 	}
+	//--------------Kinh phí
+	addContextKinhPhi = (item) => {
+		this.setState(prev =>{
+			const newKP = [...prev.resource.nguonkinhphi];
+			newKP.push(item);
+			console.log('[Main] newKP:',newKP );
+			return {
+				resource: {
+					...prev.resource,
+					nguonkinhphi: newKP
+				}
+			}
+		})
+	}
+
+	deleteContextKinhPhi = (item) => {
+		this.setState(prev =>{
+			return {
+				resource: {
+					...prev.resource,
+					nguonkinhphi: item
+				}
+			}
+		})
+	}
+
+	editContextKinhPhi = (item) => {
+		this.setState(prev => {
+			const newKP = [...prev.resource.nguonkinhphi];
+			const changeIndex = _.findIndex(newKP, {id: item.id})
+			newKP[changeIndex] = item;
+			return {
+				resource: {
+					...prev.resource,
+					nguonkinhphi: newKP,
+				}
+			}
+		})
+	}
+
+
 
 	addChildren(key, children) {
 		const childrenObj = Object.assign({}, children)
@@ -611,10 +656,18 @@ class Main extends Component {
 															keyChild!=='icon'
 															?
 															<li className="li" key={idChild}>
-																{key !== sidebar[key].children[keyChild].route
+																{key !== sidebar[key].children[keyChild].route // nếu router bằng key thì đường link khác 
 																?
+																	// nếu là đơn vị thì đường link khác
+																	key !== 'donvi'
+																	?	
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+
+																	:
+																	<MenuLink className="s-sidebar__nav-linksub" to={{
+																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name + '/danhsachtaisan',
 																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
 																:
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
@@ -641,6 +694,7 @@ class Main extends Component {
 
 					</nav>
 				</div>
+			
 
 				<QLCSVCContext.Provider
 					value={{
@@ -658,7 +712,10 @@ class Main extends Component {
 						addContextThongBao: this.addContextThongBao,
 						addContextDanhMuc: this.addContextDanhMuc,
 						editContextDanhMuc: this.editContextDanhMuc,
-						deleteContextDanhMuc: this.deleteContextDanhMuc
+						deleteContextDanhMuc: this.deleteContextDanhMuc,
+						addContextKinhPhi:this.addContextKinhPhi ,
+						editContextKinhPhi: this.editContextKinhPhi,
+						deleteContextKinhPhi: this.deleteContextKinhPhi
 					}}
 				>
 					<main className="s-layout__content">

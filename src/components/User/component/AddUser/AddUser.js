@@ -5,19 +5,16 @@ import { QLCSVCContext } from '../../../Main/Main';
 import { TextField, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
+import NavBar from '../../../../general/NavBar/NavBar';
+// const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const styles = theme => ({
 	root: {
 	  display: 'flex',
 	  justifyContent: 'center',
 	  flexWrap: 'wrap',
-	  padding: theme.spacing.unit / 2,
+	  padding: theme.spacing.unit * 5,
 	},
-	form:{
-		
-	}
-	
 });
 
 class AddUserComponent extends Component {
@@ -281,21 +278,41 @@ class Add extends Component {
 }
 
 class AddUser extends Component {
+	state ={
+		navBar : {
+			themnguoidung:{
+				route:"/user/add",
+				title: "",
+				// component: "DanhSachTaiSan"
+			},
+		}
+	}
 	
 	render() {
 		const { match, classes } = this.props
-		// console.log("match :" , match)
+		const { navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return (
-			<QLCSVCContext.Consumer>
-				{({ resource, addContextUser }) => 
-					<Add 
-						addAPIUser={this.props.addAPIUser} 
-						resource={resource} 
-						match={match} 
-						classes= {classes}
-						addContextUser={addContextUser} />
-			}
-			</QLCSVCContext.Consumer>
+			<div>
+				
+				<NavBar
+					match={match}
+					classes={classes}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {"Sửa người dùng"}
+				/>
+				<QLCSVCContext.Consumer>
+					{({ resource, addContextUser }) => 
+						<Add 
+							addAPIUser={this.props.addAPIUser} 
+							resource={resource} 
+							match={match} 
+							classes= {classes}
+							addContextUser={addContextUser} />
+				}
+				</QLCSVCContext.Consumer>
+			</div>
 		);
 	}
 }

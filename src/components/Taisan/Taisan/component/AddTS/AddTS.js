@@ -4,7 +4,19 @@ import TextField from '@material-ui/core/TextField';
 import { withRouter } from "react-router";
 import Button from '@material-ui/core/Button';
 import { QLCSVCContext } from '../../../../Main/Main';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import NavBar from '../../../../../general/NavBar/NavBar';
 
+const styles = theme => ({
+	root: {
+	  display: 'flex',
+	  justifyContent: 'center',
+	  flexWrap: 'wrap',
+	  padding: theme.spacing.unit * 7,
+	//   marginTop: "-8em",
+	},
+});
 
 const itemsTinhtrang = [
 	{
@@ -95,7 +107,7 @@ class Child extends Component {
 	};
 
 	render() {
-		const { resource } = this.props
+		const { resource, classes } = this.props
 		const {
 			id,
 			name,
@@ -112,7 +124,7 @@ class Child extends Component {
 			status,
 		} = this.state;
 		return (
-			<div>
+			<Paper className={classes.root}>
 				{/* ADD tài sản */}
 				<form
 					noValidate autoComplete="off"
@@ -372,7 +384,7 @@ class Child extends Component {
 						Thêm
 					</Button>
 				</form>
-			</div>
+				</Paper>
 	
 			);
 	} //aaaa
@@ -381,24 +393,50 @@ class Child extends Component {
 
 class Add extends Component {
 	render() {
-		const { resource } = this.props;
+		const { resource, classes } = this.props;
 
 		return (
-			<Child  addTs={this.props.addTs} resource={resource} addContextTS={this.props.addContextTS}/>
+			<Child  
+				addTs={this.props.addTs} 
+				resource={resource} 
+				classes={classes}
+				addContextTS={this.props.addContextTS}
+			/>
 		)
 	}
 }
 
 
 class AddTS extends Component {
+	state ={
+		navBar : {
+			themntaisan:{
+				route:"/taisan/add",
+				title: "",
+				// component: "DanhSachTaiSan"
+			},
+		}
+	}
 	render() {
+		const { match, classes } = this.props
+		const { navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return(
+			<div>
+				<NavBar
+					match={match}
+					classes={classes}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {"Thêm tài sản"}
+				/>
 			<QLCSVCContext.Consumer>
-				{({ resource, addContextTS }) => <Add addTs={this.props.addTs} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
+				{({ resource, addContextTS }) => <Add addTs={this.props.addTs} classes={classes} resource={resource} match={this.props.match} addContextTS={addContextTS} />}
 			</QLCSVCContext.Consumer>
+			</div>
 		)
 	}
 
 }
 	
-	export default withRouter(AddTS);
+	export default withRouter(withStyles(styles)(AddTS));

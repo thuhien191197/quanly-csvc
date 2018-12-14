@@ -10,6 +10,7 @@ import EditUser from './component/EditUser/EditUser';
 import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
+import NavBar from '../../general/NavBar/NavBar';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
 const toolbarStyles = theme => ({
@@ -18,6 +19,7 @@ const toolbarStyles = theme => ({
 		
 	},
 });
+
 
 
 class UserComponent extends Component {
@@ -82,8 +84,7 @@ class UserComponent extends Component {
 		
 		return (
 			<div>
-				User
-				{getParentPath(match.url)}
+				{/* {getParentPath(match.url)} */}
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -107,21 +108,41 @@ class User extends Component {
 			{ id: 'id_role', numeric: false, disablePadding: false, label: 'Chức vụ' },
 			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
 		],
+
+		navBar : {
+			danhsachTS:{
+				route:"/user",
+				title: "Danh sách người dùng",
+				// component: "DanhSachTaiSan"
+			},
+		}
 	}
 	renderUser = () => {
-		const { match } = this.props
-		const { rows } = this.state
+		const { match, classes } = this.props
+		const { rows, navBar } = this.state
+		const parentKey = Object.keys(navBar)
+		const title = getParentPath(match.url)
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextUser}) => {
 					console.log("[User] resource:",resource)
 					return (
-						<UserComponent 
-							rows={rows} 
-							match={match}
-							resource={resource} 
-							deleteContextUser={deleteContextUser} 
-						/>
+						<div>
+							
+							<NavBar
+								match={match}
+								classes={classes}
+								parentKey={parentKey}
+								navBar={navBar}
+								title= {"Users"}
+							/>
+							<UserComponent 
+								rows={rows} 
+								match={match}
+								resource={resource} 
+								deleteContextUser={deleteContextUser} 
+							/>
+						</div>
 					)
 				}}
 			</QLCSVCContext.Consumer>
