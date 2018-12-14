@@ -52,6 +52,15 @@ const featuredPosts = [
             'The Pearson Education Innovation Award Vietnam là một giải thưởng được thiết kế nhằm thúc đẩy hoạt động giảng dạy và học tập sáng tạo dành cho nhóm lĩnh vực STEM trong cộng đồng đối tác BUILT-IT.',
 
     },
+    {
+        id: 3,
+        title: 'Giải thưởng “The Pearson...',
+        date: '06/12/2018 09:38',
+        description:
+            'The Pearson Education Innovation Award Vietnam là một giải thưởng được thiết kế nhằm thúc đẩy hoạt động giảng dạy và học tập sáng tạo dành cho nhóm lĩnh vực STEM trong cộng đồng đối tác BUILT-IT.',
+
+    },
+
 ];
 
 class LeftNotification extends React.Component {

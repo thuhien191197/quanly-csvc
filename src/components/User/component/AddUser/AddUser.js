@@ -21,11 +21,11 @@ const styles = theme => ({
 
 class AddUserComponent extends Component {
 	state = {
-		username: 'thuhien123',
-		password: '12321',
-		fullname: '213213',
+		username: '',
+		password: '',
+		fullname: '',
 		avatar: 'https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg',
-		phone: '213213',
+		phone: '',
 		id_donvi: 0,
 		id_role: 0,
 
@@ -50,7 +50,7 @@ class AddUserComponent extends Component {
 				avatar: reader.result
 			});
 		};
-		reader.readAsDataURL(file);    
+		reader.readAsDataURL(file); 
 	}
 
 	handleSubmit = (itemsUser, event, id, username,password,fullname,avatar,phone,id_donvi, id_role) => {

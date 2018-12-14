@@ -8,11 +8,19 @@ import {
     TableRow,
     TableCell,
     TablePagination,
-    Paper
+    Paper,
+    Dialog,
+    DialogActions,
+    Button,
+    DialogTitle,
+    DialogContent,
+    DialogContentText
 } from "@material-ui/core";
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import axios from 'axios';
+
 
 
 const styles = LeftNew => ({
@@ -37,101 +45,87 @@ const styles = LeftNew => ({
 
 
     },
+    posrt: {
+        maxWidth:  250,
+        // margin: `${LeftNew.spacing.unit}px auto`,
+        // padding: LeftNew.spacing.unit * 2,
+    }
 });
 
-const featuredPosts = [
-    {
-        id: 1,
-        title: 'Sinh viên đoạt giải Đồng tại...',
-        date: '12/12/2018 15:21',
-        description:
-            'Trần Nhật Tiến và Trần Phước Bảo Thư (lớp 14 KT) là 2 gương mặt sinh viên điển hình của ...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/KhoaKientruc/2018/ThietketreCA/image002.jpg'
-    },
-    {
-        id: 2,
-        title: 'Tham quan học tập tại Vương...',
-        date: '04/12/2018 15:56',
-        description:
-            'Nhằm mục đích xây dựng mối quan hệ hợp tác hiệu quả giữa trường đại học và doanh nghiệ...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/CBVC/2018/ThamquanVQAnh/image002.jpg'
-    },
-    {
-        id: 3,
-        title: 'DUT thắng lớn trong kỳ thi...',
-        date: '03/12/2018 11:23',
-        description:
-            'Đội tuyển Trường Đại học Bách Khoa – ĐHĐN đã tham gia kỳ thi Olympic Tin học Sinh viê...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/KhoaCNTT/2018/ICPCAsia/image002.jpg'
-    },
-    {
-        id: 4,
-        title: 'Lễ ký kết MOU giữa Khoa Điện...',
-        date: '30/11/2018 14:08',
-        description:
-            'Sáng ngày 27/11/2018, Khoa Điện, Trường Đại học Quốc Gia Thành Công (NCKU) Đài Loan v...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/KhoaDien/2018/MOU_NCKU/image008.jpg'
-    },
-    {
-        id: 5,
-        title: 'DUT thắng lớn trong kỳ thi  ...',
-        date: '03/12/2018 11:23',
-        description:
-            'Đội tuyển Trường Đại học Bách Khoa – ĐHĐN đã tham gia kỳ thi Olympic Tin học Sinh vi...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/KhoaCNTT/2018/ICPCAsia/image002.jpg'
-    },
-    {
-        id: 6,
-        title: 'Lễ ký kết MOU giữa Khoa Điện ...',
-        date: '30/11/2018 14:08',
-        description:
-            'Sáng ngày 27/11/2018, Khoa Điện, Trường Đại học Quốc Gia Thành Công (NCKU) Đài Loan...',
-        image: 'http://dut.udn.vn/Files/admin/images/Tin_tuc/KhoaDien/2018/MOU_NCKU/image008.jpg'
-    },
-];
 
 class LeftNew extends React.Component {
-    state = {
-        order: 'asc',
-        orderBy: 'calories',
-        selected: [],
-        data: [],
-        page: 0,
-        rowsPerPage: 6,
-    };
-    componentDidMount(){
-        this.setState({data: featuredPosts});
+    constructor(props){
+
+        super(props);
+
+        this.state = {
+            data: [],
+            order: 'asc',
+            orderBy: 'calories',
+            selected: [],
+            page: 0,
+            rowsPerPage: 6,
+            value: -1
+        }
+        this.apiUrl = `http://localhost:5500/posts`
     }
+
+    componentDidMount(){
+        axios.get(this.apiUrl)
+            .then((res) => {
+
+                this.setState({data:res.data});
+            });
+    }
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     handleChangePage = (event, page) => {
         this.setState({ page });
     };
+
+    handleClickOpen = scroll => () => {
+        this.setState({ open: true, scroll });
+
+    };
+    handleClick =(id) => {
+                axios.get(this.apiUrl+'/'+ id)
+                    .then(res => {
+                        this.setState({ selected: res.data });
+                    });
+                console.log(id);
+    };
+
 
     handleChangeRowsPerPage = event => {
         this.setState({ rowsPerPage: event.target.value });
     };
     render() {
     const { classes } = this.props;
-    const { data, rowsPerPage, page } = this.state;
+    const { data, rowsPerPage, page,  } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
     return (
         <div>
             <Grid container spacing={0} className={classes.paperL}>
-                {featuredPosts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(post => (
+                {this.state.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(post => (
                     <Grid  xs={12} md={6}
+                           onClick={this.handleClickOpen('body')}
                            tabIndex={-1}
                            key={post.id}>
-                        <Card className={classes.cardL}>
+                        <Card className={classes.cardL}
+                              onClick={() => this.handleClick(post.id)}>
                             <div className={classes.cardDetails}>
                                 <CardContent>
-                                    <Typography component="h2" variant="h6" maxlength="50" >
+                                    <Typography component="h2" variant="h6" >
                                         {post.title}
                                     </Typography>
                                     <Typography variant="subtitle1" color="textSecondary">
                                         {post.date}
                                     </Typography>
-                                    <Typography  component="p">
-                                        {post.description}
+                                    <Typography  component="p" gutterBottom noWrap className={classes.posrt}>
+                                        {post.content}
                                     </Typography>
                                     <Typography variant="subtitle2" color="primary">
                                         Continue reading...
@@ -152,6 +146,27 @@ class LeftNew extends React.Component {
                     <TableCell colSpan={6} />
                 </TableRow>
             )}
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    scroll={this.state.scroll}
+                    aria-labelledby="scroll-dialog-title"
+                >
+                    <DialogTitle id="scroll-dialog-title">{this.state.selected.title}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {this.state.selected.content}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this.handleClose} color="primary">
+                            Subscribe
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Grid>
             <Paper style={{ flexGrow: 1, margin: 10, padding: 0, marginTop: -5, marginBottom: 2}}>
                 <TablePagination
@@ -170,6 +185,7 @@ class LeftNew extends React.Component {
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
             </Paper>
+
 
         </div>
     )}
