@@ -20,7 +20,7 @@ class Content extends Component {
 	render() {
 		return (
 			<div style={{ width: "100%" }}>
-				<Route exact path="/" component={Home} />
+				<Route exact path="/home" component={Home} />
 				<User />
 				<Danhmuc />
 				<Taisan />

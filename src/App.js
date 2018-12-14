@@ -6,12 +6,14 @@ import Main from "./components/Main/Main";
 import { 
 	BrowserRouter as Router, Route 
 } from 'react-router-dom'
+// import GuestPage from './components/Guess/GuestPage';
 
 class App extends Component {
   render() {
     return (
 		<Router>
 			<Main />
+			{/* <Route path="/qlcsvc" component={() => <GuestPage />}></Route> */}
 		</Router>
     );
   }

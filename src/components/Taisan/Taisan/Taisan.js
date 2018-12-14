@@ -18,7 +18,7 @@ import SelectThanhLyNhieu from './component/SelectThanhLy/SelectThanhLyNhieu';
 import NavBar from '../../../general/NavBar/NavBar';
 
 export const itemsTaisan = [];
-const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
+// const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
 class TableComponent extends Component {
 	constructor(props) {

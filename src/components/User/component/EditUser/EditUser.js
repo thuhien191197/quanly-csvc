@@ -18,7 +18,6 @@ const styles = theme => ({
 	form:{
 		
 	}
-	
 });
 
 class EditUserComponent extends Component {
