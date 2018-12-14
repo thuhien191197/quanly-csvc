@@ -39,7 +39,7 @@ export default class Login extends Component {
             var d = new Date();
             d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
             var expires = "expires="+d.toUTCString();
-            document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
+            window.document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
             window.location.reload();
           });
   }
