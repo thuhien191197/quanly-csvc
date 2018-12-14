@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Content.css';
 import Home from "../Home/Home";
 import User from "../User/User";
+// import Login from "../LoginNew/Login";
 import Donvi from "../Donvi/Donvi";
 import Danhmuc from "../Danhmuc/Danhmuc";
 import Taisan from "../Taisan/Taisan/Taisan";
