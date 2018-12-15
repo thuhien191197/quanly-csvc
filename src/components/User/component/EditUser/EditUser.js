@@ -16,7 +16,6 @@ const styles = theme => ({
 	  padding: theme.spacing.unit * 5,
 	},
 	form:{
-		
 	}
 });
 
@@ -29,7 +28,6 @@ class EditUserComponent extends Component {
 		phone: '',
 		id_donvi: 0,
 		id_role: 0,
-		// avatar:''
 	};
 
 	handleChange = name => event => {
@@ -54,16 +52,6 @@ class EditUserComponent extends Component {
 
 		var id_donvi = parseInt(id_donvi);
 		var id_role = parseInt(id_role);
-
-
-		// id,
-		// 	username,
-		// 	password,
-		// 	fullname,
-		// 	avatar,
-		// 	phone,
-		// 	id_donvi,
-		// 	id_role,
 
 		this.props.editContextUser({
 			id,
@@ -305,7 +293,7 @@ class EditUser extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Thêm người dùng"}
+					title= {"Sửa người dùng"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, editContextUser }) => <Edit 

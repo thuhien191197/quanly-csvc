@@ -154,8 +154,9 @@ class Danhmuc extends Component {
 					<Route path="/danhmuc" exact render={this.renderDanhMuc}></Route>
 					<Route exact path="/danhmuc/add" component={() => <AddDM addAPIDanhSach={this.addAPIDanhSach} />}></Route>
 					<Route exact path="/danhmuc/edit/:id" component={() => <EditDM editAPIDanhSach={this.editAPIDanhSach} />}></Route>
-					<LoaiTaiSan />
-					{/* <Route exact path="/danhmuc/Nguồn kinh phí" render={() => <NguonKinhPhi />} /> */}
+					{/* <LoaiTaiSan /> */}
+					<Route exact path="/danhmuc/loaitaisan/:name" render={() => <LoaiTaiSan />} />
+				 {/* <Route exact path="/danhmuc/Nguồn kinh phí" render={() => <NguonKinhPhi />} /> */}
 					<NguonKinhPhi />
 				</Switch>
 			</div>

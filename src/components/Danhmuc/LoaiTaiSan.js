@@ -92,6 +92,7 @@ class LoaiTaiSanComponent extends Component {
 			}
 
 		}
+		console.log("[DanhSachLTS] b:",b)
 
 		return b
 	}
@@ -130,14 +131,15 @@ class LoaiTaiSan extends Component {
 		}
 	}
 
-	render1 = () => {
+
+	render() {
 		const { match, classes } = this.props
 		const { rows, navBar } = this.state
 		const parentKey = Object.keys(navBar)
+		console.log(">>>match :" , match)
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS}) => {
-					
 					return (
 						<div>
 							<NavBar
@@ -157,24 +159,6 @@ class LoaiTaiSan extends Component {
 					)
 				}}
 			</QLCSVCContext.Consumer>
-		);
-	}
-	
-	render() {
-		const { match, classes } = this.props
-		const { rows, navBar } = this.state
-		console.log(">>>match :" , match)
-		const parentKey = Object.keys(navBar)
-		return (
-			// <div>
-			// 	QuanLyPhong
-			// 	{getParentPath(match.url)}
-			// </div>
-			<Switch>
-				<Route exact path="/danhmuc/loaitaisan/:name" exact render={this.render1} />
-				{/* <Route path="/donvi/:name/quanlyphong/add" render={() => <AddPhong addAPIPhong={this.addAPIPhong} />}></Route>
-				<Route path="/donvi/:name/quanlyphong/edit/:id" component={() => <EditPhong editAPIPhong={this.editAPIPhong} />}></Route> */}
-			</Switch>
 		);
 	}
 }

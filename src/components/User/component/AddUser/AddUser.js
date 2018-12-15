@@ -10,6 +10,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 // const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 import * as R from 'ramda'
+
 const styles = theme => ({
 	root: {
 	  display: 'flex',
@@ -130,7 +131,6 @@ class AddUserComponent extends Component {
 		// }
 	}
 	
-
 	render(){
 		const { resource, classes } = this.props
 		const {
@@ -345,7 +345,7 @@ class AddUser extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Sửa người dùng"}
+					title= {"Thêm người dùng"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, addContextUser }) => 

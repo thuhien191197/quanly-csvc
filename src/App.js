@@ -96,7 +96,6 @@ class App extends Component {
 		<Router>
 			<Switch>
 				<Route exact path="/qlcsvc" component={GuestPage} />
-				
 				<Route exact path="/login" component={Login} />
 				<Main />
 				

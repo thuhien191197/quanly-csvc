@@ -26,7 +26,6 @@ class Content extends Component {
 				<Danhmuc />
 				<Taisan />
 				<Switch>
-					
 					<Route path="/donvi/:name/:id" component={() => <Donvi />}></Route>
  					<Route path="/donvi/:name" exact component={() => <Donvi />}></Route>
 					{/* <Route exact path="/donvi/:name" component={() => <DanhSachTaiSan />}></Route>  */}

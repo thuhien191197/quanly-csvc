@@ -145,8 +145,6 @@ class ItemDieuChuyenNhieu extends Component {
 						helperText="Chọn phòng"
 						// margin="normal"
 					>
-						
-
 						{this.props.resource.phong.map((item, i) => {
 							// console.log("phòng: ", item.id)
 							return   parseInt(this.state.id_donvi) === item.id_donvi

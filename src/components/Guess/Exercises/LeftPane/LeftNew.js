@@ -64,7 +64,7 @@ class LeftNew extends React.Component {
             orderBy: 'calories',
             selected: [],
             page: 0,
-            rowsPerPage: 6,
+            rowsPerPage: 4,
             value: -1
         }
         this.apiUrl = `http://localhost:5500/posts`
@@ -151,6 +151,7 @@ class LeftNew extends React.Component {
                     onClose={this.handleClose}
                     scroll={this.state.scroll}
                     aria-labelledby="scroll-dialog-title"
+                    maxWidth = 'lg'
                 >
                     <DialogTitle id="scroll-dialog-title">{this.state.selected.title}</DialogTitle>
                     <DialogContent>
@@ -170,7 +171,7 @@ class LeftNew extends React.Component {
             </Grid>
             <Paper style={{ flexGrow: 1, margin: 10, padding: 0, marginTop: -5, marginBottom: 2}}>
                 <TablePagination
-                    rowsPerPageOptions={[6, 12]}
+                    rowsPerPageOptions={[4, 8]}
                     component="div"
                     count={data.length}
                     rowsPerPage={rowsPerPage}

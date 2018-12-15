@@ -25,7 +25,7 @@ class TableComponent extends Component {
 		super(props);
 		const data = this.handleGetListTable(props.resource || []);
 		this.state = {
-			data,
+			data: [],
 			openDieuChuyen: false,
 			openDieuChuyenNhieu: false,
 			openThanhLyNhieu: false,
@@ -58,35 +58,13 @@ class TableComponent extends Component {
 				'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
 				'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
 				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
-				
 			};
 			b.push(a);
 		}
-
-
-		// itemsTaisan.map(item => {
-		// 	var getNameUser = R.filter(R.propEq("id", item.id_user))
-		// 	var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
-		// 	var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-			
-		// 	console.log("[TaiSAn] itemsUser :", itemsUser)
-		// 	console.log("[TaiSAn] getNameDonvi(itemsUser)[0]:", getNameDonvi(itemsUser)[0])
-		// 	const a = {'id' :item.id, 
-		// 		'name': item.name, 
-		// 		'dongia': item.dongia, 
-		// 		'soluong': item.soluong, 
-		// 		'ngaynhap': item.ngaynhap, 
-		// 		'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
-		// 		'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
-		// 		'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
-		// 	};
-		// 	b.push(a);
-		// })
 		return b
 	}
 
 	componentWillReceiveProps(props, state) {
-		// console.log("Next props", props);
 		const data = this.handleGetListTable(props.resource || []);
 		this.setState({
 			data,
@@ -94,18 +72,16 @@ class TableComponent extends Component {
 	}
 
 	handleDelete = (selected) => {
-		// console.log("[TaiSan] props:", this.props)
 		var itemsTaisan = this.props.resource.taisan;
 		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsTaisan);
 		this.props.deleteContextTS(dataDeleted);
-		
 		
 		selected.forEach(function(select, i) {
 			fetch('http://localhost:5500/taisan/'+ select, {
 				method: 'DELETE'
 			});
 		});
-		this.setState({selected: [] });
+		// this.setState({selected: [] });
 	}
 
 
@@ -120,6 +96,7 @@ class TableComponent extends Component {
 	handleCloseDieuChuyen = () => {
 		this.setState({ openDieuChuyen: false });
 	};
+
 	// mở ra điều chuyển số lượng nhiều đến nhiều Đơn vị
 	handleClickOpenNhieu = (selected) => {
 		console.log("[TaiSan] Im here:")

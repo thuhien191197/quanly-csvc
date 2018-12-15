@@ -28,6 +28,8 @@ const styles = LeftNotification => ({
         flexGrow: 1,
         margin: 10,
         padding: 5,
+
+
     },
 });
 
