@@ -1,5 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-<Vietn
+<Vietnamese>
 ## Front-end Hệ Thống Quản Lý Cở sở vật chất trường Đại học Bách Khoa Đà Nẵng
 - Đây là project môn học Chuyên đề 2 (ReactJS) và Giao tiếp người máy được học vào học kì 1 năm 4 của mình.
 - Dữ liệu giả để thực hiện mình dùng json-server:  https://github.com/thuhien191197/server-csvc
