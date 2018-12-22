@@ -89,6 +89,9 @@ const deleteContextDanhMuc = () => {};
 const addContextKinhPhi = () => {};
 const editContextKinhPhi = () => {};
 const deleteContextKinhPhi = () => {};
+const addContextTL = () => {};
+
+
 
 // Creact Context
 export const QLCSVCContext = React.createContext(
@@ -109,7 +112,8 @@ export const QLCSVCContext = React.createContext(
 	deleteContextDanhMuc,
 	addContextKinhPhi,
 	editContextKinhPhi,
-	deleteContextKinhPhi
+	deleteContextKinhPhi,
+	addContextTL
 );
 
 
@@ -458,6 +462,20 @@ class Main extends Component {
 			}
 		})
 	}
+	//--------------Thanh lý
+	addContextTL = (item) => {
+		this.setState(prev =>{
+			const newTL = [...prev.resource.thanhly];
+			newTL.push(item);
+			// console.log('[Main] newTL:',newTL );
+			return {
+				resource: {
+					...prev.resource,
+					thanhly: newTL
+				}
+			}
+		})
+	}
 
 
 
@@ -730,7 +748,8 @@ class Main extends Component {
 						deleteContextDanhMuc: this.deleteContextDanhMuc,
 						addContextKinhPhi:this.addContextKinhPhi ,
 						editContextKinhPhi: this.editContextKinhPhi,
-						deleteContextKinhPhi: this.deleteContextKinhPhi
+						deleteContextKinhPhi: this.deleteContextKinhPhi,
+						addContextTL: this.addContextTL
 					}}
 				>
 					<main className="s-layout__content">

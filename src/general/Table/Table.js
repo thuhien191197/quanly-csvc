@@ -250,7 +250,7 @@ class Table1 extends Component {
 												<Tooltip title="Thanh lý tài sản">
 													<IconButton 
 														aria-label="Điều chuyển"
-														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+														onClick={() => this.props.handleClickOpenThanhLy(selected)}
 													>
 														<i class="fas fa-folder-minus"></i>
 													</IconButton>

@@ -175,6 +175,7 @@ class TableComponent extends Component {
 					handleDelete = {this.handleDelete}  
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
+					handleClickOpenThanhLy = {this.handleClickOpenThanhLy}
 					// selectApp={selectApp}
 					
 				/>
