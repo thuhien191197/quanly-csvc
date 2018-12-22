@@ -23,13 +23,6 @@ class ThanhLyComponent extends Component {
 		var b =[]
 		itemsThanhLy.map(item => {
 
-			// "id": 1,
-			// "ngayTL": "2018-5-1",
-			// "lydo": 10,
-			// "soluong": 2,
-			// "image": "maychieu.png",
-			// "status": 1,
-			// "id_taisan": 5
 			var getNameTaiSan = R.filter(R.propEq("id", item.id_taisan))
 			const a = {
 				'id' :item.id, 
