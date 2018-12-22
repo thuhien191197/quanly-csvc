@@ -19,7 +19,6 @@ class ThanhLyComponent extends Component {
 	handleGetListTable = (resourceTL) =>{
 		var itemsThanhLy = resourceTL.thanhly
 		var itemsTaisan = resourceTL.taisan
-		// var itemsUser  = resourceTL.user
 		var b =[]
 		itemsThanhLy.map(item => {
 
@@ -38,7 +37,6 @@ class ThanhLyComponent extends Component {
 	}
 
 	componentWillReceiveProps(props, state) {
-		// console.log("Next props", props);
 		const data = this.handleGetListTable(props.resource || []);
 		this.setState({
 			data,
@@ -87,24 +85,23 @@ class ThanhLy extends Component {
 		const parentKey = Object.keys(navBar)
 		return (
 			<div>
-		
-			<NavBar
-			match={match}
-			parentKey={parentKey}
-			navBar={navBar}
-			title= {"Thanh lý"}
-			/>
+				<NavBar
+				match={match}
+				parentKey={parentKey}
+				navBar={navBar}
+				title= {"Thanh lý"}
+				/>
 
-			<QLCSVCContext.Consumer>
-				{({ resource, deleteContextTS,  addContextTS}) => {
-					return (
-						<ThanhLyComponent 
-							rows={rows}
-							match={match}
-							resource={resource}
-						/>
-				)}}
-			</QLCSVCContext.Consumer>
+				<QLCSVCContext.Consumer>
+					{({ resource, deleteContextTS,  addContextTS}) => {
+						return (
+							<ThanhLyComponent 
+								rows={rows}
+								match={match}
+								resource={resource}
+							/>
+					)}}
+				</QLCSVCContext.Consumer>
 			</div>
 		);
 	}
