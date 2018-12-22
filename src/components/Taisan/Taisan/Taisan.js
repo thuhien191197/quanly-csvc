@@ -25,7 +25,7 @@ class TableComponent extends Component {
 		super(props);
 		const data = this.handleGetListTable(props.resource || []);
 		this.state = {
-			data: [],
+			data,
 			openDieuChuyen: false,
 			openDieuChuyenNhieu: false,
 			openThanhLyNhieu: false,
@@ -52,9 +52,6 @@ class TableComponent extends Component {
 				'dongia': item.dongia, 
 				'soluong': item.soluong, 
 				'ngaynhap': item.ngaynhap, 
-				// 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
-				// 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
-				// 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
 				'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
 				'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
 				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
@@ -126,11 +123,6 @@ class TableComponent extends Component {
 
 
 	handleDeleteSelect = data => () => {
-		// if (data.label === 'React') {
-		//   alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
-		//   return;
-		// }
-	
 		this.setState(prev => {
 		  	const selectData = [...prev.selectedTS];
 		//   const chipToDelete = selectData.indexOf(data);
@@ -274,7 +266,6 @@ class Taisan extends Component {
 	render() {
 		const { match, classes } = this.props
 		const { value, navBar } = this.state;
-		
 		return (
 			<div>
 				
@@ -282,13 +273,12 @@ class Taisan extends Component {
 					<Route path="/taisan" exact render={this.render1}></Route>
 					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
 					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
-					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
+					<Route exact path="/taisan/Danh sách thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
 					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
 					{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
 				</Switch>
 			</div>
-			
 		)
 		
 	}

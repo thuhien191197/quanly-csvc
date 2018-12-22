@@ -197,8 +197,8 @@ class Main extends Component {
 						route: 'Danh sách điều chuyển',
 					},
 					thanhly:{
-						name: 'Thanh Lý',
-						route: 'Thanh lý',
+						name: 'Danh sách thanh lý',
+						route: 'Danh sách thanh lý',
 					},
 					thongke:{
 						name: 'Thống Kê',
