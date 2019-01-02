@@ -10,7 +10,7 @@ export default class Login extends Component {
     }
     this.handleChangeUsername = this.handleChangeUsername.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
-    this.login = this.login.bind(this);
+    // this.login = this.login.bind(this);
   }
   
   handleChangePassword(event) {
@@ -23,28 +23,28 @@ export default class Login extends Component {
      console.log("change un")
   }
 
-  login() {
-     var form = new FormData()
-      form.append("username", this.state.username)
-      form.append("password", this.state.password)
-      console.log(form.get("username"))
-      console.log(form.get("password"))
-      axios({
-          method:'post',
-          url:'http://csvc.com/api/login',
-          headers: { 'content-type': 'application/x-www-form-urlencoded' },
-          data: form,
-          // headers: {'Content-Type': 'multipart/form-data' }
-        })
-        .then(function (response) {
-            console.log(response)
-            var d = new Date();
-            d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-            var expires = "expires="+d.toUTCString();
-            window.document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
-            window.location.reload();
-          });
-  }
+  // login() {
+  //    var form = new FormData()
+  //     form.append("username", this.state.username)
+  //     form.append("password", this.state.password)
+  //     console.log(form.get("username"))
+  //     console.log(form.get("password"))
+  //     axios({
+  //         method:'post',
+  //         url:'/api/login',
+  //         headers: { 'content-type': 'application/x-www-form-urlencoded' },
+  //         data: form,
+  //         // headers: {'Content-Type': 'multipart/form-data' }
+  //       })
+  //       .then(function (response) {
+  //           console.log(response)
+  //           var d = new Date();
+  //           d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+  //           var expires = "expires="+d.toUTCString();
+  //           window.document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
+  //           window.location.reload();
+  //         });
+  // }
 
   render() {
     return (
@@ -62,8 +62,8 @@ export default class Login extends Component {
             <h2>Login</h2>
           </div>
           <div className="component">
-            <form id="login">
-              <input type="text" name="user" placeholder="EMAIL" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
+            <form id="login" action="/api/login" method="POST">
+              <input type="text" name="username" placeholder="EMAIL" value={this.state.username} onChange={this.handleChangeUsername} required id="username" />
               <input type="password" name="password" placeholder="PASSWORD"value={this.state.usernamePassword} onChange={this.handleChangePassword} required id="password" />
               <ul className="agileinfotickwthree">
                                                                                     <li>
@@ -74,7 +74,7 @@ export default class Login extends Component {
               </ul>
 
               <div className="aitssendbuttonw3ls">
-                <button type="submit" value="LOGIN" id="loginbtn" className="button_Login" onClick={this.login}>
+                <button type="submit" value="LOGIN" id="loginbtn" className="button_Login" >
                   Login
                 </button>
                 <div className="clear" />
