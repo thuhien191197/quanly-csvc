@@ -45,7 +45,7 @@ class App extends Component {
 	  }
 }
 
-// import GuestPage from './components/Guess/GuestPage';
+import GuestPage from './components/Guess/GuestPage';
 // import Login from './components/Login/Login';
 
 
@@ -89,21 +89,21 @@ class App extends Component {
 // 	  }
 // }
 
-// class App extends Component {
-// 	render() {
-// 	  return (
-// 		<Router>
-// 			<Switch>
-// 				<Route exact path="/qlcsvc" component={GuestPage} />
+class App extends Component {
+	render() {
+	  return (
+		<Router>
+			<Switch>
+				<Route exact path="/qlcsvc" component={GuestPage} />
 				
-// 				<Route exact path="/login" component={Login} />
-// 				<Main />
+				<Route exact path="/login" component={Login} />
+				<Main />
 				
-// 			</Switch>
-// 		</Router>
-// 	  );
-// 	}
-//   }
+			</Switch>
+		</Router>
+	  );
+	}
+  }
 // >>>>>>> origin/feature/ThuHien
 
 export default App

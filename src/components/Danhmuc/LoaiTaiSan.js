@@ -14,6 +14,7 @@ class LoaiTaiSan extends Component {
 			<div>
 				Loai LoaiTaiSan		
 				{getParentPath(match.url)}
+				dddd
 			</div>
 		);
 	}
