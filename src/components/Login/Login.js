@@ -26,19 +26,21 @@ export default class Login extends Component {
   login() {
 		let formdata = new FormData();
 		console.log(this.state.username, this.state.password)
-      	formdata.append("username", JSON.stringify(this.state.username))
+    formdata.append("username", JSON.stringify(this.state.username))
 		formdata.append("password", JSON.stringify(this.state.password))
 		console.log("formdatadata", formdata)
 		axios({
           method:'post',
-          url:'http://localhost:5000/login',
-		  data: {
-			username: this.state.username,
-			password: this.state.password
-			},
-		headers: {
-        'Content-Type': 'application/json'
-    	}
+          url:'http://csvc.com/api/login',
+		      data: formdata 
+      // {
+
+			 // username: this.state.username,
+			 // password: this.state.password
+			// },
+		  // headers: {
+    //     'Content-Type': 'application/json'
+    // 	}
         })
         .then(function(response) {
             console.log(response)

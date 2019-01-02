@@ -52,41 +52,16 @@ class TableComponent extends Component {
 				'dongia': item.dongia, 
 				'soluong': item.soluong, 
 				'ngaynhap': item.ngaynhap, 
-				// 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
-				// 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
-				// 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
 				'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
 				'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
 				'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
-				
 			};
 			b.push(a);
 		}
-
-
-		// itemsTaisan.map(item => {
-		// 	var getNameUser = R.filter(R.propEq("id", item.id_user))
-		// 	var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
-		// 	var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-			
-		// 	console.log("[TaiSAn] itemsUser :", itemsUser)
-		// 	console.log("[TaiSAn] getNameDonvi(itemsUser)[0]:", getNameDonvi(itemsUser)[0])
-		// 	const a = {'id' :item.id, 
-		// 		'name': item.name, 
-		// 		'dongia': item.dongia, 
-		// 		'soluong': item.soluong, 
-		// 		'ngaynhap': item.ngaynhap, 
-		// 		'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 
-		// 		'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 
-		// 		'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:'',
-		// 	};
-		// 	b.push(a);
-		// })
 		return b
 	}
 
 	componentWillReceiveProps(props, state) {
-		// console.log("Next props", props);
 		const data = this.handleGetListTable(props.resource || []);
 		this.setState({
 			data,
@@ -94,18 +69,16 @@ class TableComponent extends Component {
 	}
 
 	handleDelete = (selected) => {
-		// console.log("[TaiSan] props:", this.props)
 		var itemsTaisan = this.props.resource.taisan;
 		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsTaisan);
 		this.props.deleteContextTS(dataDeleted);
-		
 		
 		selected.forEach(function(select, i) {
 			fetch('http://localhost:5500/taisan/'+ select, {
 				method: 'DELETE'
 			});
 		});
-		this.setState({selected: [] });
+		// this.setState({selected: [] });
 	}
 
 
@@ -120,6 +93,7 @@ class TableComponent extends Component {
 	handleCloseDieuChuyen = () => {
 		this.setState({ openDieuChuyen: false });
 	};
+
 	// mở ra điều chuyển số lượng nhiều đến nhiều Đơn vị
 	handleClickOpenNhieu = (selected) => {
 		console.log("[TaiSan] Im here:")
@@ -149,11 +123,6 @@ class TableComponent extends Component {
 
 
 	handleDeleteSelect = data => () => {
-		// if (data.label === 'React') {
-		//   alert('Why would you want to delete React?! :)'); // eslint-disable-line no-alert
-		//   return;
-		// }
-	
 		this.setState(prev => {
 		  	const selectData = [...prev.selectedTS];
 		//   const chipToDelete = selectData.indexOf(data);
@@ -198,6 +167,7 @@ class TableComponent extends Component {
 					handleDelete = {this.handleDelete}  
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
+					handleClickOpenThanhLy = {this.handleClickOpenThanhLy}
 					// selectApp={selectApp}
 					
 				/>
@@ -296,7 +266,6 @@ class Taisan extends Component {
 	render() {
 		const { match, classes } = this.props
 		const { value, navBar } = this.state;
-		
 		return (
 			<div>
 				
@@ -304,13 +273,12 @@ class Taisan extends Component {
 					<Route path="/taisan" exact render={this.render1}></Route>
 					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
 					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
-					<Route exact path="/taisan/Thanh lý" render={() => <ThanhLy />} />
+					<Route exact path="/taisan/Danh sách thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
 					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
 					{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
 				</Switch>
 			</div>
-			
 		)
 		
 	}

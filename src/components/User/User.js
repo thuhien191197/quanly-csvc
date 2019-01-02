@@ -16,7 +16,6 @@ const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 const toolbarStyles = theme => ({
 	rootUser:{
 		// width: "100%",
-		
 	},
 });
 
@@ -28,6 +27,7 @@ class UserComponent extends Component {
 			data,
 		}
 	}
+
 	handleGetListTable = (resourceUser) =>{
 		var itemsUser  = resourceUser.user
 		var itemsDonVi  = resourceUser.donvi
@@ -38,15 +38,15 @@ class UserComponent extends Component {
 			var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
 			var getNameRole = R.filter(R.propEq("id", item.id_role))
 			console.log("getNameDonvi(itemsDonVi)[0].name:",getNameDonvi(itemsDonVi)[0])
-
-			const a = {'id' :item.id, 
-						'username': item.username , 
-						'fullname': item.fullname ,
-						'avatar': item.avatar ,
-						'phone': item.phone , 
-						'id_donvi': item.id_donvi ? R.path([0,'name'],getNameDonvi(itemsDonVi)) : '', 
-						'id_role': item.id_role ? R.path([0,'name'],getNameRole(itemsRole)) : ''
-					};
+			const a = {
+				'id' :item.id, 
+				'username': item.username , 
+				'fullname': item.fullname ,
+				'avatar': item.avatar ,
+				'phone': item.phone , 
+				'id_donvi': item.id_donvi ? R.path([0,'name'],getNameDonvi(itemsDonVi)) : '', 
+				'id_role': item.id_role ? R.path([0,'name'],getNameRole(itemsRole)) : ''
+			};
 			b.push(a);
 		})
 		return b
@@ -65,7 +65,6 @@ class UserComponent extends Component {
 		var itemsUser = this.props.resource.user;
 		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsUser);
 		this.props.deleteContextUser(dataDeleted);
-		
 		
 		selected.forEach(function(select, i) {
 			fetch('http://localhost:5500/user/'+ select, {
@@ -109,7 +108,7 @@ class User extends Component {
 
 		navBar : {
 			danhsachTS:{
-				route:"/user",
+				// route:"/user",
 				title: "Danh sách người dùng",
 				// component: "DanhSachTaiSan"
 			},
@@ -119,7 +118,7 @@ class User extends Component {
 		const { match, classes } = this.props
 		const { rows, navBar } = this.state
 		const parentKey = Object.keys(navBar)
-		const title = getParentPath(match.url)
+		// const title = getParentPath(match.url)
 		return (
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextUser}) => {
@@ -160,7 +159,6 @@ class User extends Component {
 		.then(res => {
 			console.log("Edit done");
 		})
-      
 	}
 
 	render() {

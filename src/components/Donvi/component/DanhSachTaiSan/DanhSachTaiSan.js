@@ -85,14 +85,13 @@ class DSTSComponent extends Component {
 		const {data} = this.state
 		return(
 			<div>
-				DanhSachTaiSan
+				{/* DanhSachTaiSan */}
 				<Table1
 					rows={rows} 
 					items={data} 
 					handleDelete = {this.handleDelete}  
 					handleClickOpen = {this.handleClickOpen}
 					handleClickOpenNhieu = {this.handleClickOpenNhieu}
-					// selectApp={selectApp}
 				/>
 			</div>
 		)

@@ -53,7 +53,12 @@ const toolbarStyles = theme => ({
 	},
 	header:{
 		position: "initial",
+	},
+	imgThanhLy:{
+		width:'7em',
+		height:'7em',
 	}
+
 
 });
 function desc(a, b, orderBy){
@@ -250,7 +255,7 @@ class Table1 extends Component {
 												<Tooltip title="Thanh lý tài sản">
 													<IconButton 
 														aria-label="Điều chuyển"
-														onClick={() => this.props.handleClickThanhLyOpen(selected)}
+														onClick={() => this.props.handleClickOpenThanhLy(selected)}
 													>
 														<i class="fas fa-folder-minus"></i>
 													</IconButton>
@@ -390,8 +395,12 @@ class Table1 extends Component {
 												<TableCell key={idRow} component="th" scope="row" padding="none">
 													{row.id !== "function"
 													?
-														row.id != "avatar"
-														? item[row.id]
+														// nếu có hình ảnh thì hiển thị Hình
+														row.id !== "avatar"
+														? 
+															row.id !== "image"
+															? item[row.id]
+															: <img className={classes.imgThanhLy} src={item[row.id]}/>
 														: <img className={classes.imgUser} src={item[row.id]}/>
 													:
 													funcs.map((func, i) => {

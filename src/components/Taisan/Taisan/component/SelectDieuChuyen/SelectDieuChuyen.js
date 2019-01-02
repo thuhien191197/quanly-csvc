@@ -83,8 +83,6 @@ class SelectDieuChuyenComponent extends Component {
 		}
 	}
 	handleGetListSoLuong = (selected, resourceTS) =>{
-
-		
 		var arr = []
 		// const {selectedTS, resource} = this.props
 		var  lengthSelect = selected.length
@@ -132,9 +130,7 @@ class SelectDieuChuyenComponent extends Component {
 			id_taisan,
 			id_phong,
 			id_donvi,
-
 			arrSoLuong
-
 		} = this.state;
 		const DieuChuyenTS = props => <Link to={`${match.url}/dieuchuyentaisan`} {...props} />
 		console.log("[SelectDieuChuyen] arrSoLuong:",arrSoLuong)

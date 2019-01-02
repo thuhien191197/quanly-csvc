@@ -31,15 +31,17 @@ export default class Login extends Component {
       console.log(form.get("password"))
       axios({
           method:'post',
-          url:'http://localhost:5000/login',
-          data: form
+          url:'http://csvc.com/api/login',
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+          data: form,
+          // headers: {'Content-Type': 'multipart/form-data' }
         })
         .then(function (response) {
             console.log(response)
             var d = new Date();
             d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
             var expires = "expires="+d.toUTCString();
-            document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
+            window.document.cookie = "_token_jwt=" + response.data.token + ";" + expires + ";path=/";
             window.location.reload();
           });
   }
