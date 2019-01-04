@@ -27,11 +27,12 @@ import Taisan from '../Taisan/Taisan/Taisan';
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
+
 const styles = theme => ({
 	margin: {
 		margin: theme.spacing.unit * (-5),
 		color: "white",
-		marginBottom: '-8px'
+		marginBottom: '-24px'
 	},
 	padding: {
 	  	padding: `0 ${theme.spacing.unit * 2}px`,
@@ -53,9 +54,15 @@ const styles = theme => ({
 		opacity: "1",
 		backgroundColor: theme.palette.background.paper,
 	},
-	popperUser:{
+	popperNoti:{
 		marginLeft: '-144px'
-	}
+	},
+	user:{
+		marginTop: '-13px'
+	},
+	popperUser:{
+		marginLeft: '-80px'
+	},
 });
 
 export const resource = {
@@ -216,6 +223,7 @@ class Main extends Component {
 			}
 		},
 		open: false,
+		openUserProfile: false
 
 	};
 	// -------------- TÀI SẢN 
@@ -561,23 +569,38 @@ class Main extends Component {
 		
 	}
 
-	//---- menu user
+	//---- menu thông báo
 	handleToggle = () => {
 		this.setState(state => ({ open: !state.open }));
-	  };
-	
-	  handleClose = event => {
+	};
+	handleClose = event => {
 		if (this.anchorEl.contains(event.target)) {
 		  return;
 		}
 		this.setState({ open: false });
-	  };
+	};
+	//---- menu user profile
+	handleToggleUserProfile = () => {
+		this.setState(state => ({ openUserProfile: !state.openUserProfile }));
+	};
+
+	handleCloseUserProfile = event => {
+		if (this.anchorEl.contains(event.target)) {
+		  return;
+		}
+		this.setState({ openUserProfile: false });
+	};
+	
 	render() {
 		var {sidebar} = this.state;
 		const {classes } = this.props
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
-		console.log("[Main] sidebar: ", this.state.sidebar)
-		// console.log("[Main] resource: ", this.state.resource);
+		// console.log("[Main] sidebar: ", this.state.sidebar)
+		console.log("[Main] match: ", this.props.match);
+
+		//const linkLogOut = props => 
+		
+
 		return (
 			<div className="s-layout">
 				<div className="s-layout__sidebar">
@@ -605,13 +628,13 @@ class Main extends Component {
 									anchorEl={this.anchorEl} 
 									transition disablePortal
 									placement="bottom-end"
-									className={classes.popperUser}
+									className={classes.popperNoti}
 								>
 									{({ TransitionProps, placement }) => (
 									<Grow
 										{...TransitionProps}
 										id="menu-list-grow"
-										className={classes.popperUser}
+										className={classes.popperNoti}
 										style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
 									>
 										<Paper>
@@ -637,11 +660,53 @@ class Main extends Component {
 									</Grow>
 									)}
 								</Popper>
-
-
 							</li>
+										
+							{/* User profile */}
 							<li className="rad-dropdown no-color">
-								<Avatar  alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg" className={classes.avatar} />
+								<IconButton aria-label="4 pending messages" 
+									className={classes.user}
+									buttonRef={node => {
+										this.anchorEl = node;
+									}}
+									aria-owns={this.state.openUserProfile ? 'menu-list-grow' : undefined}
+									aria-haspopup="true"
+									onClick={this.handleToggleUserProfile}
+								>
+									<Avatar  alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg" className={classes.avatar} />
+								</IconButton>
+								<Popper 
+									open={this.state.openUserProfile} 
+									anchorEl={this.anchorEl} 
+									transition disablePortal
+									placement="bottom-end"
+									className={classes.popperUser}
+								>
+									{({ TransitionProps, placement }) => (
+									<Grow
+										{...TransitionProps}
+										id="menu-list-grow"
+										className={classes.popperUser}
+										style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+									>
+										<Paper>
+										<ClickAwayListener onClickAway={this.handleCloseUserProfile}>
+											<List dense className={classes.menuItems}>
+												<ListItem button divider>
+													<i style={{color: 'black'}} class="far fa-user-circle"></i>
+													<ListItemText primary="Profile" />
+												</ListItem>		
+												<ListItem button divider >
+													<i style={{color: 'black'}} class="fas fa-sign-out-alt"></i>
+													{/* <ListItemText primary="Log out" /> */}
+													<a style={{color: 'black'}} href="/api/logout">Log out</a>
+												</ListItem>			
+											</List>
+										</ClickAwayListener>
+										</Paper>
+									</Grow>
+									)}
+								</Popper>
 							</li>
 						</ul>
 						

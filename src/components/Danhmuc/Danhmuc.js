@@ -63,7 +63,7 @@ class DanhmucComponent extends Component {
 				method: 'DELETE'
 			});
 		});
-		this.setState({selected: [] });
+		// this.setState({selected: [] });
 	}
 
 	render() {

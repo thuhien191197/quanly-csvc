@@ -22,3 +22,15 @@ You will also see any lint errors in the console.
 ScrollBar: https://codepen.io/devstreak/pen/dMYgeO
 
 
+## config NGIX
+
+### INSTALL NGINX
+		sudo apt-get update
+		sudo apt-get install nginx
+
+### GO TO FOLDER /etc/nginx/sites-enabled add file csvc.conf
+
+### OPEN FILE /etc/hosts, add line 
+		127.0.0.1 	csvc.com
+### remember run before run app
+		sudo nginx -s reload 

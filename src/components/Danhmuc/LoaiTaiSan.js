@@ -138,6 +138,7 @@ class LoaiTaiSan extends Component {
 		const parentKey = Object.keys(navBar)
 		console.log(">>>match :" , match)
 		return (
+
 			<QLCSVCContext.Consumer>
 				{({ resource, deleteContextTS}) => {
 					return (

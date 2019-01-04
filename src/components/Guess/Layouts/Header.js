@@ -25,7 +25,9 @@ export default props =>
                     <Typography variant="h6" color="inherit" style={styles.grow}>
                         QLCSVC
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {/* <Button color="inherit" >Login</Button> */}
+					<a href="/api/logout">Login</a>
+
                 </Toolbar>
             </AppBar>
         </div>

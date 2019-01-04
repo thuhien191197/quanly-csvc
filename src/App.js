@@ -7,46 +7,9 @@ import Main from "./components/Main/Main";
 import Sidebar from './components/Main/Main'
 import axios from 'axios';
 import Login from "./components/LoginNew/Login";
-import GuestPage from "./components/Guess/GuestPage";
+// import GuestPage from "./components/Guess/GuestPage";
 
-// class App extends Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 		authentication: false
-// 		}
-// 	}
-// 	async componentDidMount() {
-// 		// var self = this
-// 		const response = await axios({
-// 			method: 'get',
-// 			url: 'http://localhost:5000/admin/hello',
-// 			withCredentials:true
-// 		})
-// 		if(response.data.status == "ok") {
-// 			this.setState({
-// 				authentication : true
-// 			})
-// 		}
-// 	}
-// 	render() {
-// 		if(this.state.authentication) {
-// 			return (
-// 				<Router>
-// 					<Sidebar />
-// 				</Router>
-// 			)
-			
-// 		} 
-// 		return (
-// 			<div>
-// 				<Login/>
-// 			</div>
-// 		)
-// 	  }
-// }
-
-// import GuestPage from './components/Guess/GuestPage';
+import GuestPage from './components/Guess/GuestPage';
 // import Login from './components/Login/Login';
 
 
@@ -61,7 +24,7 @@ class App extends Component {
 		// var self = this
 		const response = await axios({
 			method: 'get',
-			url: 'http://localhost:5000/admin/hello',
+			url: 'http://csvc.com/api/admin/hello',
 			withCredentials:true
 		})
 		if(response.data.status === "ok") {
@@ -75,33 +38,39 @@ class App extends Component {
 			return (
 				<Router>
 					<Switch>
-						<Route exact path="/qlcsvc" component={GuestPage} />
+						{/* <Route exact path="/qlcsvc" component={GuestPage} /> */}
 						<Main />
 					</Switch>
 				</Router>
 			)
-			
 		} 
 		return (
-			<div>
-				<Login/>
-			</div>
+			<Router>
+				<Switch>
+					<Route exact path="/qlcsvc" component={GuestPage} />
+					<Login/>
+				</Switch>
+			</Router>
+		
 		)
 	  }
 }
 
 // class App extends Component {
 // 	render() {
-// 		return (
-// 			<Router>
-// 				<Switch>
-// 					<Route exact path="/qlcsvc" component={GuestPage} />
-// 					<Route exact path="/login" component={Login} />
-// 					<Main />
-// 				</Switch>
-// 			</Router>
-// 		);
+
+// 	  return (
+// 		<Router>
+// 			<Switch>
+// 				<Route exact path="/qlcsvc" component={GuestPage} />
+// 				<Route exact path="/login" component={Login} />
+// 				<Main />
+				
+// 			</Switch>
+// 		</Router>
+// 	  );
 // 	}
-// }
+//   }
+// >>>>>>> origin/feature/ThuHien
 
 export default App
