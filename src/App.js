@@ -50,60 +50,58 @@ import GuestPage from "./components/Guess/GuestPage";
 // import Login from './components/Login/Login';
 
 
-// class App extends Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 		authentication: false
-// 		}
-// 	}
-// 	async componentDidMount() {
-// 		// var self = this
-// 		const response = await axios({
-// 			method: 'get',
-// 			url: 'http://localhost:5000/admin/hello',
-// 			withCredentials:true
-// 		})
-// 		if(response.data.status === "ok") {
-// 			this.setState({
-// 				authentication : true
-// 			})
-// 		}
-// 	}
-// 	render() {
-// 		if(this.state.authentication) {
-// 			return (
-// 				<Router>
-// 					<Switch>
-// 						<Route exact path="/qlcsvc" component={GuestPage} />
-// 						<Main />
-// 					</Switch>
-// 				</Router>
-// 			)
-			
-// 		} 
-// 		return (
-// 			<div>
-// 				<Login/>
-// 			</div>
-// 		)
-// 	  }
-// }
-
 class App extends Component {
-	render() {
-	  return (
-		<Router>
-			<Switch>
-				<Route exact path="/qlcsvc" component={GuestPage} />
-				<Route exact path="/login" component={Login} />
-				<Main />
-				
-			</Switch>
-		</Router>
-	  );
+	constructor(props) {
+		super(props);
+		this.state = {
+		authentication: false
+		}
 	}
-  }
-// >>>>>>> origin/feature/ThuHien
+	async componentDidMount() {
+		// var self = this
+		const response = await axios({
+			method: 'get',
+			url: 'http://localhost:5000/admin/hello',
+			withCredentials:true
+		})
+		if(response.data.status === "ok") {
+			this.setState({
+				authentication : true
+			})
+		}
+	}
+	render() {
+		if(this.state.authentication) {
+			return (
+				<Router>
+					<Switch>
+						<Route exact path="/qlcsvc" component={GuestPage} />
+						<Main />
+					</Switch>
+				</Router>
+			)
+			
+		} 
+		return (
+			<div>
+				<Login/>
+			</div>
+		)
+	  }
+}
+
+// class App extends Component {
+// 	render() {
+// 		return (
+// 			<Router>
+// 				<Switch>
+// 					<Route exact path="/qlcsvc" component={GuestPage} />
+// 					<Route exact path="/login" component={Login} />
+// 					<Main />
+// 				</Switch>
+// 			</Router>
+// 		);
+// 	}
+// }
 
 export default App

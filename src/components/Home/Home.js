@@ -190,14 +190,14 @@ class HomeComponent extends Component {
 						<div className={classes.cardPricing}>
 							<Typography component="h2" variant="h3" color="textPrimary">
 							{tier.title === 'Tài Sản'
-							?
+							?	
 								resource.taisan.length.toString()
 							:
 							''
 							}
 							</Typography>
 							<Typography variant="h6" color="textSecondary">
-							/người
+							/tài sản
 							</Typography>
 						</div>
 						: ''}
@@ -213,7 +213,7 @@ class HomeComponent extends Component {
 							}
 							</Typography>
 							<Typography variant="h6" color="textSecondary">
-							/tài sản
+							/người
 							</Typography>
 						</div>
 						: ''}
