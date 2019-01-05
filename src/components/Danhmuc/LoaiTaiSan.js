@@ -120,7 +120,7 @@ class LoaiTaiSan extends Component {
 			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
 			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
 			{ id: 'id_danhmuc', numeric: false, disablePadding: false, label: 'Loai tài sản' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add'] },
 		],
 
 		navBar : {

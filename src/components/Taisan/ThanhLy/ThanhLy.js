@@ -69,7 +69,7 @@ class ThanhLy extends Component {
 			{ id: 'soluong', numeric: false, disablePadding: false, label: 'Số lượng' },
 			{ id: 'image', numeric: false, disablePadding: false, label: 'Hình ảnh' },
 			{ id: 'id_taisan', numeric: false, disablePadding: false, label: 'Tài sản' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['back'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['back', ] },
 		],
 		navBar : {
 			danhsachDC:{

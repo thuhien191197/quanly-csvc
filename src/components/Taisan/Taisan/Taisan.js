@@ -10,6 +10,7 @@ import ThongKe from '../ThongKe/ThongKe';
 import axios from 'axios';
 import AddTS from './component/AddTS/AddTS';
 import EditTS from './component/EditTS/EditTS';
+import ViewTS from './component/ViewTS/ViewTS';
 import { QLCSVCContext } from '../../Main/Main';
 import { withRouter } from "react-router";
 import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
@@ -187,7 +188,7 @@ class Taisan extends Component {
 			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit','dieuchuyen','thanhly'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit','dieuchuyen','thanhly', 'add','view'] },
 		],
 
 		navBar : {
@@ -261,7 +262,6 @@ class Taisan extends Component {
 		.then(res => {
 			console.log("Edit done");
 		})
-      
 	}
 	render() {
 		const { match, classes } = this.props
@@ -276,6 +276,7 @@ class Taisan extends Component {
 					<Route exact path="/taisan/Danh sách thanh lý" render={() => <ThanhLy />} />
 					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
 					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
+					<Route exact path="/taisan/view/:id" component={() => <ViewTS  />}></Route>
 					{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}
 				</Switch>
 			</div>

@@ -103,7 +103,7 @@ class QuanLyPhong extends Component {
 		rows : [
 			{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
 			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
-			{ id: 'function', numeric: false, disablePadding: true, label: 'Chức năng', function:['edit'] },
+			{ id: 'function', numeric: false, disablePadding: true, label: 'Chức năng', function:['edit', 'add'] },
 		],
 	}
 

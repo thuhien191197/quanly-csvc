@@ -98,6 +98,7 @@ const editContextKinhPhi = () => {};
 const deleteContextKinhPhi = () => {};
 const addContextTL = () => {};
 
+const sessionUser={}
 
 
 // Creact Context
@@ -120,14 +121,16 @@ export const QLCSVCContext = React.createContext(
 	addContextKinhPhi,
 	editContextKinhPhi,
 	deleteContextKinhPhi,
-	addContextTL
+	addContextTL,
+	sessionUser
 );
 
 
 
 class Main extends Component {
-
-	state = {
+	constructor(props) {
+		super(props);
+	this.state = {
 		resource: {
 			user: resource.user,
 			role: resource.role,
@@ -141,7 +144,7 @@ class Main extends Component {
 			thanhly:resource.thanhly,
 			thongbao:resource.thongbao
 		},
-
+		sessionUser:sessionUser,
 		sidebar : {
 			home:{
 				id: 0,
@@ -226,6 +229,7 @@ class Main extends Component {
 		openUserProfile: false
 
 	};
+}
 	// -------------- TÀI SẢN 
 	editContextTS = (item) => {
 		// console.log('Edit Item context', this.state.resource.taisan);
@@ -235,10 +239,10 @@ class Main extends Component {
 			const changeIndex = _.findIndex(newTaiSan, {id: item.id})
 			newTaiSan[changeIndex] = item;
 
-			console.log('Edit context', {
-				...prev.resource,
-				taisan: newTaiSan,
-			});
+			// console.log('Edit context', {
+			// 	...prev.resource,
+			// 	taisan: newTaiSan,
+			// });
 
 			return {
 				resource: {
@@ -253,7 +257,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newTaiSan = [...prev.resource.taisan];
 			newTaiSan.push(item);
-			console.log('[Main] newTaiSan:',newTaiSan );
+			// console.log('[Main] newTaiSan:',newTaiSan );
 			return {
 				resource: {
 					...prev.resource,
@@ -279,7 +283,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newDieuChuyen = [...prev.resource.chuyentaisan];
 			newDieuChuyen.push(item);
-			console.log('[Main] newDieuChuyen:',newDieuChuyen );
+			// console.log('[Main] newDieuChuyen:',newDieuChuyen );
 			return {
 				resource: {
 					...prev.resource,
@@ -293,7 +297,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newUser = [...prev.resource.user];
 			newUser.push(item);
-			console.log('[Main] newUser:',newUser );
+			// console.log('[Main] newUser:',newUser );
 			return {
 				resource: {
 					...prev.resource,
@@ -340,7 +344,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newPhong = [...prev.resource.phong];
 			newPhong.push(item);
-			console.log('[Main] newPhong:',newPhong );
+			// console.log('[Main] newPhong:',newPhong );
 			return {
 				resource: {
 					...prev.resource,
@@ -397,7 +401,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newDM = [...prev.resource.danhmuc];
 			newDM.push(item);
-			console.log('[Main] newDM:',newDM );
+			// console.log('[Main] newDM:',newDM );
 			return {
 				resource: {
 					...prev.resource,
@@ -436,7 +440,7 @@ class Main extends Component {
 		this.setState(prev =>{
 			const newKP = [...prev.resource.nguonkinhphi];
 			newKP.push(item);
-			console.log('[Main] newKP:',newKP );
+			// console.log('[Main] newKP:',newKP );
 			return {
 				resource: {
 					...prev.resource,
@@ -489,7 +493,7 @@ class Main extends Component {
 
 	addChildren(key, children) {
 		const childrenObj = Object.assign({}, children)
-		console.log("[Main] childrenObj: ", childrenObj)
+		// console.log("[Main] childrenObj: ", childrenObj)
 		
 		this.setState(({sidebar}) => ({
 			sidebar: {
@@ -525,6 +529,11 @@ class Main extends Component {
 		// console.log("parentId:",parentId)
 		this.toggleDropdown(parentId)
 		
+		axios.get('http://csvc.com/api/admin/hello')
+		.then((res) => {
+			this.setState({sessionUser: res.data});
+		});
+		
 		// Handle Axios
 		const user = await axios.get('http://localhost:5500/user')
 		const role = await axios.get('http://localhost:5500/role')
@@ -538,6 +547,8 @@ class Main extends Component {
 		const nguonkinhphi = await axios.get('http://localhost:5500/nguonkinhphi')
 		const thongbao = await axios.get('http://localhost:5500/thongbao')
 		
+
+
 		
 		// Add Children
 		this.addChildren('donvi', donvi.data);
@@ -596,10 +607,9 @@ class Main extends Component {
 		const {classes } = this.props
 		const parentKey = Object.keys(sidebar) // ['donvi', 'danhmuc']
 		// console.log("[Main] sidebar: ", this.state.sidebar)
-		console.log("[Main] match: ", this.props.match);
-
-		//const linkLogOut = props => 
-		
+		// console.log("[Main] match: ", this.props.match);
+		// console.log("[Main] sessionUser.role:", this.state.sessionUser.role)
+		const linkLogOut = props => <Link to={`${this.props.match.url}/api/logout`} {...props} />
 
 		return (
 			<div className="s-layout">
@@ -673,7 +683,7 @@ class Main extends Component {
 									aria-haspopup="true"
 									onClick={this.handleToggleUserProfile}
 								>
-									<Avatar  alt="IMG_0432 - 3x4" src="https://farm2.staticflickr.com/1738/42575021701_788f8b74b0_z.jpg" className={classes.avatar} />
+									<Avatar  alt="IMG_0432 - 3x4" src={this.state.sessionUser.avatar} className={classes.avatar} />
 								</IconButton>
 								<Popper 
 									open={this.state.openUserProfile} 
@@ -760,9 +770,12 @@ class Main extends Component {
 																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
 																				
 																			:
-																				<MenuLink className="s-sidebar__nav-linksub" to={{
+																			// Nếu Role != 3 thì cho show Nguon khi phí
+																			this.state.sessionUser.role !== 3
+																				?<MenuLink className="s-sidebar__nav-linksub" to={{
 																					pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
 																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																				:''
 																	:
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name + '/danhsachtaisan',
@@ -772,8 +785,6 @@ class Main extends Component {
 																		pathname: '/'+ key,
 																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
 																}
-																
-															
 															</li>
 															:
 															''
@@ -814,7 +825,8 @@ class Main extends Component {
 						addContextKinhPhi:this.addContextKinhPhi ,
 						editContextKinhPhi: this.editContextKinhPhi,
 						deleteContextKinhPhi: this.deleteContextKinhPhi,
-						addContextTL: this.addContextTL
+						addContextTL: this.addContextTL,
+						sessionUser:this.state.sessionUser
 					}}
 				>
 					<main className="s-layout__content">

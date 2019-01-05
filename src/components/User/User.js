@@ -103,7 +103,7 @@ class User extends Component {
 			{ id: 'phone', numeric: false, disablePadding: false, label: 'Số điện thoại' },
 			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
 			{ id: 'id_role', numeric: false, disablePadding: false, label: 'Chức vụ' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add'] },
 		],
 
 		navBar : {

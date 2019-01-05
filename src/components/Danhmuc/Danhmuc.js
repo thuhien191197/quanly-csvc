@@ -20,11 +20,18 @@ class DanhmucComponent extends Component {
 	constructor(props) {
 		super(props);
 		const data = this.handleGetListTable(props.resource || []);
-		console.log("[Danhmuc] props.resource :", props.resource )
+
+		// let roleadd = true
+		// if(props.sessionUser.role === 3){
+		// 	roleadd = false
+		// }
+		// console.log("[Danhmuc]>>> roleadd :", roleadd )
 		this.state = {
 			data,
-			selectedTS: []
+			selectedtrueS: [],
+			// roleAdd: roleadd
 		}
+	
 	}
 
 	handleGetListTable = (resourceTS) =>{
@@ -46,9 +53,16 @@ class DanhmucComponent extends Component {
 	componentWillReceiveProps(props, state) {
 		// console.log("Next props", props);
 		const data = this.handleGetListTable(props.resource || []);
-		this.setState({
-			data,
-		})
+		
+		// Check Role user = 3 thì ẩn nút Add
+		// let roleadd = this.state.roleAdd
+		// if(props.sessionUser.role === 3){
+		// 	roleadd = false
+		// }
+		// this.setState({
+		// 	data,
+		// 	roleAdd: roleadd
+		// })
 	}
 
 	handleDelete = (selected) => {
@@ -67,8 +81,9 @@ class DanhmucComponent extends Component {
 	}
 
 	render() {
-		const { rows,  } = this.props;
+		const { rows, sessionUser } = this.props;
 		const { data } = this.state;
+		
 		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
 			<div>
@@ -76,6 +91,7 @@ class DanhmucComponent extends Component {
 					rows={rows} 
 					items={data} 
 					handleDelete = {this.handleDelete}  
+					// roleAdd={this.state.roleAdd}
 				/>
 			</div>
 		)
@@ -83,20 +99,24 @@ class DanhmucComponent extends Component {
 }
 
 class Danhmuc extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên danh mục' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
-		],
+	constructor(props) {
+		super(props);
 
-		navBar : {
-			danhsachTS:{
-				route:"/danhmuc",
-				title: "Tất cả danh mục danh mục",
-				// component: "DanhSachTaiSan"
-			},
+		this.state = {	
+			rows : [
+				{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
+				{ id: 'name', numeric: false, disablePadding: false, label: 'Tên danh mục' },
+				{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add' ] },
+			],
+			navBar : {
+				danhsachTS:{
+					route:"/danhmuc",
+					title: "Tất cả danh mục danh mục",
+					// component: "DanhSachTaiSan"
+				},
+			}
 		}
+
 	}
 
 	renderDanhMuc = () => {
@@ -105,8 +125,9 @@ class Danhmuc extends Component {
 		const parentKey = Object.keys(navBar)
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, deleteContextDanhMuc}) => {
-					console.log("[Danhmuc] resource:", resource)
+				{({ resource, deleteContextDanhMuc, sessionUser}) => {
+					// console.log("[Danhmuc] resource:", resource)
+					console.log("[Danhmuc] sessionUser.role:", sessionUser.role)
 					return (
 						<div>
 							<NavBar
@@ -121,6 +142,7 @@ class Danhmuc extends Component {
 								resource={resource}  
 								deleteContextDanhMuc={deleteContextDanhMuc} 
 								match={match}
+								sessionUser={sessionUser}
 							/>
 						</div>
 					)

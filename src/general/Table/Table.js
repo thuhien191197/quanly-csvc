@@ -167,29 +167,48 @@ class Table1 extends Component {
 	
 	
 	render() {
-		const {rows, items, numSelected, classes, selectApp} = this.props;
+		const {rows, items, numSelected, classes, roleAdd} = this.props;
 		const {page, rowsPerPage, orderBy, order, selected} = this.state;
 		const emptyRows =rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 		// console.log('render', this.state)
 		const { match } = this.props
 		// console.log(">>>match:",match)
-		// console.log("[Table] selected:"+ selected);
+		console.log("[Table] roleAdd:"+ roleAdd);
 
 		const Add = props => <Link to={`${match.url}/add`} {...props} />
 		
 		return (
 			<div>
 				<div className="divAdd">
-					<Tooltip title="Add" className={classes.btnAdd}>
-						<Button 
-							variant="fab" 
-							color="primary" 
-							aria-label="Add"
-							component={Add}
-						>
-							<AddIcon  />
-						</Button>
-					</Tooltip>
+
+					{rows.map((row, idRow) => {
+						var funcs = row.function;
+						return(
+							row.id === "function"
+							?
+							funcs.map((func, i) => {
+								// console.log("func:",func)
+									return(
+										func === "add"
+										?
+										<Tooltip title="Add" className={classes.btnAdd}>
+										 	<Button 
+										 		variant="fab" 
+										 		color="primary" 
+										 		aria-label="Add"
+										 		component={Add}
+										 	>
+										 		<AddIcon  />
+										 	</Button>
+										 </Tooltip>
+										:
+										""
+									)
+							})
+							:
+							""
+						)
+					})}
 				</div>
 				<Paper className={classes.root}>
 					<Toolbar>
@@ -373,6 +392,7 @@ class Table1 extends Component {
 								// console.log("[Table] item Id:", item.id)
 								const isSelected = this.isSelected(item.id);
 								const Edit = props => <Link to={`${match.url}/edit/${item.id}`} {...props} />
+								const View = props => <Link to={`${match.url}/view/${item.id}`} {...props} />
 								return(
 									<TableRow 
 										hover
@@ -420,9 +440,21 @@ class Table1 extends Component {
 																		<EditIcon />
 																	</Button>
 																:
-																	''
-																
-																
+																	func === 'view'
+																	?
+																	<Button 
+																		key={i}
+																		className={classes.btnEdit}
+																		variant="fab" 
+																		// color="secondary" 
+																		aria-label="View"
+																		component={View}
+																	>
+																		
+																		<i class="far fa-eye"></i>
+																	</Button>
+																	:
+																	""
 															)
 														})
 														

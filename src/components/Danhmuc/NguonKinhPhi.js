@@ -91,7 +91,7 @@ class NguonKinhPhi extends Component {
 			{ id: 'tongngansach', numeric: false, disablePadding: false, label: 'Tổng ngân sách' },
 			{ id: 'tongchi', numeric: false, disablePadding: false, label: 'Tổng chi' },
 			{ id: 'tongthanhly', numeric: false, disablePadding: false, label: 'Tổng thanh lý' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit'] },
+			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add'] },
 		],
 
 		navBar : {
