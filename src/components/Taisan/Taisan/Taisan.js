@@ -17,9 +17,61 @@ import SelectDieuChuyen from './component/SelectDieuChuyen/SelectDieuChuyen';
 import SelectDieuChuyenNhieu from './component/SelectDieuChuyen/SelectDieuChuyenNhieu';
 import SelectThanhLyNhieu from './component/SelectThanhLy/SelectThanhLyNhieu';
 import NavBar from '../../../general/NavBar/NavBar';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import { TextField, Button } from '@material-ui/core';
 
 export const itemsTaisan = [];
 // const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
+
+
+const styles = theme => ({
+	search: {
+		position: 'relative',
+		borderRadius: theme.shape.borderRadius,
+		backgroundColor: fade(theme.palette.common.white, 0.15),
+		'&:hover': {
+		  backgroundColor: fade(theme.palette.common.white, 0.25),
+		},
+		marginLeft: 0,
+		width: '100%',
+		[theme.breakpoints.up('sm')]: {
+		  marginLeft: theme.spacing.unit,
+		  width: 'auto',
+		},
+		marginBottom: '12px',
+	},
+	searchIcon: {
+		width: theme.spacing.unit * 9,
+		height: '100%',
+		position: 'absolute',
+		pointerEvents: 'none',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	inputRoot: {
+		color: 'inherit',
+		width: '100%',
+	},
+	inputInput: {
+		paddingTop: theme.spacing.unit,
+		paddingRight: theme.spacing.unit,
+		paddingBottom: theme.spacing.unit,
+		paddingLeft: theme.spacing.unit * 10,
+		transition: theme.transitions.create('width'),
+		width: '100%',
+		[theme.breakpoints.up('sm')]: {
+		  width: 120,
+		  '&:focus': {
+			width: 200,
+		  },
+		},
+		border: '1px solid #3F5191',
+	},
+});
+
 
 class TableComponent extends Component {
 	constructor(props) {
@@ -30,7 +82,8 @@ class TableComponent extends Component {
 			openDieuChuyen: false,
 			openDieuChuyenNhieu: false,
 			openThanhLyNhieu: false,
-			selectedTS: []
+			selectedTS: [],
+			textSearch:''
 		}
 	}
 	// Chọn dữ liệu của các trường cho bảng
@@ -131,12 +184,43 @@ class TableComponent extends Component {
 			selectData.pop(data)
 		  	return { selectedTS: selectData };
 		});
-	  };
+	};
+
+	onSearch = (event, text, resource) => {
+		
+		event.preventDefault();
+		// event.preventDefault();
+		// var dataFilted = vocabIndex.filter((key)=> {
+		// 	if(vocab[key].word.toUpperCase().indexOf(text.toUpperCase())>=0) return true
+		// 	return false
+		// })
+		var dataFilted = []
+		dataFilted = this.state.data.filter((item, index)=> {
+			console.log("[TaiSan] item:", item)
+
+			if(item.name.toUpperCase().indexOf(text.toUpperCase())>=0) return true
+			return false
+		})
+		console.log("[TaiSan] dataFilted:", dataFilted)
+		this.setState({data: dataFilted});
+	}
+	
+	onChangeSearch = (event) => {
+		if(event.target.value !== ''){
+			this.setState({
+				textSearch: event.target.value,
+			})
+		} else{
+			this.setState({
+				data: this.handleGetListTable(this.props.resource || []),
+			})
+		}
+	}
 
 	render() {
-		const { rows,  } = this.props;
+		const { rows, classes} = this.props;
 		const { data } = this.state;
-		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
+		
 		return (
 			<div>
 				{/* Taisan */}
@@ -162,6 +246,30 @@ class TableComponent extends Component {
 					handleCloseThanhLyNhieu ={this.handleCloseThanhLyNhieu} 
 					handleDeleteSelect={this.handleDeleteSelect} 
 				/>
+
+				<div className={classes.search}>
+					
+					<form onSubmit={(event) => this.onSearch(event, this.state.textSearch, this.props.resource)}  noValidate autoComplete="off">
+							{/* <TextField
+								defaultValue={this.state.textSearch}
+								onChange={this.onChangeSearch}
+							/>
+							<input className={classes.input} type="submit" value="Submit" /> */}
+						<div className={classes.searchIcon}>
+						<SearchIcon />
+						</div>
+						<InputBase
+						placeholder="Search…"
+						defaultValue={this.state.textSearch}
+						classes={{
+							root: classes.inputRoot,
+							input: classes.inputInput,
+						}}
+						onChange={this.onChangeSearch}
+						/>
+					</form>
+				</div>
+
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -240,6 +348,7 @@ class Taisan extends Component {
 								resource={resource}  
 								deleteContextTS={deleteContextTS} 
 								match={match}
+								classes={classes}
 							/>
 						</div>
 					)
@@ -284,5 +393,5 @@ class Taisan extends Component {
 		
 	}
 }
+export default withRouter(withStyles(styles)(Taisan));
 
-export default withRouter(Taisan);
