@@ -26,6 +26,7 @@ export const itemsTaisan = [];
 // const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
 
+
 const styles = theme => ({
 	search: {
 		position: 'relative',
@@ -41,6 +42,8 @@ const styles = theme => ({
 		  width: 'auto',
 		},
 		marginBottom: '12px',
+		float: 'left',
+		marginTop: '24px',
 	},
 	searchIcon: {
 		width: theme.spacing.unit * 9,
@@ -68,8 +71,22 @@ const styles = theme => ({
 			width: 200,
 		  },
 		},
-		border: '1px solid #3F5191',
+		border: '1px solid rgb(169, 169, 169)',
 	},
+	textField: {
+		marginLeft: theme.spacing.unit,
+		marginRight: theme.spacing.unit,
+		// padding: '9.5px 14px',
+
+	},
+	btnFil:{
+		minHeight: '53px',
+		bottom: '-17px',
+
+	},
+	filLeft:{
+
+	}
 });
 
 
@@ -83,7 +100,8 @@ class TableComponent extends Component {
 			openDieuChuyenNhieu: false,
 			openThanhLyNhieu: false,
 			selectedTS: [],
-			textSearch:''
+			textSearch:'',
+			textLoaiTaiSan:''
 		}
 	}
 	// Chọn dữ liệu của các trường cho bảng
@@ -187,24 +205,16 @@ class TableComponent extends Component {
 	};
 
 	onSearch = (event, text, resource) => {
-		
 		event.preventDefault();
-		// event.preventDefault();
-		// var dataFilted = vocabIndex.filter((key)=> {
-		// 	if(vocab[key].word.toUpperCase().indexOf(text.toUpperCase())>=0) return true
-		// 	return false
-		// })
 		var dataFilted = []
 		dataFilted = this.state.data.filter((item, index)=> {
-			console.log("[TaiSan] item:", item)
-
 			if(item.name.toUpperCase().indexOf(text.toUpperCase())>=0) return true
 			return false
 		})
 		console.log("[TaiSan] dataFilted:", dataFilted)
 		this.setState({data: dataFilted});
 	}
-	
+
 	onChangeSearch = (event) => {
 		if(event.target.value !== ''){
 			this.setState({
@@ -216,7 +226,30 @@ class TableComponent extends Component {
 			})
 		}
 	}
+	handleChange = name => event => {
+		if(event.target.value === 'all'){
+			this.setState({
+				data: this.handleGetListTable(this.props.resource || []),
+			});
+		}else 
+		this.setState({
+		  [name]: event.target.value,
+		  data: this.handleGetListTable(this.props.resource || []),
+		});
 
+	};
+	onFilterLTS = (event) =>{
+		event.preventDefault();
+		var dataFilted = []
+		console.log("[TaiSan]  this.state.textLoaiTaiSan: ",  this.state.textLoaiTaiSan)
+		dataFilted = this.state.data.filter((item, index)=> {
+			if(item.id_loaitaisan === this.state.textLoaiTaiSan) return true
+			return false
+		})
+		console.log("[TaiSan] dataFilted:", dataFilted)
+		this.setState({data: dataFilted});
+	}
+	
 	render() {
 		const { rows, classes} = this.props;
 		const { data } = this.state;
@@ -246,15 +279,10 @@ class TableComponent extends Component {
 					handleCloseThanhLyNhieu ={this.handleCloseThanhLyNhieu} 
 					handleDeleteSelect={this.handleDeleteSelect} 
 				/>
-
+				
+				{/* Search */}
 				<div className={classes.search}>
-					
 					<form onSubmit={(event) => this.onSearch(event, this.state.textSearch, this.props.resource)}  noValidate autoComplete="off">
-							{/* <TextField
-								defaultValue={this.state.textSearch}
-								onChange={this.onChangeSearch}
-							/>
-							<input className={classes.input} type="submit" value="Submit" /> */}
 						<div className={classes.searchIcon}>
 						<SearchIcon />
 						</div>
@@ -269,7 +297,50 @@ class TableComponent extends Component {
 						/>
 					</form>
 				</div>
-
+				<div className={classes.filLeft}>
+					<form onSubmit={(event) => this.onFilterLTS(event, this.props.resource)}  noValidate autoComplete="off">
+						<TextField
+							id="outlined-select-currency-native"
+							select
+							label="Lọc loại tài sản"
+							className={classes.textField}
+							value={this.state.textLoaiTaiSan}
+							onChange={this.handleChange('textLoaiTaiSan')}
+							SelectProps={{
+								native: true,
+								MenuProps: {
+								className: classes.menu,
+								},
+							}}
+							InputLabelProps={{
+								shrink: true,
+							}}
+							// helperText="Please select your loaitaisan"
+							margin="normal"
+							// paddingBottom="12px"
+							variant="outlined"
+							>
+							<option value="all">
+								Tất cả tài sản			
+							</option>
+							{this.props.resource.loaitaisan.map((item, i) => {
+								console.log("item:", item.id)
+								return (
+									<option key={i} value={item.name}>
+										{item.name}
+									</option>
+								)
+							})}
+						</TextField>
+						<Button variant="contained"
+						className={classes.btnFil}
+						type="submit"
+						>
+							Filter
+						</Button>
+					</form>
+				</div>
+				
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -307,23 +378,6 @@ class Taisan extends Component {
 			},
 		}
 	}
-
-	// handleGetListTable = (resourceTS) =>{
-	// 	var itemsTaisan = resourceTS.taisan
-	// 	var itemsLoaiTaiSan = resourceTS.loaitaisan
-	// 	var itemsDonVi  = resourceTS.donvi
-	// 	var itemsUser  = resourceTS.user
-	// 	var b =[]
-	// 	itemsTaisan.map(item => {
-	// 		var getNameLoaiTaiSan = R.filter(R.propEq("id", item.id_loaitaisan))
-	// 		var getNameDonvi = R.filter(R.propEq("id", item.id_donvi))
-	// 		var getNameUser = R.filter(R.propEq("id", item.id_user))
-	// 		const a = {'id' :item.id, 'name': item.name, 'dongia': item.dongia, 'soluong': item.soluong, 'ngaynhap': item.ngaynhap, 'id_loaitaisan': item.id_loaitaisan?getNameLoaiTaiSan(itemsLoaiTaiSan)[0].name:'', 'id_donvi': item.id_donvi?getNameDonvi(itemsDonVi)[0].name:'', 'id_user': item.id_user?getNameUser(itemsUser)[0].fullname:''};
-	// 		b.push(a);
-	// 	})
-	// 	return b
-	// }
-
 
 	render1 = () => {
 		const { match, classes } = this.props
