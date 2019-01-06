@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { withStyles } from '@material-ui/core/styles';
 import { QLCSVCContext } from '../../../../Main/Main';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import NavBar from '../../../../../general/NavBar/NavBar';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const itemsTinhtrang = [
@@ -15,6 +18,15 @@ const itemsTinhtrang = [
 		name: 'Không còn sử dụng',
 	}
 ];
+
+const styles = theme => ({
+	root: {
+	  display: 'flex',
+	  justifyContent: 'center',
+	  flexWrap: 'wrap',
+	  padding: theme.spacing.unit * 7,
+	},
+});
 
 class Child extends Component {
 	state = this.props.itemTS || {
@@ -89,7 +101,7 @@ class Child extends Component {
 		});
 	};
 	render() {
-		const { resource } = this.props
+		const { resource, classes } = this.props
 		// console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
 		const {
 			id,
@@ -108,7 +120,7 @@ class Child extends Component {
 		} = this.state;
 		
 		return (
-		<div>
+		<Paper className={classes.root}>
 			{/* Edit tài sản */}
 			<form
 				noValidate autoComplete="off"
@@ -365,7 +377,7 @@ class Child extends Component {
 					Sửa
 				</Button>
 			</form>
-		</div>
+		</Paper>
 		);
 	}
 }
@@ -373,28 +385,49 @@ class Child extends Component {
 
 class EditTS extends Component {
 	render() {
-		const { resource } = this.props;
+		const { resource, classes } = this.props;
 		const itemsTaisan = resource.taisan;
 		const currentId = getParentPath(this.props.match.url);
 		let itemTS = itemsTaisan.find((item) => { return item.id == currentId });;
 
 		return (
-			<Child itemTS={itemTS} editTs={this.props.editTs} resource={resource} editContextTS={this.props.editContextTS}/>
+			<Child itemTS={itemTS} classes={classes} editTs={this.props.editTs} resource={resource} editContextTS={this.props.editContextTS}/>
 		)
 	}
 }
 
 
 class EditTSWrap extends Component {
-	render() {
+	state ={
+		navBar : {
+			suataisan:{
+				route:"/taisan/edit",
+				title: "",
+				// component: "DanhSachTaiSan"
+			},
+		}
+	}
+	render() {	
+		const { classes, match } = this.props;
+		const { navBar } = this.state
+		const parentKey = Object.keys(navBar)
 		return(
-			<QLCSVCContext.Consumer>
-				{({ resource, editContextTS }) => <EditTS editTs={this.props.editTs} resource={resource} match={this.props.match} editContextTS={editContextTS} />}
-			</QLCSVCContext.Consumer>
+			<div>
+				<NavBar
+					match={match}
+					classes={classes}
+					parentKey={parentKey}
+					navBar={navBar}
+					title= {"Sửa tài sản"}
+				/>
+				<QLCSVCContext.Consumer>
+					{({ resource, editContextTS }) => <EditTS editTs={this.props.editTs} classes={classes} resource={resource} match={this.props.match} editContextTS={editContextTS} />}
+				</QLCSVCContext.Consumer>
+			</div>
 		)
 	}
 
 }
 
 
-export default withRouter(EditTSWrap);
+export default withRouter(withStyles(styles)(EditTSWrap));

@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 // const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 import * as R from 'ramda'
 
@@ -282,6 +283,11 @@ class AddUserComponent extends Component {
 
 					<br />
 					<Button 
+						variant="contained" 
+					>
+						<Link button  to={`/user`} >Cancer</Link>
+					</Button>		
+					<Button 
 						variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
 							resource.user,
@@ -299,6 +305,7 @@ class AddUserComponent extends Component {
 					>
 						Thêm
 					</Button>
+					
 				</form>
 				</Paper>
 			</div>

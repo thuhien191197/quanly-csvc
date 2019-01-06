@@ -5,6 +5,7 @@ import { QLCSVCContext } from '../../../../../Main/Main';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as R from 'ramda';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[5]
 
 class EditPhongComponent extends Component {
@@ -46,18 +47,18 @@ class EditPhongComponent extends Component {
 		});
 	};
 
-	getIDDonViCurrent = (resourceTS, nameDVCurrent) =>{
-		console.log("[phong] nameDVCurrent:",nameDVCurrent)
+	getNameTaiSanCurrent = (resourceTS, idTSCurrent) =>{
+		console.log("[phong] nameDVCurrent:",idTSCurrent)
 		var itemsDonVi  = resourceTS.donvi
 		var lengthDV  = itemsDonVi.length
-		var idDonVi = 0
+		var nameDonVi = ''
 		for(var j =0; j < lengthDV; j++){
 			var item = itemsDonVi[j]
-			if(item.name === nameDVCurrent){
-				idDonVi = item.id
+			if(item.id === idTSCurrent){
+				nameDonVi = item.name
 			}
 		}
-		return idDonVi
+		return nameDonVi
 	}
 
 	render(){
@@ -108,6 +109,11 @@ class EditPhongComponent extends Component {
 						))}
 					</TextField>
 					<br />
+					<Button 
+						variant="contained" 
+					>
+						<Link button to={`${this.getNameTaiSanCurrent(resource, id_donvi)}/quanlyphong`} >Cancer</Link>
+					</Button>
 					<Button variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
 							resource.phong,

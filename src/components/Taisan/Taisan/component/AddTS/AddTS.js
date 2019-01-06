@@ -14,7 +14,6 @@ const styles = theme => ({
 	  justifyContent: 'center',
 	  flexWrap: 'wrap',
 	  padding: theme.spacing.unit * 7,
-	//   marginTop: "-8em",
 	},
 });
 

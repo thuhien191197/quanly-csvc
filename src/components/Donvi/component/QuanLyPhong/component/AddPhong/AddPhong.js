@@ -5,6 +5,7 @@ import { QLCSVCContext } from '../../../../../Main/Main';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as R from 'ramda';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[2]
 
 class AddPhongComponent extends Component {
@@ -113,6 +114,11 @@ class AddPhongComponent extends Component {
 						))}
 					</TextField>
 					<br />
+					<Button 
+						variant="contained" 
+					>
+						<Link button  to={`/user`} >Cancer</Link>
+					</Button>	
 					<Button variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
 							resource.phong,
