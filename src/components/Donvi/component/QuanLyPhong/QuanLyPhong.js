@@ -67,18 +67,19 @@ class PhongComponent extends Component {
 	}
 
 	handleDelete = (selected) => {
-		// console.log("[TaiSan] props:", this.props)
-		var itemsPhong = this.props.resource.phong;
-		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsPhong);
-		this.props.deleteContextPhong(dataDeleted);
-		
-		
-		selected.forEach(function(select, i) {
-			fetch('http://localhost:5500/phong/'+ select, {
-				method: 'DELETE'
+		if(window.confirm('Bạn có chắc muốn xóa không?')){
+			var itemsPhong = this.props.resource.phong;
+			const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsPhong);
+			this.props.deleteContextPhong(dataDeleted);
+			
+			
+			selected.forEach(function(select, i) {
+				fetch('http://localhost:5500/phong/'+ select, {
+					method: 'DELETE'
+				});
 			});
-		});
-		this.setState({selected: [] });
+			this.setState({selected: [] });
+		}
 	}
 
 	render() {

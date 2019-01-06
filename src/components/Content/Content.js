@@ -12,7 +12,6 @@ import LoaiTaiSan from '../Danhmuc/LoaiTaiSan';
 import NguonKinhPhi from '../Danhmuc/NguonKinhPhi';
 import DieuChuyenTaiSan from '../Taisan/DieuChuyenTaiSan/DieuChuyenTaiSan';
 import ThanhLy from '../Taisan/ThanhLy/ThanhLy';
-import ThongKe from '../Taisan/ThongKe/ThongKe';
 import VanBanMau from '../Kehoach/VanBanMau';
 import { withRouter } from "react-router";
 import DanhSachTaiSan from '../Donvi/component/DanhSachTaiSan/DanhSachTaiSan';
@@ -26,6 +25,7 @@ class Content extends Component {
 				<User />
 				<Danhmuc />
 				<Taisan />
+				<Kehoach />
 				<Switch>
 					<Route path="/donvi/:name/:id" component={() => <Donvi />}></Route>
  					<Route path="/donvi/:name" exact component={() => <Donvi />}></Route>

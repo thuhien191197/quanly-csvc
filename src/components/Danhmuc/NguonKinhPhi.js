@@ -54,17 +54,18 @@ class KinhphiComponent extends Component {
 	}
 
 	handleDelete = (selected) => {
-		// console.log("[TaiSan] props:", this.props)
-		var itemsKinhPhi = this.props.resource.nguonkinhphi;
-		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsKinhPhi);
-		this.props.deleteContextKinhPhi(dataDeleted);
-		
-		selected.forEach(function(select, i) {
-			fetch('http://localhost:5500/nguonkinhphi/'+ select, {
-				method: 'DELETE'
+		if(window.confirm('Bạn có chắc muốn xóa không?')){
+			var itemsKinhPhi = this.props.resource.nguonkinhphi;
+			const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsKinhPhi);
+			this.props.deleteContextKinhPhi(dataDeleted);
+			
+			selected.forEach(function(select, i) {
+				fetch('http://localhost:5500/nguonkinhphi/'+ select, {
+					method: 'DELETE'
+				});
 			});
-		});
-		this.setState({selected: [] });
+			this.setState({selected: [] });
+		}
 	}
 
 	render() {

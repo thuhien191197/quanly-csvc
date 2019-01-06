@@ -21,6 +21,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import StarIcon from '@material-ui/icons/StarBorder';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 const styles = theme => ({
 	root: {
 	  display: 'flex',
@@ -66,15 +67,17 @@ const tiers = [
 	  description: [''],
 	  buttonText: 'Sign up for free',
 	  buttonVariant: 'outlined',
+	  link:'user'
 	},
 	{
 	  title: 'Tài Sản',
-	  subheader: 'Tài sản trong các năm qua',
+	  subheader: 'Số đợt Tài sản được thêm vào',
 	  price: '15',
 	  description: [
 	  ],
 	  buttonText: 'Get started',
 	  buttonVariant: 'contained',
+	  link:'taisan'
 	},
 	{
 	  title: 'Đơn vị',
@@ -84,6 +87,7 @@ const tiers = [
 	  ],
 	  buttonText: 'Contact us',
 	  buttonVariant: 'outlined',
+	  link:'donvi'
 	},
   ];
 
@@ -141,11 +145,6 @@ class HomeComponent extends Component {
 			var date = []
 			date = item.ngaynhap.split('-')
 			year.push(date[0])
-			// const newData = {
-			// 	'year': date[0], 
-			// 	'soluong': 0
-			// }
-			
 		}
 		const yearFilter = this.deduplicate(year)
 		console.log("[Home] yearFilter:" ,yearFilter)
@@ -158,12 +157,13 @@ class HomeComponent extends Component {
 			}
 			const newData = {
 				'YEAR': yearFilter[i], 
-				'Số lượng tài sản': countSoLuong
+				'Số đợt thêm tài sản': countSoLuong
 			};
 			data.push(newData)
 		}
+		
 		console.log("[Home] data:" ,data);
-		return data
+		return data.reverse()
 	}
 
 	render(){
@@ -174,8 +174,10 @@ class HomeComponent extends Component {
 				<Grid container spacing={40} alignItems="flex-end" className={classes.grid}>
 				{tiers.map(tier => (
 					// Enterprise card is full width at sm breakpoint
+					
 					<Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
 					<Card className={classes.card}>
+						<Link to={`/${tier.link}`} >
 						<CardHeader
 						title={tier.title}
 						subheader={tier.subheader}
@@ -184,9 +186,11 @@ class HomeComponent extends Component {
 						action={tier.title === 'Tài Sản' ? <StarIcon /> : null}
 						className={classes.cardHeader}
 						/>
+						</Link>
 						<CardContent>
 						{tier.title === 'Tài Sản'
 						?
+						
 						<div className={classes.cardPricing}>
 							<Typography component="h2" variant="h3" color="textPrimary">
 							{tier.title === 'Tài Sản'
@@ -200,6 +204,7 @@ class HomeComponent extends Component {
 							/tài sản
 							</Typography>
 						</div>
+						
 						: ''}
 						{tier.title === 'Người dùng'
 						?
@@ -246,6 +251,7 @@ class HomeComponent extends Component {
 						</Button>
 						</CardActions> */}
 					</Card>
+					
 					</Grid>
 				))}
 				</Grid>
@@ -257,7 +263,7 @@ class HomeComponent extends Component {
 						<Tooltip />
 						<Legend />
 						{/* <Line type="monotone" dataKey="YEAR" stroke="#82ca9d" /> */}
-						<Line type="monotone" dataKey="Số lượng tài sản" stroke="#8884d8" activeDot={{ r: 8 }} />
+						<Line type="monotone" dataKey="Số đợt thêm tài sản" stroke="#8884d8" activeDot={{ r: 8 }} />
 					</LineChart>
 				</ResponsiveContainer>
 			</Paper>

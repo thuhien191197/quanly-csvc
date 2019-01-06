@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import './ViewTS.css';
+import './ViewKH.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withRouter } from "react-router";
-import { QLCSVCContext } from '../../../../Main/Main';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { QLCSVCContext } from '../../../Main/Main';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import NavBar from '../../../../../general/NavBar/NavBar';
+import NavBar from '../../../../general/NavBar/NavBar';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Typography from '@material-ui/core/Typography';
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const styles = theme => ({
@@ -16,9 +18,16 @@ const styles = theme => ({
 	  justifyContent: 'center',
 	  flexWrap: 'wrap',
 	  padding: theme.spacing.unit * 5,
+	  width: '90%',
 	},
-	form:{
-	}
+
+	  backButton: {
+		marginRight: theme.spacing.unit,
+	  },
+	  instructions: {
+		marginTop: theme.spacing.unit,
+		marginBottom: theme.spacing.unit,
+	  },
 });
 const itemsTinhtrang = [
 	{
@@ -30,6 +39,23 @@ const itemsTinhtrang = [
 		name: 'Không còn sử dụng',
 	}
 ];
+
+function getSteps() {
+	return ['Chờ duyệt', 'Đã duyệt', 'Chờ ký', 'Được thông qua'];
+  }
+  
+  function getStepContent(stepIndex) {
+	switch (stepIndex) {
+	  case 0:
+		return 'Select campaign settings...';
+	  case 1:
+		return 'What is an ad group anyways?';
+	  case 2:
+		return 'This is the bit I really care about!';
+	  default:
+		return 'Unknown stepIndex';
+	}
+  }
 
 class Child extends Component {
 	state = this.props.itemTS || {
@@ -103,6 +129,24 @@ class Child extends Component {
 			[name]: event.target.value,
 		});
 	};
+
+	handleNext = () => {
+		this.setState(state => ({
+		  activeStep: state.activeStep + 1,
+		}));
+	  };
+	
+	  handleBack = () => {
+		this.setState(state => ({
+		  activeStep: state.activeStep - 1,
+		}));
+	  };
+	
+	  handleReset = () => {
+		this.setState({
+		  activeStep: 0,
+		});
+	  };
 	render() {
 		const { resource, classes } = this.props
 		// console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
@@ -120,13 +164,14 @@ class Child extends Component {
 			id_phong,
 			id_user,
 			status,
+			activeStep
 		} = this.state;
-		
+		const steps = getSteps();
 		return (
 			<div className={classes.root}>
 				<div className="quiz-window">
 					<div className="quiz-window-header">
-						<div className="quiz-window-title">{name}</div>
+						<div className="quiz-window-title">Kế hoách sữa chữa- khoa CNTT - 2018</div>
 					</div>
 					<div className="quiz-window-body">
 						<div className="gui-window-awards">
@@ -138,12 +183,12 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star goldstar" /></li>
-							<li className="guiz-awards-title">Tên người nhập</li>
+							<li className="guiz-awards-title">Tên đơn vị</li>
 							{resource.user.map((item, i) => {
 								return(
 									item.id === id_user
 									?
-									<li className="guiz-awards-track">{item.fullname}</li>
+									<li className="guiz-awards-track">Khoa CNTT</li>
 									:''
 								)
 							})}
@@ -151,92 +196,34 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Đơn giá</li>
-							<li className="guiz-awards-track">{dongia}</li>
+							<li className="guiz-awards-title">Ngày nhập</li>
+							<li className="guiz-awards-track">2018/1/1</li>
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Số lượng</li>
-							<li className="guiz-awards-track">{soluong}</li>
+							<li className="guiz-awards-title">Tình Trạng</li>
+							<li className="guiz-awards-track">Chưa duyệt
+							<Stepper activeStep={activeStep} alternativeLabel>
+							{steps.map(label => {
+								return (
+								<Step key={label}>
+									<StepLabel>{label}</StepLabel>
+								</Step>
+								);
+							})}
+							</Stepper>
+							
+
+							</li>
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star rhodiumstar" /></li>
-							<li className="guiz-awards-title">Ghi chú</li>
-							<li className="guiz-awards-track">{ghichu}</li>
-						</ul>
-						<ul className="guiz-awards-row guiz-awards-row-even">
-							<li className="guiz-awards-star"><span className="star platinumstar" /></li>
-							<li className="guiz-awards-title">Tình trạng</li>
-							{itemsTinhtrang.map((item, i) => {
-								return(
-									item.id === status
-									?
-									<li className="guiz-awards-track">{item.name}</li>
-									:''
-								)
-							})}
-						</ul>
-						<ul className="guiz-awards-row">
-							<li className="guiz-awards-star"><span className="star" /></li>
-							<li className="guiz-awards-title">Loại tài sản</li>
-							{resource.loaitaisan.map((item, i) => {
-								return(
-									item.id === id_loaitaisan
-									?
-									<li className="guiz-awards-track">{item.name}</li>
-									:''
-								)
-							})}
-						</ul>
-						<ul className="guiz-awards-row guiz-awards-row-even">
-							<li className="guiz-awards-star"><span className="star goldstar" /></li>
-							<li className="guiz-awards-title">Nguồn kinh phí</li>
-							{resource.nguonkinhphi.map((item, i) => {
-								return(
-									item.id === id_kinhphi
-									?
-									<li className="guiz-awards-track">{item.name}</li>
-									:''
-								)
-							})}
-						</ul>
-						<ul className="guiz-awards-row">
-							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Đơn vị</li>
-							{resource.donvi.map((item, i) => {
-								return(
-									item.id === id_donvi
-									?
-									<li className="guiz-awards-track">{item.name}</li>
-									:''
-								)
-							})}
-						</ul>
-						<ul className="guiz-awards-row guiz-awards-row-even">
-							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Phòng</li>
-							{resource.phong.map((item, i) => {
-								return(
-									item.id === id_phong
-									?
-									<li className="guiz-awards-track">{item.name}</li>
-									:''
-								)
-							})}
-						</ul>
-						<ul className="guiz-awards-row">
-							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Ngày nhập</li>
-							<li className="guiz-awards-track">{ngaynhap}</li>
-						</ul>
-						<ul className="guiz-awards-row guiz-awards-row-even">
-							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Hạn sử dụng</li>
-							<li className="guiz-awards-track">{hansudung}</li>
+							<li className="guiz-awards-title">Loại kế hoạch</li>
+							<li className="guiz-awards-track">Kế hoạch Sửa chữa</li>
 						</ul>
 						</div>
 						<div className="guiz-awards-buttons">
-						 	<Link className="guiz-awards-but-back" to={`/taisan`} ><i className="fa fa-angle-left" />Back</Link>
+						 	<Link className="guiz-awards-but-back" to={`/kehoach`} ><i className="fa fa-angle-left" />Back</Link>
 							<Link className="guiz-awards-but-back" to={`/taisan/edit/${id}`} >Edit <i className="fa fa-angle-right" /></Link>
 						</div>
 					</div>
@@ -249,7 +236,7 @@ class Child extends Component {
 }
 
 
-class ViewTS extends Component {
+class ViewKH extends Component {
 	render() {
 		const { resource, classes } = this.props;
 		const itemsTaisan = resource.taisan;
@@ -263,7 +250,7 @@ class ViewTS extends Component {
 }
 
 
-class ViewTSWrap extends Component {
+class ViewKHWrap extends Component {
 	state ={
 		navBar : {
 			viewtaisan:{
@@ -288,7 +275,7 @@ class ViewTSWrap extends Component {
 				/>
 			
 				<QLCSVCContext.Consumer>
-					{({ resource, editContextTS }) => <ViewTS classes={classes} editTs={this.props.editTs} resource={resource} match={this.props.match} editContextTS={editContextTS} />}
+					{({ resource, editContextTS }) => <ViewKH classes={classes} editTs={this.props.editTs} resource={resource} match={this.props.match} editContextTS={editContextTS} />}
 				</QLCSVCContext.Consumer>
 			</div>
 		)
@@ -297,4 +284,4 @@ class ViewTSWrap extends Component {
 }
 
 
-export default withRouter(withStyles(styles)(ViewTSWrap));
+export default withRouter(withStyles(styles)(ViewKHWrap));

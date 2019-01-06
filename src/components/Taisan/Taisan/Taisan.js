@@ -6,7 +6,6 @@ import * as R from 'ramda';
 import { Switch, Route } from 'react-router-dom'
 import DieuChuyenTaiSan from '../DieuChuyenTaiSan/DieuChuyenTaiSan';
 import ThanhLy from '../ThanhLy/ThanhLy';
-import ThongKe from '../ThongKe/ThongKe';
 import axios from 'axios';
 import AddTS from './component/AddTS/AddTS';
 import EditTS from './component/EditTS/EditTS';
@@ -141,21 +140,24 @@ class TableComponent extends Component {
 	}
 
 	handleDelete = (selected) => {
-		var itemsTaisan = this.props.resource.taisan;
-		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsTaisan);
-		this.props.deleteContextTS(dataDeleted);
 		
-		selected.forEach(function(select, i) {
-			fetch('http://localhost:5500/taisan/'+ select, {
-				method: 'DELETE'
+		if(window.confirm('Bạn có chắc muốn xóa không?')){
+			console.log("[TaiSan] Im here:")
+			var itemsTaisan = this.props.resource.taisan;
+			const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsTaisan);
+			this.props.deleteContextTS(dataDeleted);
+			
+			selected.forEach(function(select, i) {
+				fetch('http://localhost:5500/taisan/'+ select, {
+					method: 'DELETE'
+				});
 			});
-		});
-		// this.setState({selected: [] });
+		}
 	}
 
 
 	handleClickOpen = (selected) => {
-		console.log("[TaiSan] Im here:")
+		
 		this.setState({ 
 			selectedTS: selected, 
 			openDieuChuyen: true 
@@ -437,7 +439,6 @@ class Taisan extends Component {
 					<Route exact path="/taisan/add" component={() => <AddTS addTs={this.addTs} />}></Route>
 					<Route exact path="/taisan/Danh sách điều chuyển" render={() => <DieuChuyenTaiSan />} />
 					<Route exact path="/taisan/Danh sách thanh lý" render={() => <ThanhLy />} />
-					<Route exact path="/taisan/Thống kê" render={() => <ThongKe />} />
 					<Route exact path="/taisan/edit/:id" component={() => <EditTS editTs={this.editTs} />}></Route>
 					<Route exact path="/taisan/view/:id" component={() => <ViewTS  />}></Route>
 					{/* <Route exact path="/taisan/danhsachdieuchuyen" render={() => <DieuChuyenTS />} /> */}

@@ -20,16 +20,22 @@ class DanhmucComponent extends Component {
 	constructor(props) {
 		super(props);
 		const data = this.handleGetListTable(props.resource || []);
-
-		// let roleadd = true
-		// if(props.sessionUser.role === 3){
-		// 	roleadd = false
-		// }
-		// console.log("[Danhmuc]>>> roleadd :", roleadd )
+		// Nếu user = 3 thì đổi sang false k cho hiển thị j đó
+		let roleadd = true
+		let roleedit = true
+		let roledel = true
+		if(props.sessionUser.role === 3){
+			roleadd = false
+			roleedit = false
+			roledel = false
+		}
+		console.log("[Danhmuc]>>> roleadd :", roleadd )
 		this.state = {
 			data,
 			selectedtrueS: [],
-			// roleAdd: roleadd
+			roleAdd: roleadd,
+			roleEdit: roleedit,
+			roleDel: roledel
 		}
 	
 	}
@@ -55,35 +61,43 @@ class DanhmucComponent extends Component {
 		const data = this.handleGetListTable(props.resource || []);
 		
 		// Check Role user = 3 thì ẩn nút Add
-		// let roleadd = this.state.roleAdd
-		// if(props.sessionUser.role === 3){
-		// 	roleadd = false
-		// }
-		// this.setState({
-		// 	data,
-		// 	roleAdd: roleadd
-		// })
+		let roleadd = this.state.roleAdd
+		let roleedit = this.state.roleEdit
+		let roledel = this.state.roleDel
+		if(props.sessionUser.role === 3){
+			roleadd = false
+			roleedit = false
+			roledel = false
+		}
+		console.log("[danhmuc] roleAdd:" + roleadd);
+		this.setState({
+			data,
+			roleAdd: roleadd,
+			roleEdit: roleedit,
+			roleDel: roledel
+
+		})
 	}
 
 	handleDelete = (selected) => {
-		// console.log("[TaiSan] props:", this.props)
-		var itemsDanhmuc = this.props.resource.danhmuc;
-		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsDanhmuc);
-		this.props.deleteContextDanhMuc(dataDeleted);
-		
-		
-		selected.forEach(function(select, i) {
-			fetch('http://localhost:5500/danhmuc/'+ select, {
-				method: 'DELETE'
+		if(window.confirm('Bạn có chắc muốn xóa không?')){
+			var itemsDanhmuc = this.props.resource.danhmuc;
+			const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsDanhmuc);
+			this.props.deleteContextDanhMuc(dataDeleted);
+			
+			
+			selected.forEach(function(select, i) {
+				fetch('http://localhost:5500/danhmuc/'+ select, {
+					method: 'DELETE'
+				});
 			});
-		});
-		// this.setState({selected: [] });
+		}
 	}
 
 	render() {
 		const { rows, sessionUser } = this.props;
 		const { data } = this.state;
-		
+		console.log("[danhmuc] roleAdd:" + this.state.roleAdd);
 		// console.log("[TaiSan] openDC:", this.state.openDieuChuyen)
 		return (
 			<div>
@@ -91,7 +105,9 @@ class DanhmucComponent extends Component {
 					rows={rows} 
 					items={data} 
 					handleDelete = {this.handleDelete}  
-					// roleAdd={this.state.roleAdd}
+					roleAdd={this.state.roleAdd}
+					roleEdit={this.state.roleEdit}
+					roleDel={this.state.roleDel}
 				/>
 			</div>
 		)

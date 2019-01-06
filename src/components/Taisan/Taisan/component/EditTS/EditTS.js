@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import { QLCSVCContext } from '../../../../Main/Main';
 import TextField from '@material-ui/core/TextField';
@@ -50,49 +51,51 @@ class Child extends Component {
 	}
 
 	handleSubmit = (itemsTaisan, event, id, name, dongia, soluong, ngaynhap, hansudung, ghichu, id_loaitaisan, id_donvi, id_kinhphi, id_phong, id_user, status) => {
-		event.preventDefault();
-		// console.log("clicked submit");
-		// var id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1;
-		var dongia = parseInt(dongia);
-		var soluong = parseInt(soluong);
-		var id_loaitaisan = parseInt(id_loaitaisan);
-		var id_kinhphi = parseInt(id_kinhphi);
-		var id_donvi = parseInt(id_donvi);
-		var id_phong = parseInt(id_phong);
-		var id_user = parseInt(id_user);
-		var status = parseInt(status);
+		if(window.confirm('Bạn có chắc muốn sửa không?')){
+			event.preventDefault();
+			// console.log("clicked submit");
+			// var id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1;
+			var dongia = parseInt(dongia);
+			var soluong = parseInt(soluong);
+			var id_loaitaisan = parseInt(id_loaitaisan);
+			var id_kinhphi = parseInt(id_kinhphi);
+			var id_donvi = parseInt(id_donvi);
+			var id_phong = parseInt(id_phong);
+			var id_user = parseInt(id_user);
+			var status = parseInt(status);
 
-		this.props.editContextTS({
-			id,
-			name,
-			dongia,
-			soluong,
-			ngaynhap,
-			hansudung,
-			ghichu,
-			id_loaitaisan,
-			id_donvi,
-			id_kinhphi,
-			id_phong,
-			id_user,
-			status
-		})
-		
-		this.props.editTs(
-			{id,
-			name,
-			dongia,
-			soluong,
-			ngaynhap,
-			hansudung,
-			ghichu,
-			id_loaitaisan,
-			id_donvi,
-			id_kinhphi,
-			id_phong,
-			id_user,
-			status}
-		)
+			this.props.editContextTS({
+				id,
+				name,
+				dongia,
+				soluong,
+				ngaynhap,
+				hansudung,
+				ghichu,
+				id_loaitaisan,
+				id_donvi,
+				id_kinhphi,
+				id_phong,
+				id_user,
+				status
+			})
+			
+			this.props.editTs(
+				{id,
+				name,
+				dongia,
+				soluong,
+				ngaynhap,
+				hansudung,
+				ghichu,
+				id_loaitaisan,
+				id_donvi,
+				id_kinhphi,
+				id_phong,
+				id_user,
+				status}
+			)
+		}
 	}
 
 	handleChange = name => event => {
@@ -374,7 +377,7 @@ class Child extends Component {
 						status
 					)}
 				>
-					Sửa
+					<Link to="/taisan">Sửa</Link>
 				</Button>
 			</form>
 		</Paper>

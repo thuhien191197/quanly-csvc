@@ -23,8 +23,19 @@ class UserComponent extends Component {
 	constructor(props) {
 		super(props);
 		const data = this.handleGetListTable(props.resource || []);
+		let roleadd = true
+		let roleedit = true
+		let roledel = true
+		if(props.sessionUser.role === 3 ||props.sessionUser.role === 2 ){
+			roleadd = false
+			roleedit = false
+			roledel = false
+		}
 		this.state = {
 			data,
+			roleAdd: roleadd,
+			roleEdit: roleedit,
+			roleDel: roledel
 		}
 	}
 
@@ -55,27 +66,40 @@ class UserComponent extends Component {
 	componentWillReceiveProps(props, state) {
 		// console.log("Next props", props);
 		const data = this.handleGetListTable(props.resource || []);
+		let roleadd = this.state.roleAdd
+		let roleedit = this.state.roleEdit
+		let roledel = this.state.roleDel
+		if(props.sessionUser.role === 3){
+			roleadd = false
+			roleedit = false
+			roledel = false
+		}
 		this.setState({
 			data,
+			roleAdd: roleadd,
+			roleEdit: roleedit,
+			roleDel: roledel
 		})
 	}
 
 	handleDelete = (selected) => {
 		// console.log("[TaiSan] props:", this.props)
-		var itemsUser = this.props.resource.user;
-		const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsUser);
-		this.props.deleteContextUser(dataDeleted);
-		
-		selected.forEach(function(select, i) {
-			fetch('http://localhost:5500/user/'+ select, {
-				method: 'DELETE'
+		if(window.confirm('Bạn có chắc muốn xóa không?')){
+			var itemsUser = this.props.resource.user;
+			const dataDeleted = R.reject((item) => selected.indexOf(item.id)!== -1, itemsUser);
+			this.props.deleteContextUser(dataDeleted);
+			
+			selected.forEach(function(select, i) {
+				fetch('http://localhost:5500/user/'+ select, {
+					method: 'DELETE'
+				});
 			});
-		});
-		this.setState({selected: [] });
+			this.setState({selected: [] });
+		}
 	}
 
 	render() {
-		const { rows, match, resource} = this.props
+		const { rows, match, resource, sessionUser} = this.props
 		const { data } = this.state
 		console.log("[User] match:",match)
 		
@@ -86,6 +110,9 @@ class UserComponent extends Component {
 					rows={rows} 
 					items={data} 
 					handleDelete = {this.handleDelete}  
+					roleAdd={this.state.roleAdd}
+					roleEdit={this.state.roleEdit}
+					roleDel={this.state.roleDel}
 				/>
 			</div>
 		);
@@ -121,7 +148,7 @@ class User extends Component {
 		// const title = getParentPath(match.url)
 		return (
 			<QLCSVCContext.Consumer>
-				{({ resource, deleteContextUser}) => {
+				{({ resource, deleteContextUser, sessionUser}) => {
 					console.log("[User] resource:",resource)
 					return (
 						<div>
@@ -138,6 +165,7 @@ class User extends Component {
 								match={match}
 								resource={resource} 
 								deleteContextUser={deleteContextUser} 
+								sessionUser={sessionUser}
 							/>
 						</div>
 					)

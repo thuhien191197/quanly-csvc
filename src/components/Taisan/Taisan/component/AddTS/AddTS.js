@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './AddTS.css';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField';
 import { withRouter } from "react-router";
 import Button from '@material-ui/core/Button';
@@ -50,52 +51,52 @@ class Child extends Component {
 
 
 	handleSubmit = (itemsTaisan, event, id, name, dongia, soluong, ngaynhap, hansudung, ghichu, id_loaitaisan, id_donvi, id_kinhphi, id_phong, id_user, status) => {
-		// event.preventDefault();
-		// console.log("clicked submit");
-		var dongia = parseInt(dongia);
-		var soluong = parseInt(soluong);
-		var id_loaitaisan = parseInt(id_loaitaisan);
-		var id_kinhphi = parseInt(id_kinhphi);
-		var id_donvi = parseInt(id_donvi);
-		var id_phong = parseInt(id_phong);
-		var id_user = parseInt(id_user);
-		var status = parseInt(status);
+		if(window.confirm('Bạn có chắc muốn thêm không?')){
+			var dongia = parseInt(dongia);
+			var soluong = parseInt(soluong);
+			var id_loaitaisan = parseInt(id_loaitaisan);
+			var id_kinhphi = parseInt(id_kinhphi);
+			var id_donvi = parseInt(id_donvi);
+			var id_phong = parseInt(id_phong);
+			var id_user = parseInt(id_user);
+			var status = parseInt(status);
 
-		itemsTaisan.length!==0
-		? id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1
-		: id = 1
+			itemsTaisan.length!==0
+			? id = parseInt(itemsTaisan[itemsTaisan.length - 1].id) + 1
+			: id = 1
 
-		this.props.addContextTS({
-			id,
-			name,
-			dongia,
-			soluong,
-			ngaynhap,
-			hansudung,
-			ghichu,
-			id_loaitaisan,
-			id_donvi,
-			id_kinhphi,
-			id_phong,
-			id_user,
-			status
-		})
+			this.props.addContextTS({
+				id,
+				name,
+				dongia,
+				soluong,
+				ngaynhap,
+				hansudung,
+				ghichu,
+				id_loaitaisan,
+				id_donvi,
+				id_kinhphi,
+				id_phong,
+				id_user,
+				status
+			})
 
-		this.props.addTs(
-			id,
-			name,
-			dongia,
-			soluong,
-			ngaynhap,
-			hansudung,
-			ghichu,
-			id_loaitaisan,
-			id_donvi,
-			id_kinhphi,
-			id_phong,
-			id_user,
-			status
-		)
+			this.props.addTs(
+				id,
+				name,
+				dongia,
+				soluong,
+				ngaynhap,
+				hansudung,
+				ghichu,
+				id_loaitaisan,
+				id_donvi,
+				id_kinhphi,
+				id_phong,
+				id_user,
+				status
+			)
+		}
 	}
 
 
@@ -385,7 +386,7 @@ class Child extends Component {
 						)}
 						href="http://localhost:3000/taisan"
 					>
-						Thêm
+						<Link to="/taisan">Thêm</Link>
 					</Button>
 				</form>
 				</Paper>

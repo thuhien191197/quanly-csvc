@@ -210,10 +210,6 @@ class Main extends Component {
 						name: 'Danh sách thanh lý',
 						route: 'Danh sách thanh lý',
 					},
-					thongke:{
-						name: 'Thống Kê',
-						route: 'Thống kê',
-					},
 				}
 			},
 			kehoach:{
@@ -222,7 +218,13 @@ class Main extends Component {
 				route: 'kehoach',
 				isOpen: false,
 				icon:'fas fa-book',
-				children: {}
+				children: {
+					icon:'fas fa-angle-right',
+					vanbanmau:{
+						name: 'VanBanMau',
+						// route: '/danhmuc',
+					},
+				}
 			}
 		},
 		open: false,
@@ -704,7 +706,8 @@ class Main extends Component {
 											<List dense className={classes.menuItems}>
 												<ListItem button divider>
 													<i style={{color: 'black'}} class="far fa-user-circle"></i>
-													<ListItemText primary="Profile" />
+													{/* <ListItemText primary="Profile" /> */}
+													<a style={{color: 'black'}} href={`user/edit/${this.state.sessionUser.id}`}>Profile</a>
 												</ListItem>		
 												<ListItem button divider >
 													<i style={{color: 'black'}} class="fas fa-sign-out-alt"></i>
@@ -738,9 +741,15 @@ class Main extends Component {
 								
 								return(
 									<li key={i}>
+										{key === 'danhmuc' && this.state.sessionUser.role === 3
+										?
+										''
+										:
 										<div onClick={() => this.toggleDropdown(key)}>
 											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
 										</div>
+										}
+										
 										{childrenKeys!== null
 										?
 											sidebar[key].isOpen ?
@@ -762,25 +771,28 @@ class Main extends Component {
 																			<MenuLink className="s-sidebar__nav-linksub" to={{
 																				pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
 																			}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
-																		:
-																			sidebar[key].children[keyChild].name !== "Nguồn Kinh Phí" && sidebar[key].children[keyChild].name !=='Danh mục'
-																			?
-																				<MenuLink className="s-sidebar__nav-linksub" to={{
-																					pathname: '/'+ key + '/loaitaisan/' + sidebar[key].children[keyChild].name,
-																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
-																				
-																			:
+																		:	
 																			// Nếu Role != 3 thì cho show Nguon khi phí
-																			this.state.sessionUser.role !== 3
-																				?<MenuLink className="s-sidebar__nav-linksub" to={{
-																					pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																				}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
-																				:''
+																			key === 'danhmuc' && this.state.sessionUser.role !== 3
+																			?
+																				sidebar[key].children[keyChild].name !== "Nguồn Kinh Phí" && sidebar[key].children[keyChild].name !=='Danh mục'
+																				?
+																					<MenuLink className="s-sidebar__nav-linksub" to={{
+																						pathname: '/'+ key + '/loaitaisan/' + sidebar[key].children[keyChild].name,
+																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																					
+																				:
+																					<MenuLink className="s-sidebar__nav-linksub" to={{
+																						pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
+																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																			:
+																			''
 																	:
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name + '/danhsachtaisan',
 																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
 																:
+																	
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key,
 																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />

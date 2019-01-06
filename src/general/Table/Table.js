@@ -167,7 +167,7 @@ class Table1 extends Component {
 	
 	
 	render() {
-		const {rows, items, numSelected, classes, roleAdd} = this.props;
+		const {rows, items, numSelected, classes, roleAdd, roleEdit, roleDel} = this.props;
 		const {page, rowsPerPage, orderBy, order, selected} = this.state;
 		const emptyRows =rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 		// console.log('render', this.state)
@@ -180,8 +180,9 @@ class Table1 extends Component {
 		return (
 			<div>
 				<div className="divAdd">
-
-					{rows.map((row, idRow) => {
+					{roleAdd !== false
+					?
+					rows.map((row, idRow) => {
 						var funcs = row.function;
 						return(
 							row.id === "function"
@@ -208,7 +209,11 @@ class Table1 extends Component {
 							:
 							""
 						)
-					})}
+					})
+					:
+					''
+					}
+					
 				</div>
 				<Paper className={classes.root}>
 					<Toolbar>
@@ -231,6 +236,8 @@ class Table1 extends Component {
 							{selected.length > 0 
 							? (
 								<div>
+									{roleDel!== false
+									?
 									<Tooltip title="Delete">
 										<IconButton 
 											aria-label="Delete"
@@ -241,6 +248,10 @@ class Table1 extends Component {
 											/>
 										</IconButton>
 									</Tooltip>
+									:
+									''
+									}
+									
 									{/*  icon điều chuyển  */}
 
 									{rows[rows.length-1].function.map((func, i) => {
@@ -294,13 +305,17 @@ class Table1 extends Component {
 
 								
 								<div>
+									{roleDel!== false
+									?
 									<Tooltip disabled title="Delete">
 										<IconButton aria-label="Delete">
 											<DeleteIcon 
-												onClick = {() => this.props.handleDelete(selected)}
+												onClick = {() => {this.props.handleDelete(selected)}}
 											/>
 										</IconButton>
 									</Tooltip>
+									:""
+									}
 									{rows[rows.length-1].function.map((func, i) => {
 									// console.log("func:",func)
 										if(func === "dieuchuyen"){
@@ -427,7 +442,8 @@ class Table1 extends Component {
 														// console.log("func:",func)
 															return(
 																func === "edit"
-																?
+																?	roleEdit !== false
+																	?
 																	<Button 
 																		key={i}
 																		className={classes.btnEdit}
@@ -439,6 +455,8 @@ class Table1 extends Component {
 																		
 																		<EditIcon />
 																	</Button>
+																	:
+																	''
 																:
 																	func === 'view'
 																	?
