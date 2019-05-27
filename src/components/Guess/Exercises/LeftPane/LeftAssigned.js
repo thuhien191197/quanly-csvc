@@ -64,10 +64,10 @@ class LeftNew extends React.Component {
             orderBy: 'calories',
             selected: [],
             page: 0,
-            rowsPerPage: 2,
+            rowsPerPage: 6,
             value: -1
         }
-        this.apiUrl = `http://localhost:5500/posts`
+        this.apiUrl = `http://localhost:5500/user`
     }
 
     componentDidMount(){
@@ -109,23 +109,21 @@ class LeftNew extends React.Component {
     return (
         <div>
             <Grid container spacing={0} className={classes.paperL}>
-                {this.state.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(post => (
+                {this.state.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(user => (
                     <Grid  xs={12} md={6}
                            onClick={this.handleClickOpen('body')}
                            tabIndex={-1}
-                           key={post.id}>
+                           key={user.id}>
                         <Card className={classes.cardL}
-                              onClick={() => this.handleClick(post.id)}>
+                              onClick={() => this.handleClick(user.id)}>
                             <div className={classes.cardDetails}>
                                 <CardContent>
                                     <Typography component="h2" variant="h6" >
-                                        {post.title}
+                                        {user.fullname}
                                     </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        {post.date}
-                                    </Typography>
+                                   
                                     <Typography  component="p" gutterBottom noWrap className={classes.posrt}>
-                                        {post.content}
+                                        {user.phone}
                                     </Typography>
                                     <Typography variant="subtitle2" color="primary">
                                         Continue reading...
@@ -135,8 +133,8 @@ class LeftNew extends React.Component {
                             <Hidden xsDown>
                                 <CardMedia
                                     className={classes.cardMedia}
-                                    image={post.image}
-                                    title={post.title}
+                                    image={user.avatar}
+                                    //title={post.title}
                                 />
                             </Hidden>
                         </Card>
@@ -171,7 +169,7 @@ class LeftNew extends React.Component {
             </Grid>
             <Paper style={{ flexGrow: 1, margin: 10, padding: 0, marginTop: -5, marginBottom: 2}}>
                 <TablePagination
-                    rowsPerPageOptions={[2, 4, 6, 8]}
+                    rowsPerPageOptions={[6, 12]}
                     component="div"
                     count={data.length}
                     rowsPerPage={rowsPerPage}

@@ -4,7 +4,7 @@ import LeftPane from './LeftPane';
 import RightPane from './RightPane';
 import TopPanne from './TopPane';
 
-let imgUrl = 'https://png.pngtree.com/thumb_back/fh260/back_pic/00/15/30/4656e81f6dc57c5.jpg';
+let imgUrl = 'http://dut.udn.vn/Images/Slides/Slider_HappyNewYear2019.jpg';
 const styles ={
     root: {
         width: '100%',
@@ -31,6 +31,8 @@ const styles ={
     mainFeaturedPostContent: {
         padding: 20,
         margin: 10,
+    
+        height: 250,
     },
     card: {
         maxWidth: '100%',
@@ -71,7 +73,7 @@ const styles ={
     },
 };
 export default props =>
-    <div>
+    <div style={{backgroundColor:'white'}}>
         <TopPanne styles={styles}/>
         <Grid container >
             <Grid item sm= {8} >

@@ -26,6 +26,7 @@ import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withRouter } from "react-router";
+import Radio from '@material-ui/core/Radio';
 
 
 
@@ -457,7 +458,26 @@ class Table1 extends Component {
 																	</Button>
 																	:
 																	''
-																:
+																:	
+
+																	func === "del"
+																	?	roleEdit !== false
+																		?
+																		<Button 
+																			key={i}
+																			className={classes.btnEdit}
+																			variant="fab" 
+																			// color="secondary" 
+																			aria-label="Del"
+																			component={Edit}
+																		>
+																			
+																			Del
+																		</Button>
+																		:
+																		''
+																	:
+
 																	func === 'view'
 																	?
 																	<Button 
@@ -477,6 +497,7 @@ class Table1 extends Component {
 														})
 														
 													}
+													
 												</TableCell>
 											)})}
 									</TableRow>

@@ -248,7 +248,8 @@ class ButtonDieuChuyenNhieu extends Component {
 					})
 
 					// vì tài sản đó được tách ra cho đơn vị khác nữa, nên phải thêm vào
-					id = parseInt(itemsTaiSan[itemsTaiSan.length - 1].id) + 1 + count
+					id = parseInt(parseInt(itemsTaiSan[itemsTaiSan.length - 1].id) + 1 + count)
+					console.log("[Diều chuyển nhiều]>>>> parseInt(itemsTaiSan[itemsTaiSan.length - 1].id) + 1 +count:", parseInt(itemsTaiSan[itemsTaiSan.length - 1].id)+ 1+ count)
 					name = item.name
 					dongia = (item.dongia / item.soluong)*chuyenTS[i].soluong
 					soluong = chuyenTS[i].soluong
@@ -297,9 +298,9 @@ class ButtonDieuChuyenNhieu extends Component {
 			//
 			let name = "Tài sản "+ name + " được chuyển cho đơn vị " + id_donvi + " với số lượng " +  chuyenTS[i].soluong + " / " + sumSoLuong
 			let link = "/taisan"
-			let count = 0
-			this.props.addContextThongBao({name, link,count})
-			axios.post(`http://localhost:5500/thongbao`, {name, link,count})
+			let count1 = 0
+			this.props.addContextThongBao({name, link,count1})
+			axios.post(`http://localhost:5500/thongbao`, {name, link,count1})
 			.then(res => {
 			})
 		}

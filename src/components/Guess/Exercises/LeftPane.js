@@ -3,6 +3,8 @@ import {Tabs, Tab, Paper} from '@material-ui/core';
 import LeftBody from './LeftPane/LeftNew'
 import Typography from "@material-ui/core/es/Typography/Typography";
 import LeftNotification from "./LeftPane/LeftNotification";
+import LeftAssigned from "./LeftPane/LeftAssigned";
+
 
 
 
@@ -34,12 +36,12 @@ class LeftPane extends React.Component {
                     >
                         <Tab label="Tin Tức"/>
                         <Tab label="Thông Báo"/>
-                        <Tab label="Thông Tin"/>
+                        <Tab label="Phân Công Công Việc"/>
                     </Tabs>
                 </Paper>
                 {value === 0 && <LeftBody/>}
                 {value === 1 && <LeftNotification/>}
-                {value === 2 && <Typography> a </Typography>}
+                {value === 2 && <LeftAssigned/>}
                 <br/>
 
             </div>

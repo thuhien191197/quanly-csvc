@@ -19,15 +19,17 @@ const styles = {
 
 export default props =>
         <div style ={styles.root}>
-            <AppBar position="absolute">
+            <AppBar position="absolute" >
                 <Toolbar>
-                    <img width="50" height="50" alt="abc" src={Logo}/>
-                    <Typography variant="h6" color="inherit" style={styles.grow}>
-                        QLCSVC
-                    </Typography>
-                    {/* <Button color="inherit" >Login</Button> */}
-					<a href="/api/logout">Login</a>
-
+                    <img width="65" height="65" alt="abc" src={Logo}/>
+                   
+                      <Typography variant="h7" color="inherit" style={styles.grow}>
+                            TRƯỜNG ĐẠI HỌC BÁCH KHOA <br/>
+                            PHÒNG CƠ SỞ VẬT CHẤT
+                        </Typography>
+                        
+                    {/* <Button color="inherit">Login</Button> */}
+					<a href="/">Login</a>
                 </Toolbar>
             </AppBar>
         </div>
