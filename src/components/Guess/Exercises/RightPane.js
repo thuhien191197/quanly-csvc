@@ -7,7 +7,7 @@ import {
     Paper, Typography
 } from '@material-ui/core';
 import { Gavel, Help, LocationOn, Call, Email} from '@material-ui/icons'
-
+import { FormattedMessage } from "react-intl";
 
 export default ({styles}) =>
     <div>
@@ -22,7 +22,7 @@ export default ({styles}) =>
                         <Avatar>
                             <Help />
                         </Avatar>
-                        <ListItemText primary="Hổ Trơ" />
+                        <ListItemText primary={<FormattedMessage  id="help.title" defaulMesage="Hỗ Trợ" />} />
                     </ListItem>
                 </List>
             </Card>

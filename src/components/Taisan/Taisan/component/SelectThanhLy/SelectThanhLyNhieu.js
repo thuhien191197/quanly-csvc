@@ -14,6 +14,7 @@ import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
+import { FormattedMessage } from "react-intl";
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
@@ -270,10 +271,12 @@ class SelectThanhLyNhieuComponent extends Component {
 				aria-labelledby="form-dialog-title"
 			>
 				<form noValidate autoComplete="off">
-					<DialogTitle id="form-dialog-title">Thanh lý tài sản</DialogTitle>
+					<DialogTitle id="form-dialog-title">
+						<FormattedMessage id="taisan.thanhly" defaulMesage="Thanh lý" />
+					</DialogTitle>
 					<DialogContent>
 						<DialogContentText>
-							Hãy điều chỉnh số lượng của các tài sản
+							<FormattedMessage id="dieuchinhsoluong.title" defaulMesage="Hãy điều chỉnh số lượng của tài sản này" />
 							<Paper className={classes.root}>
 								{this.props.selectedTS.map((item, i) => {
 									// số lượng ban đầu của item đó
@@ -305,7 +308,7 @@ class SelectThanhLyNhieuComponent extends Component {
 							</Paper>
 							<TextField
 								id="date"
-								label="Ngày thanh lý"
+								label={<FormattedMessage id="taisan.thanhly.table.ngaythanhly" defaulMesage="Ngày thanh lý" />}
 								type="date"
 								value={ngayTL}
 								onChange={this.handleChange('ngayTL')}
@@ -318,9 +321,8 @@ class SelectThanhLyNhieuComponent extends Component {
 							/>
 							<TextField
 								id="standard-name"
-								label="Lý do"
+								label={<FormattedMessage id="taisan.thanhly.table.lydo" defaulMesage="Lý do" />}
 								value={lydo}
-								placeholder="Nhập lý do"
 								onChange={this.handleChange('lydo')}
 								style={{ marginRight: 30 }}
 								margin="normal"
@@ -342,10 +344,10 @@ class SelectThanhLyNhieuComponent extends Component {
 								// component={DieuChuyenTS}
 								id="teo"
 							>
-								Chuyển
+								<FormattedMessage id="thanhly.title" defaulMesage="Thanh lý" />
 							</Button>
 							<Button onClick={this.props.handleCloseThanhLyNhieu} color="primary">
-								Cancel
+								<FormattedMessage id="cancel.title" defaulMesage="Cancel" />
 							</Button>
 						</DialogActions>
 					</DialogContent>

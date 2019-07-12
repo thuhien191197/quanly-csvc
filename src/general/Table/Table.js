@@ -27,6 +27,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withRouter } from "react-router";
 import Radio from '@material-ui/core/Radio';
+import { FormattedMessage } from "react-intl";
 
 
 
@@ -54,11 +55,16 @@ const toolbarStyles = theme => ({
 	},
 	header:{
 		position: "initial",
+		minWidth: "80px",
+		maxWidth:  "400px"
 	},
 	imgThanhLy:{
 		width:'7em',
 		height:'7em',
-	}
+	},
+	table: {
+		minWidth: 750
+	},
 
 
 });
@@ -228,7 +234,7 @@ class Table1 extends Component {
 						:
 						(
 							<Typography variant="h10" id="tableTitle">
-							Chức năng
+								<FormattedMessage id='optionalfunctions.title' defaulMesage="Chức năng tùy chọn" />
 							</Typography>
 						)
 						}
@@ -239,7 +245,7 @@ class Table1 extends Component {
 								<div>
 									{roleDel!== false
 									?
-									<Tooltip title="Delete">
+									<Tooltip title={<FormattedMessage id='delete.title' defaulMesage="Xóa" />}>
 										<IconButton 
 											aria-label="Delete"
 										>
@@ -260,7 +266,7 @@ class Table1 extends Component {
 										if(func === "dieuchuyen"){
 											return(
 												<span>
-													<Tooltip title="Điều chuyển tài sản">
+													<Tooltip title={<FormattedMessage id='taisan.dieuchuyen' defaulMesage="Điều chuyển tài sản" />}>
 														<IconButton 
 															aria-label="Điều chuyển"
 															aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
@@ -276,16 +282,19 @@ class Table1 extends Component {
 														className={classes.menuDC}
 														onClose={this.handleCloseDC}
 													>
-														<MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem>
-														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>Chuyển đến nhiều đơn vị</MenuItem>
+														{/* <MenuItem  onClick={() => {this.handleCloseDC(); this.props.handleClickOpen(selected)}} >Chuyển đến một đơn vị</MenuItem> */}
+														<MenuItem onClick={() => {this.handleCloseDC(); this.props.handleClickOpenNhieu(selected)}}>
+															{/* Chuyển đến nhiều đơn vị */}
+															<FormattedMessage  id="taisan.dieuchuyen" defaulMesage="Điều chuyển tài sản" />
+														</MenuItem>
 													</Menu>
 												</span>
 											)
 										} else if(func === "thanhly"){
 											return(
-												<Tooltip title="Thanh lý tài sản">
+												<Tooltip title={<FormattedMessage id='taisan.thanhly' defaulMesage="Thanh lý tài sản" />} >
 													<IconButton 
-														aria-label="Điều chuyển"
+														aria-label="Thanh lý"
 														onClick={() => this.props.handleClickOpenThanhLy(selected)}
 													>
 														<i class="fas fa-folder-minus"></i>
@@ -361,7 +370,9 @@ class Table1 extends Component {
 							)}
 						</div>
 					</Toolbar>
-					<Table aria-labelledby="tableTitle" >
+					<Table aria-labelledby="tableTitle" 
+						className={classes.table}
+					>
 						<TableHead >
 							<TableRow >
 								<TableCell padding="checkbox">
@@ -428,16 +439,34 @@ class Table1 extends Component {
 											// console.log("[Table] row: ", row.function);
 											var funcs = row.function;
 											return(
-												<TableCell key={idRow} component="th" scope="row" padding="none">
+												<TableCell 
+													key={idRow} 
+													component="th" 
+													scope="row" 
+													padding="none" 
+													
+												>
 													{row.id !== "function"
 													?
 														// nếu có hình ảnh thì hiển thị Hình
 														row.id !== "avatar"
 														? 
 															row.id !== "image"
-															? item[row.id]
-															: <img className={classes.imgThanhLy} src={item[row.id]}/>
-														: <img className={classes.imgUser} src={item[row.id]}/>
+															?
+																row.id !== "name" 
+																?
+																	item[row.id]
+																:
+																	<p
+																		className={classes.header}
+																		noWrap
+																	>
+																		{item[row.id]}
+																	</p>
+															: 
+																<img className={classes.imgThanhLy} src={item[row.id]}/>
+														: 
+															<img className={classes.imgUser} src={item[row.id]}/>
 													:
 													funcs.map((func, i) => {
 														// console.log("func:",func)
@@ -472,7 +501,7 @@ class Table1 extends Component {
 																			component={Edit}
 																		>
 																			
-																			Del
+																			<DeleteIcon />
 																		</Button>
 																		:
 																		''

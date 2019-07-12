@@ -4,7 +4,7 @@ import {
     DialogContentText, DialogActions,
     CardActionArea, CardMedia, CardContent, Typography
 } from "@material-ui/core";
-
+import { FormattedMessage } from "react-intl";
 
 class ScrollPaper extends React.Component {
     state = {
@@ -31,10 +31,10 @@ class ScrollPaper extends React.Component {
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Giới Thiệu
+							<FormattedMessage  id="gioithieu.title" defaulMesage="Giới Thiệu" />
                         </Typography>
                         <Typography component="p">
-                            Đại Học Bách Khoa Đà Nẵng
+							<FormattedMessage  id="school.title" defaulMesage="Đại Học Bách Khoa Đà Nẵng" />
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -48,7 +48,7 @@ class ScrollPaper extends React.Component {
                 >
                     <DialogTitle>
                         <Typography component="h2" variant="display2" gutterBottom>
-                            Giới Thiệu
+							<FormattedMessage  id="gioithieu.title" defaulMesage="Giới Thiệu" />
                         </Typography>
 
                     </DialogTitle>
@@ -109,7 +109,7 @@ class ScrollPaper extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
-                            Close
+							<FormattedMessage  id="close.title" defaulMesage="Close" />
                         </Button>
                     </DialogActions>
                 </Dialog>

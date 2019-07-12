@@ -7,6 +7,8 @@ import { QLCSVCContext } from '../../../Main/Main';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const styles = theme => ({
 	root: {
@@ -66,9 +68,9 @@ class AddDMComponent extends Component {
 					>
 						<TextField
 							id="standard-name"
-							label="Tên danh mục"
+							label={<FormattedMessage id="danhmuc.table.name" defaulMesage="Tên danh mục" />}
 							value={name}
-							placeholder="Nhập tên danh mục"
+							helperText={<FormattedMessage id="danhmuc.input.name" defaulMesage="Nhập tên danh mục" />}
 							onChange={this.handleChange('name')}
 							style={{ marginRight: 30 }}
 							margin="normal"
@@ -77,6 +79,13 @@ class AddDMComponent extends Component {
 							}}
 						/>
 						<br />
+						<Button 
+						variant="contained" 
+						>
+							<Link button  to={`/danhmuc`} >
+								<FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+							</Link>
+						</Button>	
 						<Button variant="contained" color="primary"
 							onClick={(event) => this.handleSubmit(
 								resource.danhmuc,
@@ -86,7 +95,7 @@ class AddDMComponent extends Component {
 							)}
 							// href="http://localhost:3000/taisan"
 						>
-							Thêm
+							<FormattedMessage id="add.title" defaulMesage="Thêm" />
 						</Button>
 					</form>
 				</Paper>
@@ -119,6 +128,7 @@ class AddDM extends Component {
 				route:"/danhmuc/add",
 				title: "",
 				// component: "DanhSachTaiSan"
+				messageId : "danhmuc.title"
 			},
 		}
 	}
@@ -133,7 +143,7 @@ class AddDM extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Thêm danh mục"}
+					title= {"add.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, addContextDanhMuc }) => <Add 
@@ -146,7 +156,6 @@ class AddDM extends Component {
 			</div>
 		)
 	}
-
 }
 	
 export default withRouter(withStyles(styles)(AddDM));

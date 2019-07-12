@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Table1 from '../../general/Table/Table';
 import { Switch, Route } from 'react-router-dom'
 import * as R from 'ramda';
+import { FormattedMessage } from "react-intl";
 
 // import './LoaiTaiSan.css';
 const styles = theme => ({
@@ -115,20 +116,30 @@ class LoaiTaiSanComponent extends Component {
 }
 
 class LoaiTaiSan extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
-			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
-			{ id: 'id_danhmuc', numeric: false, disablePadding: false, label: 'Loai tài sản' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add'] },
-		],
 
-		navBar : {
-			danhsachLTS:{
-				route:"/loaitaisan",
-				title: "Danh sách loai tài sản",
-			},
+	constructor(props) {
+		let name = <FormattedMessage id="loaitaisan.table.name" defaulMesage="Tên loại tài sản" />
+		let danhmuc = <FormattedMessage id="loaitaisan.table.danhmuc" defaulMesage="Tên danh mục" />
+		let functions = <FormattedMessage id="loaitaisan.table.functions" defaulMesage="Chức năng" />
+
+		super(props);
+
+		this.state = {	
+			rows : [
+				{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
+				{ id: 'name', numeric: false, disablePadding: false, label: name },
+				{ id: 'id_danhmuc', numeric: false, disablePadding: false, label: danhmuc },
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:['edit', 'add'] },
+			],
+	
+			navBar : {
+				danhsachLTS:{
+					route:"/loaitaisan",
+					title: "Danh sách loai tài sản",
+				},
+			}
 		}
+
 	}
 
 

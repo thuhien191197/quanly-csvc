@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {Typography, Paper} from '@material-ui/core';
 import { Gavel, Help, LocationOn, Call, Email} from '@material-ui/icons';
-
+import { FormattedMessage } from "react-intl";
 
 
 let imgUrl = 'https://png.pngtree.com/thumb_back/fh260/back_pic/00/15/30/4656e81f6dc57c5.jpg';
@@ -25,14 +25,15 @@ function Footer(props) {
         <div >
              <Paper style={styles.PaperRight} style={{backgroundColor: '#0c5389'}} >
             <Typography variant="h6" style={{color: '#ffffff'}}   gutterBottom align="center" >
-                THÔNG TIN LIÊN HỆ
+				<FormattedMessage  id="thongtinlienhe.title" defaulMesage="THÔNG TIN LIÊN HỆ" />
             </Typography>
             <Typography style={{color: '#ffffff'}} gutterBottom align="center"> 
-                Phòng Cơ sở vật chất, Trường Đại học Bách khoa, ĐHĐN
+				<FormattedMessage  id="page.title" defaulMesage="Phòng cơ sở vật chất" />,  
+				<FormattedMessage  id="school.title" defaulMesage="Trường Đại học Bách Khoa Đà Nẵng" /><br/>
             </Typography>
             <Typography style={{color: '#ffffff'}} gutterBottom align="center">
                 <LocationOn/>
-                54 Nguyễn Lương Bằng, Quận Liên Chiểu, Thành phố Đà Nẵng
+				<FormattedMessage  id="diachi.title" defaulMesage="54 Nguyễn Lương Bằng, Quận Liên Chiểu, Thành phố Đà Nẵng" />
             </Typography>
             <Typography style={{color: '#ffffff'}} gutterBottom align="center">
                 <Call/>

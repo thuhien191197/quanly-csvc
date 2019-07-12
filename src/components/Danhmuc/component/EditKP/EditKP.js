@@ -5,7 +5,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { QLCSVCContext } from '../../../Main/Main';
 import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
 import NavBar from '../../../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const styles = theme => ({
 	root: {
@@ -61,7 +64,7 @@ class EditKPComponent extends Component {
 	};
 
 	render() {
-		const { resource } = this.props
+		const { resource, classes } = this.props
 		// console.log(">>loaitaisan: ", this.state.itemsLoaitaisan);
 		const {
 			id,
@@ -72,16 +75,14 @@ class EditKPComponent extends Component {
 		} = this.state;
 		
 		return (
-		<div>
-			{/* Edit tài sản */}
+			<Paper className={classes.root}>
 			<form
 				noValidate autoComplete="off"
 			>
 				<TextField
 						id="standard-name"
-						label="Tên danh mục"
+						label={<FormattedMessage id="danhmuc.nguonkinhphi.table.name" defaulMesage="Tên nguồn kinh phí" />}
 						value={name}
-						placeholder="Nhập tên danh mục"
 						onChange={this.handleChange('name')}
 						style={{ marginRight: 30 }}
 						margin="normal"
@@ -91,13 +92,11 @@ class EditKPComponent extends Component {
 					/>
 					<TextField
 						id="standard-name"
-						label="Số lượng"
+						label={<FormattedMessage id="danhmuc.nguonkinhphi.table.tongngansach" defaulMesage="Tổng ngân sách" />}
 						value={tongngansach}
 						style={{ marginRight: 30 }}
 						type="number"
-						placeholder="Nhập tổng ngân sách"
 						// fullWidth
-						helperText="tổng ngân sách!"
 						onChange={this.handleChange('tongngansach')}
 						margin="normal"
 						InputLabelProps={{
@@ -107,11 +106,10 @@ class EditKPComponent extends Component {
 					<br />
 					<TextField
 						id="standard-name"
-						label="Tổng chi"
+						label={<FormattedMessage id="danhmuc.nguonkinhphi.table.tongchi" defaulMesage="Tổng chi" />}
 						value={tongchi}
 						style={{ marginRight: 30 }}
 						type="number"
-						placeholder="Nhập tổng chi"
 						// fullWidth
 						helperText="tổng chi!"
 						onChange={this.handleChange('tongchi')}
@@ -122,11 +120,10 @@ class EditKPComponent extends Component {
 					/>
 					<TextField
 						id="standard-name"
-						label="Tổng thanh lý"
+						label={<FormattedMessage id="danhmuc.nguonkinhphi.table.tongthanhly" defaulMesage="Tổng thanh lý" />}
 						value={tongthanhly}
 						style={{ marginRight: 30 }}
 						type="number"
-						placeholder="Nhập tổng thanh lý"
 						// fullWidth
 						helperText="ổng thanh lý!"
 						onChange={this.handleChange('tongthanhly')}
@@ -136,6 +133,13 @@ class EditKPComponent extends Component {
 						}}
 					/>
 					<br />
+					<Button 
+						variant="contained" 
+					>
+						<Link button  to={`/danhmuc/Nguồn Kinh Phí`} >
+							<FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+						</Link>
+					</Button>	
 				<Button variant="contained" color="primary"
 					onClick={(event) => this.handleSubmit(
 						resource.nguonkinhphi,
@@ -148,10 +152,10 @@ class EditKPComponent extends Component {
 					)}
 					href="http://localhost:3000/Nguồn%20Kinh%20Phí"
 				>
-					Sửa
+					<FormattedMessage id="edit.title" defaulMesage="Sửa" />
 				</Button>
 			</form>
-		</div>
+		</Paper>
 		);
 	}
 }
@@ -160,13 +164,19 @@ class EditKPComponent extends Component {
 class Edit extends Component {
 	
 	render() {
-		const { resource } = this.props;
+		const { resource, classes } = this.props;
 		const itemsKinhPhi = resource.nguonkinhphi;
 		const currentId = parseInt(getParentPath(this.props.match.url))
 		let itemKinhPhi = itemsKinhPhi.find((item) => { return item.id === currentId });;
 		console.log("currentId:", currentId)
 		return (
-			<EditKPComponent itemKinhPhi={itemKinhPhi} editAPIKinhPhi={this.props.editAPIKinhPhi} resource={resource} editContextKinhPhi={this.props.editContextKinhPhi}/>
+			<EditKPComponent 
+				itemKinhPhi={itemKinhPhi} 
+				editAPIKinhPhi={this.props.editAPIKinhPhi} 
+				resource={resource}
+				classes={classes}
+				editContextKinhPhi={this.props.editContextKinhPhi}
+			/>
 		)
 	}
 }
@@ -174,12 +184,14 @@ class Edit extends Component {
 
 class EditKP extends Component {
 	render() {
+		const { match, classes } = this.props
 		return(
 			<QLCSVCContext.Consumer>
 				{({ resource, editContextKinhPhi }) => <Edit 
 							editAPIKinhPhi={this.props.editAPIKinhPhi} 
 							resource={resource} 
 							match={this.props.match} 
+							classes={classes}
 							editContextKinhPhi={editContextKinhPhi} />}
 			</QLCSVCContext.Consumer>
 		)
@@ -188,4 +200,4 @@ class EditKP extends Component {
 }
 
 
-export default withRouter(EditKP);
+export default withRouter(withStyles(styles)(EditKP));

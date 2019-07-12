@@ -13,6 +13,7 @@ import Table1 from '../../general/Table/Table';
 import NavBar from '../../general/NavBar/NavBar';
 import AddDM from './component/AddDM/AddDM';
 import EditDM from './component/EditDM/EditDM';
+import { FormattedMessage } from "react-intl";
 
 const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -116,18 +117,23 @@ class DanhmucComponent extends Component {
 
 class Danhmuc extends Component {
 	constructor(props) {
+		let name = <FormattedMessage id="danhmuc.table.name" defaulMesage="Tên danh mục" />
+		let functions = <FormattedMessage id="danhmuc.table.functions" defaulMesage="Chức năng" />
+		
 		super(props);
 
 		this.state = {	
 			rows : [
 				{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-				{ id: 'name', numeric: false, disablePadding: false, label: 'Tên danh mục' },
-				{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add' ] },
+				{ id: 'name', numeric: false, disablePadding: false, label: name },
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:['edit', 'add' ] },
 			],
+
 			navBar : {
 				danhsachTS:{
 					route:"/danhmuc",
 					title: "Tất cả danh mục danh mục",
+					messageId : "danhmuc.navBar"
 					// component: "DanhSachTaiSan"
 				},
 			}
@@ -151,7 +157,7 @@ class Danhmuc extends Component {
 								classes={classes}
 								parentKey={parentKey}
 								navBar={navBar}
-								title= {"Danh mục"}
+								title= {"danhmuc.title"}
 							/>
 							<DanhmucComponent 
 								rows={rows} 

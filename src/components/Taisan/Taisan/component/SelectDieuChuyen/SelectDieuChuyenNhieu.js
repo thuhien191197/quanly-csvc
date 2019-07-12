@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import { QLCSVCContext } from '../../../../Main/Main';
+import { FormattedMessage } from "react-intl";
 import axios from 'axios';
 
 const styles = theme => ({
@@ -82,7 +83,7 @@ class ItemDieuChuyenNhieu extends Component {
 					<br />
 					<TextField
 						id={`standard-name${keyTS}`}
-						label="Số lượng"
+						label={<FormattedMessage id="taisan.dieuchuyen.table.soluong" defaulMesage="Số lượng" />}
 						helperText="Tổng số lượng"
 						className={classes.soluong}
 						value={soluong <= this.props.soluongHienTai&& soluong > 0 ? soluong: this.props.soluongHienTai}
@@ -102,7 +103,7 @@ class ItemDieuChuyenNhieu extends Component {
 					<TextField
 						id={`standard-name${keyTS}`}
 						select
-						label="Đơn vị nhận"
+						label={<FormattedMessage id="taisan.dieuchuyen.table.donvinhan" defaulMesage="Đơn vị nhận" />}
 						value={id_donvi}
 						onChange={this.handleChange('id_donvi')}
 						SelectProps={{
@@ -114,7 +115,6 @@ class ItemDieuChuyenNhieu extends Component {
 							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
-						helperText="Nơi muốn chuyển"
 						// margin="normal"
 					>
 						<option  value="">
@@ -130,7 +130,7 @@ class ItemDieuChuyenNhieu extends Component {
 					<TextField
 						id={`standard-name${keyTS}`}
 						select
-						label="Phòng"
+						label={<FormattedMessage id="taisan.dieuchuyen.table.phongnhan" defaulMesage="Phòng nhận" />}
 						value={id_phong}
 						onChange={this.handleChange('id_phong')}
 						style={{ marginRight: 30 }}
@@ -142,7 +142,6 @@ class ItemDieuChuyenNhieu extends Component {
 						InputLabelProps={{
 							shrink: true,
 						}}
-						helperText="Chọn phòng"
 						// margin="normal"
 					>
 						{this.props.resource.phong.map((item, i) => {
@@ -159,7 +158,7 @@ class ItemDieuChuyenNhieu extends Component {
 
 					<TextField
 						id={`standard-name${keyTS}`}
-						label="Ngày nhập"
+						label={<FormattedMessage id="taisan.dieuchuyen.table.ngaychuyen" defaulMesage="Ngày chuyển" />}
 						type="date"
 						// defaultValue="1997-11-19"
 						value={ngayCTS}
@@ -324,10 +323,10 @@ class ButtonDieuChuyenNhieu extends Component {
 					component={DieuChuyenTS}
 					id="teo"
 				>
-					Chuyển
+					<FormattedMessage id="taisan.dieuchuyen" defaulMesage="Điều chuyển tài sản" />
 				</Button>
 				<Button onClick={handleCloseDieuChuyenNhieu} color="primary">
-					Cancel
+					<FormattedMessage id="cancel.title" defaulMesage="Cancel" />
 				</Button>
 			</DialogActions>
 		)
@@ -389,10 +388,12 @@ class SelectDieuChuyenNhieu extends Component {
 						aria-labelledby="max-width-dialog-title"
 						maxWidth='xl'
 					>
-						<DialogTitle id="form-dialog-title">Điều chuyển tài sản</DialogTitle>
+						<DialogTitle id="form-dialog-title">
+							<FormattedMessage id="taisan.dieuchuyen" defaulMesage="Điều chuyển tài sản" />
+						</DialogTitle>
 						<DialogContent>
 							<DialogContentText>
-								Hãy điều chỉnh số lượng của các tài sản đến các đơn vị bạn muốn
+								<FormattedMessage id="dieuchinhsoluong.title" defaulMesage="Hãy điều chỉnh số lượng của tài sản này" />
 								<Paper className={classes.root} >
 									{this.props.selectedTS.map((item, i) => {
 										return(

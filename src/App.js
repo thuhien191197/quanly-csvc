@@ -13,6 +13,7 @@ import GuestPage from './components/Guess/GuestPage';
 // import Login from './components/Login/Login';
 
 
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -38,7 +39,7 @@ class App extends Component {
 			return (
 				<Router>
 					<Switch>
-						{/* <Route exact path="/qlcsvc" component={GuestPage} /> */}
+						<Route exact path="/qlcsvc" component={GuestPage} />
 						<Main />
 					</Switch>
 				</Router>

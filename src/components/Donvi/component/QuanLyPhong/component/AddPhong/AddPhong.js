@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as R from 'ramda';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[2]
 
 class AddPhongComponent extends Component {
@@ -78,11 +80,12 @@ class AddPhongComponent extends Component {
 				<form noValidate autoComplete="off">
 					<TextField
 						id="standard-name"
-						label="Tên tài sản"
+						label={<FormattedMessage id="quanlyphong.table.name" defaulMesage="Tên phòng" />}
 						value={name}
-						placeholder="Nhập tên tài sản"
+						// placeholder={<FormattedMessage id="quanlyphong.input.name" defaulMesage="Nhập tên phòng" />}
 						onChange={this.handleChange('name')}
 						style={{ marginRight: 30 }}
+						helperText={<FormattedMessage id="quanlyphong.input.name" defaulMesage="Nhập tên phòng" />}
 						margin="normal"
 						InputLabelProps={{
 							shrink: true,
@@ -92,7 +95,7 @@ class AddPhongComponent extends Component {
 						id="standard-name"
 						select
 						disabled
-						label="Đơn vị"
+						label={<FormattedMessage id="donvi.title" defaulMesage="Đơn vị" />}
 						value={id_donvi}
 						onChange={() => this.handleChangeDV(this.getIDDonViCurrent(resource,getParentPath(this.props.match.url)))}
 						SelectProps={{
@@ -104,7 +107,6 @@ class AddPhongComponent extends Component {
 							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
-						helperText="Please select your currency"
 						margin="normal"
 					>
 						{resource.donvi.map((item, i) => (
@@ -117,7 +119,9 @@ class AddPhongComponent extends Component {
 					<Button 
 						variant="contained" 
 					>
-						<Link button  to={`/user`} >Cancer</Link>
+						<Link button  to={`/user`} >
+							<FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+						</Link>
 					</Button>	
 					<Button variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
@@ -129,7 +133,7 @@ class AddPhongComponent extends Component {
 						)}
 						// href="http://localhost:3000/"
 					>
-						Thêm
+						<FormattedMessage id="add.title" defaulMesage="Thêm" />
 					</Button>
 				</form>
 			</div>

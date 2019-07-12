@@ -55,12 +55,14 @@ class Donvi extends Component {
 			danhsachTS:{
 				route:"/danhsachtaisan",
 				title: "Danh sách tài sản",
-				component: "DanhSachTaiSan"
+				component: "DanhSachTaiSan",
+				messageId : "donvi.navBar.danhsachtaisan"
 			},
 			quanlyPhong:{
 				route:"/quanlyphong",
 				title: "Quản lý Phòng",
-				component: "QuanLyPhong"
+				component: "QuanLyPhong",
+				messageId : "donvi.navBar.quanlyphong"
 			}
 		}
 	}

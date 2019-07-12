@@ -8,6 +8,8 @@ import { Switch, Route } from 'react-router-dom'
 import AddPhong from './component/AddPhong/AddPhong';
 import axios from 'axios';
 import EditPhong from './component/EditPhong/EditPhong';
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[2]
 
 class PhongComponent extends Component {
@@ -100,12 +102,19 @@ class PhongComponent extends Component {
 }
 
 class QuanLyPhong extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
-			{ id: 'function', numeric: false, disablePadding: true, label: 'Chức năng', function:['edit', 'add'] },
-		],
+
+	constructor(props) {
+		let name = <FormattedMessage id="quanlyphong.table.name" defaulMesage="Name" />
+		let functions = <FormattedMessage id="quanlyphong.table.functions" defaulMesage="Chức năng" />
+
+		super(props);
+		this.state = {		
+			rows : [
+				{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
+				{ id: 'name', numeric: false, disablePadding: false, label: name },
+				{ id: 'function', numeric: false, disablePadding: true, label: functions, function:['edit', 'add'] },
+			],
+		}
 	}
 
 	render1 = () => {

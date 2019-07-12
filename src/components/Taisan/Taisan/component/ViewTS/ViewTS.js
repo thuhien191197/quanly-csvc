@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const styles = theme => ({
@@ -31,7 +33,26 @@ const itemsTinhtrang = [
 	}
 ];
 
+const name_title = <FormattedMessage id="taisan.table.name" defaulMesage="Name" />
+const dongia_title = <FormattedMessage id="taisan.table.dongia" defaulMesage="Don gia" />
+const soluong_title = <FormattedMessage id="taisan.table.soluong" defaulMesage="so luong" />
+const ngaynhap_title = <FormattedMessage id="taisan.table.ngaynhap" defaulMesage="Ngay nnhap" />
+const loaitaisan_title = <FormattedMessage id="taisan.table.loaitaisan" defaulMesage="Loai tai san" />
+const donvi_title = <FormattedMessage id="taisan.table.donvi" defaulMesage="Don vi" />
+const nguoinhap_title = <FormattedMessage id="taisan.table.nguoinhap" defaulMesage="Nguoi nhap" />
+const ghichu_title = <FormattedMessage id="taisan.table.ghichu" defaulMesage="Ghi chú" />
+const tinhtrang_title = <FormattedMessage id="taisan.table.tinhtrang" defaulMesage="Tình trạng" />
+const nguonkinhphi_title = <FormattedMessage id="taisan.table.nguonkinhphi" defaulMesage="Nguồn kinh phí" />
+const phong_title = <FormattedMessage id="taisan.table.phong" defaulMesage="Phòng" />
+const hansudung_title = <FormattedMessage id="taisan.table.hansudung" defaulMesage="Hạn sử dụng" />
+const back = <FormattedMessage id="back.title" defaulMesage="Back" />
+const edit = <FormattedMessage id="edit.title" defaulMesage="Edit" />
+const thongtin = <FormattedMessage id="taisan.thongtin" defaulMesage="Thông tin" />
+const chitiet = <FormattedMessage id="taisan.chitiet" defaulMesage="Chi tiết" />
+
+
 class Child extends Component {
+	
 	state = this.props.itemTS || {
 		id: 0,
 		name: '',
@@ -121,7 +142,7 @@ class Child extends Component {
 			id_user,
 			status,
 		} = this.state;
-		
+
 		return (
 			<div className={classes.root}>
 				<div className="quiz-window">
@@ -132,13 +153,13 @@ class Child extends Component {
 						<div className="gui-window-awards">
 						<ul className="guiz-awards-row guiz-awards-header">
 							<li className="guiz-awards-header-star">&nbsp;</li>
-							<li className="guiz-awards-header-title">Thông tin</li>
-							<li className="guiz-awards-header-track">Chi tiết</li>
+							<li className="guiz-awards-header-title">{thongtin}</li>
+							<li className="guiz-awards-header-track">{chitiet}</li>
 					
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star goldstar" /></li>
-							<li className="guiz-awards-title">Tên người nhập</li>
+							<li className="guiz-awards-title">{nguoinhap_title}</li>
 							{resource.user.map((item, i) => {
 								return(
 									item.id === id_user
@@ -151,22 +172,22 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Đơn giá</li>
+							<li className="guiz-awards-title">{dongia_title}</li>
 							<li className="guiz-awards-track">{dongia}</li>
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Số lượng</li>
+							<li className="guiz-awards-title">{soluong_title}</li>
 							<li className="guiz-awards-track">{soluong}</li>
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star rhodiumstar" /></li>
-							<li className="guiz-awards-title">Ghi chú</li>
+							<li className="guiz-awards-title">{ghichu_title}</li>
 							<li className="guiz-awards-track">{ghichu}</li>
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star platinumstar" /></li>
-							<li className="guiz-awards-title">Tình trạng</li>
+							<li className="guiz-awards-title">{tinhtrang_title}</li>
 							{itemsTinhtrang.map((item, i) => {
 								return(
 									item.id === status
@@ -178,7 +199,7 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star" /></li>
-							<li className="guiz-awards-title">Loại tài sản</li>
+							<li className="guiz-awards-title">{loaitaisan_title}</li>
 							{resource.loaitaisan.map((item, i) => {
 								return(
 									item.id === id_loaitaisan
@@ -190,7 +211,7 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star goldstar" /></li>
-							<li className="guiz-awards-title">Nguồn kinh phí</li>
+							<li className="guiz-awards-title">{nguonkinhphi_title}</li>
 							{resource.nguonkinhphi.map((item, i) => {
 								return(
 									item.id === id_kinhphi
@@ -202,7 +223,7 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Đơn vị</li>
+							<li className="guiz-awards-title">{donvi_title}</li>
 							{resource.donvi.map((item, i) => {
 								return(
 									item.id === id_donvi
@@ -214,7 +235,7 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Phòng</li>
+							<li className="guiz-awards-title">{phong_title}</li>
 							{resource.phong.map((item, i) => {
 								return(
 									item.id === id_phong
@@ -226,18 +247,18 @@ class Child extends Component {
 						</ul>
 						<ul className="guiz-awards-row">
 							<li className="guiz-awards-star"><span className="star silverstar" /></li>
-							<li className="guiz-awards-title">Ngày nhập</li>
+							<li className="guiz-awards-title">{ngaynhap_title}</li>
 							<li className="guiz-awards-track">{ngaynhap}</li>
 						</ul>
 						<ul className="guiz-awards-row guiz-awards-row-even">
 							<li className="guiz-awards-star"><span className="star bronzestar" /></li>
-							<li className="guiz-awards-title">Hạn sử dụng</li>
+							<li className="guiz-awards-title">{hansudung_title}</li>
 							<li className="guiz-awards-track">{hansudung}</li>
 						</ul>
 						</div>
 						<div className="guiz-awards-buttons">
-						 	<Link className="guiz-awards-but-back" to={`/taisan`} ><i className="fa fa-angle-left" />Back</Link>
-							<Link className="guiz-awards-but-back" to={`/taisan/edit/${id}`} >Edit <i className="fa fa-angle-right" /></Link>
+						 	<Link className="guiz-awards-but-back" to={`/taisan`} ><i className="fa fa-angle-left" />{back}</Link>
+							<Link className="guiz-awards-but-back" to={`/taisan/edit/${id}`} >{edit} <i className="fa fa-angle-right" /></Link>
 						</div>
 					</div>
 					</div>
@@ -270,6 +291,7 @@ class ViewTSWrap extends Component {
 				route:"/user/view/:id",
 				title: "",
 				// component: "DanhSachTaiSan"
+				messageId: "taisan.title"
 			},
 		}
 	}
@@ -284,7 +306,7 @@ class ViewTSWrap extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Chi tiết tài sản"}
+					title= {"taisan.chitiet"}
 				/>
 			
 				<QLCSVCContext.Consumer>

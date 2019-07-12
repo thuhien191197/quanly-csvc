@@ -20,7 +20,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import axios from 'axios';
-
+import { FormattedMessage } from "react-intl";
 
 
 const styles = LeftNew => ({
@@ -128,7 +128,7 @@ class LeftNew extends React.Component {
                                         {post.content}
                                     </Typography>
                                     <Typography variant="subtitle2" color="primary">
-                                        Continue reading...
+										<FormattedMessage  id="xemthem.title" defaulMesage="Xem thêm" />
                                     </Typography>
                                 </CardContent>
                             </div>

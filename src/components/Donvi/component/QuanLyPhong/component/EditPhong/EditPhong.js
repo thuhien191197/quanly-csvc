@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as R from 'ramda';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[5]
 
 class EditPhongComponent extends Component {
@@ -73,11 +75,11 @@ class EditPhongComponent extends Component {
 				<form noValidate autoComplete="off">
 					<TextField
 						id="standard-name"
-						label="Tên tài sản"
+						label={<FormattedMessage id="quanlyphong.table.name" defaulMesage="Tên phòng" />}
 						value={name}
-						placeholder="Nhập tên tài sản"
 						onChange={this.handleChange('name')}
 						style={{ marginRight: 30 }}
+						helperText={<FormattedMessage id="quanlyphong.input.name" defaulMesage="Nhập tên phòng" />}
 						margin="normal"
 						InputLabelProps={{
 							shrink: true,
@@ -87,7 +89,7 @@ class EditPhongComponent extends Component {
 						id="standard-name"
 						select
 						disabled
-						label="Đơn vị"
+						label={<FormattedMessage id="donvi.title" defaulMesage="Đơn vị" />}
 						value={id_donvi}
 						onChange={this.handleChange('id_donvi')}
 						SelectProps={{
@@ -99,7 +101,6 @@ class EditPhongComponent extends Component {
 							shrink: true,
 						}}
 						style={{ marginRight: 30 }}
-						helperText="Please select your currency"
 						margin="normal"
 					>
 						{resource.donvi.map((item, i) => (
@@ -112,7 +113,9 @@ class EditPhongComponent extends Component {
 					<Button 
 						variant="contained" 
 					>
-						<Link button to={`${this.getNameTaiSanCurrent(resource, id_donvi)}/quanlyphong`} >Cancer</Link>
+						<Link button to={`${this.getNameTaiSanCurrent(resource, id_donvi)}/quanlyphong`} >
+							<FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+						</Link>
 					</Button>
 					<Button variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
@@ -124,7 +127,7 @@ class EditPhongComponent extends Component {
 						)}
 						// href="http://localhost:3000/"
 					>
-						Sửa
+						<FormattedMessage id="edit.title" defaulMesage="Sửa" />
 					</Button>
 				</form>
 			</div>

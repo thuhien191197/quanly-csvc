@@ -6,8 +6,6 @@ import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
-// import MenuItem from '@material-ui/core/MenuItem';
-// import MenuItemAvatar from '@material-ui/core/MenuItemAvatar';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -17,13 +15,14 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import MenuList from '@material-ui/core/MenuList';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
-import Taisan from '../Taisan/Taisan/Taisan';
+
+import { IntlProvider } from 'react-intl';
+import { FormattedMessage } from "react-intl";
+
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -44,15 +43,10 @@ const styles = theme => ({
 		width: '100%',
 		maxWidth: 360,
 		backgroundColor: theme.palette.background.paper,
-		// position: 'relative',
 		overflowX: 'auto',
 		wordBreak: "break-word",
 		maxHeight: 300,
-		// marginLeft: '-70px'
-		width: '100%',
-		maxWidth: 360,
 		opacity: "1",
-		backgroundColor: theme.palette.background.paper,
 	},
 	popperNoti:{
 		marginLeft: '-144px'
@@ -62,7 +56,7 @@ const styles = theme => ({
 	},
 	popperUser:{
 		marginLeft: '-80px'
-	},
+	}
 });
 
 export const resource = {
@@ -152,6 +146,7 @@ class Main extends Component {
 				route: '/home',
 				isOpen: false,
 				icon:'fa fa-home',
+				messageID:'home.title',
 				children: {}
 			},
 			user:{
@@ -160,6 +155,7 @@ class Main extends Component {
 				route: '/user',
 				isOpen: false,
 				icon:'fa fa-user',
+				messageID:'user.title',
 				children: {}
 			},
 			donvi:{
@@ -168,6 +164,7 @@ class Main extends Component {
 				route: '/donvi',
 				isOpen: false,
 				icon:'fas fa-landmark',
+				messageID:'donvi.title',
 				children: {
 					icon:'fas fa-angle-right',
 				}
@@ -178,15 +175,16 @@ class Main extends Component {
 				route: '/danhmuc',
 				isOpen: false,
 				icon:'fas fa-list-ul',
+				messageID:'danhmuc.title',
 				children: {
 					icon:'fas fa-angle-right',
 					quanlydanhmuc:{
 						name: 'Danh mục',
-						// route: '/danhmuc',
+						messageID:'danhmuc.title',
 					},
 					nguonkinhphi:{
 						name: 'Nguồn Kinh Phí',
-						// route: '/nguonkinhphi',
+						messageID:'danhmuc.nguonkinhphi',
 					},
 				}
 			},
@@ -196,19 +194,23 @@ class Main extends Component {
 				route: '/taisan',
 				isOpen: false,
 				icon:'fas fa-warehouse',
+				messageID:'taisan.title',
 				children: {
 					icon:'fas fa-angle-right',
 					taisan:{
 						name: 'Tài Sản',
 						route: 'taisan',
+						messageID:'taisan.title',
 					},
 					dieuchinhtaisan:{
 						name: 'Danh sách điều chuyển',
 						route: 'Danh sách điều chuyển',
+						messageID:'taisan.dieuchuyen',
 					},
 					thanhly:{
 						name: 'Danh sách thanh lý',
 						route: 'Danh sách thanh lý',
+						messageID:'taisan.thanhly',
 					},
 				}
 			},
@@ -218,6 +220,7 @@ class Main extends Component {
 				route: 'kehoach',
 				isOpen: false,
 				icon:'fas fa-book',
+				messageID:'kehoach.title',
 				children: {
 					icon:'fas fa-angle-right',
 					vanbanmau:{
@@ -228,8 +231,228 @@ class Main extends Component {
 			}
 		},
 		open: false,
-		openUserProfile: false
+		openUserProfile: false,
 
+		lang:"vi",
+		message: {
+			vi: {
+				'project.title' : "Quản lý cơ sở vật chất",
+				'logout.title' : "Đăng xuất",
+				'profile.title' : "Thông tin cá nhân",
+				'home.title' : "Trang chủ",
+				'home.navBar' : "Thống kê trang quản lý",
+				'user.title' : "Người dùng",
+				'user.navBar' : "Người có quyền trong CSVC",
+				'user.table.username' : "Tên người dùng",
+				'user.table.fullname' : "Họ và tên",
+				'user.table.password' : "Mật khẩu",
+				'user.table.avatar' : "Avatar",
+				'user.table.phone' : "Số điện thoại",
+				'user.table.donvi' : "Đơn vị",
+				'user.table.role' : "Chức vụ",
+				'user.table.functions' : "Chức năng",
+				'user.add.title' : "Thêm người dùng",
+				'user.edit.title' : "Sửa người dùng",
+				'donvi.title' : "Đơn vị",
+				'donvi.navBar' : "Đơn vị trong trường",
+
+				'donvi.navBar.quanlyphong' : "Quản lý phòng",
+				'donvi.navBar.danhsachtaisan' : "Danh sách tài sản",
+				'quanlyphong.table.name': "Tên phòng",
+				'quanlyphong.table.functions': "Chức năng",
+				'quanlyphong.input.name' : "Nhập tên phòng",
+
+				'danhmuc.title' : "Danh mục",
+				'danhmuc.navBar' : "List danh mục tài sản",
+				'danhmuc.table.name': "Tên danh mục",
+				'danhmuc.table.functions': "Chức năng",
+				'danhmuc.input.name' : "Nhập tên danh mục",
+				'danhmuc.nguonkinhphi': "Nguồn kinh phí",
+
+				'danhmuc.nguonkinhphi.table.name': "Tên nguồn kinh phí",
+				'danhmuc.nguonkinhphi.table.tongngansach': "Tổng ngân sách",
+				'danhmuc.nguonkinhphi.table.tongchi': "Tổng chi",
+				'danhmuc.nguonkinhphi.table.tongthanhly': "Tổng thanh lý",
+				'danhmuc.nguonkinhphi.table.functions': "Chức năng",
+
+				'danhmuc.nguonkinhphi.input.name': "Nhập tên nguồn kinh phí",
+				'danhmuc.nguonkinhphi.input.tongngansach': "Nhập tổng ngân sách",
+				'danhmuc.nguonkinhphi.input.tongchi': "Nhập tổng chi",
+				'danhmuc.nguonkinhphi.input.tongthanhly': "Nhập tổng thanh lý",
+
+				'taisan.title' : "Tài sản",
+				'taisan.navBar' : "Tài sản của trường",
+				'taisan.filter' : "Lọc loại tài sản",
+				'taisan.filter.all' : "Tất cả loại tài sản",
+
+				
+
+				'taisan.table.name' : "Tên tài sản",
+				'taisan.table.dongia' : "Đơn giá",
+				'taisan.table.soluong' : "Số lượng",
+				'taisan.table.ngaynhap' : "Ngày nhập",
+				'taisan.table.loaitaisan' : "Loại tài sản",
+				'taisan.table.donvi' : "Đơn vị",
+				'taisan.table.nguoinhap' : "Người nhập",
+				'taisan.table.ghichu' : "Chú thích",
+				'taisan.table.tinhtrang' : "Tình trạng",
+				'taisan.table.nguonkinhphi' : "Nguồn Kinh phí",
+				'taisan.table.phong' : "Phòng",
+				'taisan.table.hansudung' : "Hạn sử dụng",
+				'taisan.table.functions' : "Chức năng",
+				'taisan.thongtin' : "Thông tin",
+				'taisan.chitiet' : "Chi tiết",
+
+
+				'taisan.soluong' : "Số tài sản được thêm",
+
+				'taisan.dieuchuyen' : "Điều chuyển tài sản", 
+				'taisan.dieuchuyen.navBar' : "Danh sách đã điều chuyển",
+				'taisan.dieuchuyen.table.name' : "Tên tài sản điều chuyển", 
+				'taisan.dieuchuyen.table.donvinhan' : "Đơn vị nhận", 
+				'taisan.dieuchuyen.table.phongnhan' : "Phòng nhận", 
+				'taisan.dieuchuyen.table.soluong' : "Số lượng", 
+				'taisan.dieuchuyen.table.ngaychuyen' : "Ngày chuyển", 
+				'taisan.dieuchuyen.table.functions' : "Chức năng", 
+
+				'taisan.thanhly' : "Thanh lý tài sản",
+				'taisan.thanhly.navBar' : "Danh sách đã thanh lý",
+				'taisan.thanhly.table.ngaythanhly' : "Ngày thanh lý",
+				'taisan.thanhly.table.lydo' : "Lý do",
+				'taisan.thanhly.table.soluong' : "Số lượng",
+				'taisan.thanhly.table.hinhanh' : "Hình ảnh",
+				'taisan.thanhly.table.tentaisan' : "Tên tài sản",
+				'taisan.thanhly.table.functions' : "Chức năng", 
+
+				'dieuchinhsoluong.title' : "Hãy điều chỉnh số lượng của tài sản này.", 
+
+				'loaitaisan.table.name' : "Tên loại tài sản",
+				'loaitaisan.table.danhmuc' : "Danh mục",
+				'loaitaisan.table.functions' : "Chức năng", 
+
+				'kehoach.title' : "Kế hoạch",
+				'add.title' : "Thêm",
+				'edit.title' : "Sửa",
+				'delete.title' : "Xóa",
+				'cancel.title' : "Hủy",
+				'search.title' : "Search",
+				'back.title' : "Back",
+				'filter.title' : "Lọc",
+				'optionalfunctions.title' : "Chức năng tùy chọn",
+				'thanhly.title' : "Thanh lý",
+			},
+			ja: {
+				'project.title' : "ダナン工科大学の施設管理",
+				'logout.title' : "ログアウト",
+				'profile.title' : "プロフィール",
+				'home.title' : "ホーム",
+				'home.navBar' : "管理ページの統計",
+				'user.title' : "ユーザー",
+				'user.navBar' : "施設管理ページのユーザー",
+				'user.table.username' : "ユーザー名",
+				'user.table.fullname' : "フルネーム",
+				'user.table.password' : "パスワード",
+				'user.table.avatar' : "アバター",
+				'user.table.phone' : "電話番号",
+				'user.table.donvi' : "ユニット",
+				'user.table.role' : "役割",
+				'user.table.functions' : "関数",
+				'user.add.title' : "ユーザーを追加する",
+				'user.edit.title' : "ユーザーを編集する",
+				'donvi.title' : "ユニット",
+				'donvi.navBar' : "ダナン工科大学のユニット",
+				'donvi.navBar.quanlyphong' : "教室管理",
+				'donvi.navBar.danhsachtaisan' : "施設のリスト",
+				'quanlyphong.table.name': "教室の名",
+				'quanlyphong.table.functions': "関数",
+				'quanlyphong.input.name' : "教室の名を入力してください",
+
+				'danhmuc.title' : "カテゴリー",
+				'danhmuc.navBar' : "施設管理ページのカテゴリー",
+				'danhmuc.table.name': "カテゴリーの名",
+				'danhmuc.table.functions': "関数",
+				'danhmuc.input.name' : "カテゴリーの名を入力してください",
+
+				'danhmuc.nguonkinhphi': "資金",
+				'danhmuc.nguonkinhphi.table.name': "資金の名",
+				'danhmuc.nguonkinhphi.table.tongngansach': "総予算",
+				'danhmuc.nguonkinhphi.table.tongchi': "総支出",
+				'danhmuc.nguonkinhphi.table.tongthanhly': "総清算",
+				'danhmuc.nguonkinhphi.table.functions': "関数",
+
+				'danhmuc.nguonkinhphi.input.name': "資金の名を入力してください",
+				'danhmuc.nguonkinhphi.input.tongngansach': "総予算の名を入力してください",
+				'danhmuc.nguonkinhphi.input.tongchi': "総支出の名を入力してください",
+				'danhmuc.nguonkinhphi.input.tongthanhly': "総清算の名を入力してください",
+				
+
+
+				'taisan.title' : "施設",
+				'taisan.navBar' : "ダナン工科大学の施設",
+				'taisan.filter' : "施設タイプのフィルター",
+				'taisan.filter.all' : "すべての施設タイプ",
+
+				
+
+				'taisan.table.name' : "施設の名",
+				'taisan.table.dongia' : "単価",
+				'taisan.table.soluong' : "数量",
+				'taisan.table.ngaynhap' : "入力した日付",
+				'taisan.table.loaitaisan' : "施設のタイプ",
+				'taisan.table.donvi' : "ユニット",
+				'taisan.table.nguoinhap' : "入力した人",
+				'taisan.table.ghichu' : "キャプション",
+				'taisan.table.tinhtrang' : "調子",
+				'taisan.table.nguonkinhphi' : "資金",
+				'taisan.table.phong' : "教室の名",
+				'taisan.table.hansudung' : "有効期限",
+				'taisan.table.functions' : "関数",
+
+				'taisan.thongtin' : "情報",
+				'taisan.chitiet' : "詳細",
+				
+
+				'taisan.soluong' : "追加された施設の数",
+				'taisan.dieuchuyen' : "移転",
+				'taisan.dieuchuyen.navBar' : "移転のリスト",
+				'taisan.dieuchuyen.table.name' : "移転された施設の名", 
+				'taisan.dieuchuyen.table.donvinhan' : "受け取られたユニット", 
+				'taisan.dieuchuyen.table.phongnhan' : "受け取られた教室", 
+				'taisan.dieuchuyen.table.soluong' : "数量", 
+				'taisan.dieuchuyen.table.ngaychuyen' : "移転した日付", 
+				'taisan.dieuchuyen.table.functions' : "関数", 
+
+				'taisan.thanhly' : "清算",
+				'taisan.thanhly.navBar' : "清算のリスト",
+				'taisan.thanhly.table.ngaythanhly' : "清算した日付",
+				'taisan.thanhly.table.lydo' : "理由",
+				'taisan.thanhly.table.soluong' : "数量",
+				'taisan.thanhly.table.hinhanh' : "イメージ",
+				'taisan.thanhly.table.tentaisan' : "施設の名",
+				
+				'taisan.thanhly.table.functions' : "関数", 
+
+				'dieuchinhsoluong.title' : "この施設の量を調整してください", 
+				
+				
+
+				'loaitaisan.table.name' : "施設タイプの名",
+				'loaitaisan.table.danhmuc' : "カテゴリー",
+				'loaitaisan.table.functions' : "関数", 
+
+				'kehoach.title' : "計画",
+				'add.title' : "追加",
+				'edit.title' : "編集",
+				'delete.title' : "削除",
+				'cancel.title' : "キャンセル",
+				'search.title' : "検索",
+				'back.title' : "バック",
+				'filter.title' : "フィルター",
+				'optionalfunctions.title' : "オプション機能",
+				'thanhly.title' : "清算",
+				
+			}
+		}
 	};
 }
 	// -------------- TÀI SẢN 
@@ -603,6 +826,10 @@ class Main extends Component {
 		}
 		this.setState({ openUserProfile: false });
 	};
+
+	handleLang = (text) => {
+		this.setState(state => ({ lang: text}));
+	};
 	
 	render() {
 		var {sidebar} = this.state;
@@ -614,12 +841,20 @@ class Main extends Component {
 		const linkLogOut = props => <Link to={`${this.props.match.url}/api/logout`} {...props} />
 
 		return (
+			<IntlProvider 
+				locale={this.state.lang} 
+				messages={this.state.message[this.state.lang]}	
+			>
 			<div className="s-layout">
 				<div className="s-layout__sidebar">
 					<div className="s-sidebar__trigger" href="#0">
 						<i className="fa fa-bars"></i>
 						<ul className="pull-right">
 							{/* Thông báo và avatar */}
+							<li className="rad-dropdown lang" >
+								<a role="button" onClick={ ()=> this.handleLang('ja')}> JA </a> |
+								<a role="button" onClick={ ()=> this.handleLang('vi')}> VI </a> <br />
+							</li>
 							<li className="rad-dropdown no-color bell">
 								<IconButton aria-label="4 pending messages" 
 									className={classes.margin}
@@ -707,12 +942,16 @@ class Main extends Component {
 												<ListItem button divider>
 													<i style={{color: 'black'}} class="far fa-user-circle"></i>
 													{/* <ListItemText primary="Profile" /> */}
-													<a style={{color: 'black'}} href={`user/edit/${this.state.sessionUser.id}`}>Profile</a>
+													<a style={{color: 'black'}} href={`user/edit/${this.state.sessionUser.id}`}>
+														<FormattedMessage id="profile.title" defaulMesage="Thông tin cá nhân" />
+													</a>
 												</ListItem>		
 												<ListItem button divider >
 													<i style={{color: 'black'}} class="fas fa-sign-out-alt"></i>
 													{/* <ListItemText primary="Log out" /> */}
-													<a style={{color: 'black'}} href="/api/logout">Log out</a>
+													<a style={{color: 'black'}} href="/api/logout">
+														<FormattedMessage id="logout.title" defaulMesage="Đăng xuất" />
+													</a>
 												</ListItem>			
 											</List>
 										</ClickAwayListener>
@@ -731,7 +970,9 @@ class Main extends Component {
 						<div className="s-sidebar__nav-avartar">
 							<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
 							{/* style={{width:'55px', height:'55px' }} */}
-							<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
+							<span className="s-sidebar__nav-avartar-csvc">
+								<FormattedMessage id="project.title" defaulMesage="Quản lý cơ sở vật chất" />
+							</span>
 							
 						</div>
 						{/* List SideBar */}
@@ -746,7 +987,8 @@ class Main extends Component {
 										''
 										:
 										<div onClick={() => this.toggleDropdown(key)}>
-											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
+											{/* <MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} /> */}
+											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 										</div>
 										}
 										
@@ -770,13 +1012,14 @@ class Main extends Component {
 																		?
 																			<MenuLink className="s-sidebar__nav-linksub" to={{
 																				pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																			}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																			}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																		:	
 																			// Nếu Role != 3 thì cho show Nguon khi phí
 																			key === 'danhmuc' && this.state.sessionUser.role !== 3
 																			?
 																				sidebar[key].children[keyChild].name !== "Nguồn Kinh Phí" && sidebar[key].children[keyChild].name !=='Danh mục'
 																				?
+																					// Loại tài sản
 																					<MenuLink className="s-sidebar__nav-linksub" to={{
 																						pathname: '/'+ key + '/loaitaisan/' + sidebar[key].children[keyChild].name,
 																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
@@ -784,10 +1027,11 @@ class Main extends Component {
 																				:
 																					<MenuLink className="s-sidebar__nav-linksub" to={{
 																						pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																					}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																			:
 																			''
 																	:
+																	// Các đơn vị
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name + '/danhsachtaisan',
 																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
@@ -795,7 +1039,7 @@ class Main extends Component {
 																	
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key,
-																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																	}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																}
 															</li>
 															:
@@ -842,10 +1086,11 @@ class Main extends Component {
 					}}
 				>
 					<main className="s-layout__content">
-						<Content />
+						<Content lang={this.state.lang}/>
 					</main>
 				</QLCSVCContext.Provider>
 			</div>
+			</IntlProvider>
 			
 		);
 	}

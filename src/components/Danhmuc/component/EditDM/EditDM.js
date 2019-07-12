@@ -7,6 +7,8 @@ import { QLCSVCContext } from '../../../Main/Main';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { FormattedMessage } from "react-intl";
 
 const styles = theme => ({
 	root: {
@@ -68,9 +70,8 @@ class EditDMComponent extends Component {
 			>
 				<TextField
 					id="standard-name"
-					label="Tên danh mục"
+					label={<FormattedMessage id="danhmuc.table.name" defaulMesage="Tên danh mục" />}
 					value={name}
-					placeholder="Nhập tên danh mục"
 					onChange={this.handleChange('name')}
 					style={{ marginRight: 30 }}
 					margin="normal"
@@ -79,6 +80,13 @@ class EditDMComponent extends Component {
 					}}
 				/>
 				<br />
+				<Button 
+					variant="contained" 
+				>
+					<Link button  to={`/danhmuc`} >
+						<FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+					</Link>
+				</Button>	
 				<Button variant="contained" color="primary"
 					onClick={(event) => this.handleSubmit(
 						resource.taisan,
@@ -87,7 +95,7 @@ class EditDMComponent extends Component {
 						name,
 					)}
 				>
-					Sửa
+					<FormattedMessage id="edit.title" defaulMesage="Sửa" />
 				</Button>
 			</form>
 			</Paper>
@@ -123,6 +131,7 @@ class EditDM extends Component {
 				route:"/danhmuc/edit",
 				title: "",
 				// component: "DanhSachTaiSan"
+				messageId : "danhmuc.title"
 			},
 		}
 	}
@@ -137,7 +146,7 @@ class EditDM extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Sửa danh mục"}
+					title=  {"edit.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, editContextDanhMuc }) => <Edit 

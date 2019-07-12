@@ -4,6 +4,8 @@ import { withRouter } from "react-router";
 import { QLCSVCContext } from '../../../Main/Main';
 import Table1 from '../../../../general/Table/Table';
 import * as R from 'ramda';
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[2]
 class DSTSComponent extends Component {
 	constructor(props) {
@@ -98,19 +100,32 @@ class DSTSComponent extends Component {
 	}
 }
 class DanhSachTaiSan extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
-			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên tài sản' },
-			{ id: 'dongia', numeric: false, disablePadding: false, label: 'Đơn giá' },
-			{ id: 'soluong', numeric: false, disablePadding: true, label: 'Số lượng' },
-			{ id: 'ngaynhap', numeric: false, disablePadding: false, label: 'Ngày nhập' },
-			{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: 'Loại tài sản' },
-			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
-			{ id: 'id_user', numeric: false, disablePadding: false, label: 'Người nhập' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:[] },
-		],
-	}	
+	constructor(props) {
+		let name = <FormattedMessage id="taisan.table.name" defaulMesage="Name" />
+		let dongia = <FormattedMessage id="taisan.table.dongia" defaulMesage="Don gia" />
+		let soluong = <FormattedMessage id="taisan.table.soluong" defaulMesage="so luong" />
+		let ngaynhap = <FormattedMessage id="taisan.table.ngaynhap" defaulMesage="Ngay nnhap" />
+		let loaitaisan = <FormattedMessage id="taisan.table.loaitaisan" defaulMesage="Loai tai san" />
+		let donvi = <FormattedMessage id="taisan.table.donvi" defaulMesage="Don vi" />
+		let nguoinhap = <FormattedMessage id="taisan.table.nguoinhap" defaulMesage="Nguoi nhap" />
+		let functions = <FormattedMessage id="taisan.table.functions" defaulMesage="Functions" />
+
+		super(props);
+		this.state = {		
+			rows : [
+				{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
+				{ id: 'name', numeric: false, disablePadding: false, label: name },
+				{ id: 'dongia', numeric: false, disablePadding: false, label: dongia },
+				{ id: 'soluong', numeric: false, disablePadding: true, label: soluong},
+				{ id: 'ngaynhap', numeric: false, disablePadding: false, label: ngaynhap },
+				{ id: 'id_loaitaisan', numeric: false, disablePadding: false, label: loaitaisan },
+				{ id: 'id_donvi', numeric: false, disablePadding: false, label: donvi},
+				{ id: 'id_user', numeric: false, disablePadding: false, label: nguoinhap },
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:[] },
+			],
+		}
+	}
+
 	render() {
 		const { match } = this.props
 		const { rows } = this.state

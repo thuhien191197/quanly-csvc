@@ -5,6 +5,8 @@ import Table1 from '../../../general/Table/Table'
 import { QLCSVCContext } from '../../Main/Main';
 import * as R from 'ramda';
 import NavBar from '../../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 class DieuChuyenComponent extends Component {
@@ -60,24 +62,40 @@ class DieuChuyenComponent extends Component {
 }
 
 class DieuChuyenTaiSan extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
-			{ id: 'id_taisan', numeric: false, disablePadding: false, label: 'ID Tài sản' },
-			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị nhận'},
-			{ id: 'id_phong', numeric: false, disablePadding: false, label: 'Phòng nhận' },
-			{ id: 'soluong', numeric: false, disablePadding: false, label: 'Sô lượng' },
-			{ id: 'ngayCTS', numeric: false, disablePadding: false, label: 'Ngày chuyển' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['back'] },
-		],
-		navBar : {
-			danhsachDC:{
-				route:"/Danh sách điều chuyển",
-				title: "Danh sách điều chuyển",
-				// component: "DanhSachTaiSan"
-			},
+
+	constructor(props) {
+		let name = <FormattedMessage id="taisan.dieuchuyen.table.name" defaulMesage="Tên tài sản được điều chuyển" />
+		let donvinhan = <FormattedMessage id="taisan.dieuchuyen.table.donvinhan" defaulMesage="Đơn vị nhận" />
+		let phongnhan = <FormattedMessage id="taisan.dieuchuyen.table.phongnhan" defaulMesage="Phòng nhận" />
+		let soluong = <FormattedMessage id="taisan.dieuchuyen.table.soluong" defaulMesage="Số lượng" />
+		let ngaychuyen = <FormattedMessage id="taisan.dieuchuyen.table.ngaychuyen" defaulMesage="Ngày chuyển" />
+		let functions = <FormattedMessage id="taisan.dieuchuyen.table.functions" defaulMesage="Chức năng" />
+		
+		super(props);
+
+		this.state = {	
+			rows : [
+				{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
+				{ id: 'id_taisan', numeric: false, disablePadding: false, label: name },
+				{ id: 'id_donvi', numeric: false, disablePadding: false, label: donvinhan},
+				{ id: 'id_phong', numeric: false, disablePadding: false, label: phongnhan},
+				{ id: 'soluong', numeric: false, disablePadding: false, label: soluong},
+				{ id: 'ngayCTS', numeric: false, disablePadding: false, label: ngaychuyen },
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:['back'] },
+			],
+			navBar : {
+				danhsachDC:{
+					route:"/Danh sách điều chuyển",
+					title: "Danh sách điều chuyển",
+					// component: "DanhSachTaiSan"
+					messageId : "taisan.dieuchuyen.navBar"
+				},
+			}
 		}
+
 	}
+
+
 	render() {
 		const { match } = this.props
 		const { rows, navBar } = this.state
@@ -89,7 +107,7 @@ class DieuChuyenTaiSan extends Component {
 			match={match}
 			parentKey={parentKey}
 			navBar={navBar}
-			title= {"Điều Chuyển"}
+			title= {"taisan.dieuchuyen"}
 			/>
 
 			<QLCSVCContext.Consumer>

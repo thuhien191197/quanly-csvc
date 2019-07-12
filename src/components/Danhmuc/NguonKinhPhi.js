@@ -11,7 +11,7 @@ import Table1 from '../../general/Table/Table';
 import NavBar from '../../general/NavBar/NavBar';
 import AddKP from './component/AddKP/AddKP';
 import EditKP from './component/EditKP/EditKP';
-
+import { FormattedMessage } from "react-intl";
 
 const getParentPathTitle = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -73,7 +73,6 @@ class KinhphiComponent extends Component {
 		const { data } = this.state;
 		return (
 			<div>
-				KinhPhi
 				<Table1 
 					rows={rows} 
 					items={data} 
@@ -85,22 +84,35 @@ class KinhphiComponent extends Component {
 }
 
 class NguonKinhPhi extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
-			{ id: 'name', numeric: false, disablePadding: false, label: 'Tên nguồn kinh phí' },
-			{ id: 'tongngansach', numeric: false, disablePadding: false, label: 'Tổng ngân sách' },
-			{ id: 'tongchi', numeric: false, disablePadding: false, label: 'Tổng chi' },
-			{ id: 'tongthanhly', numeric: false, disablePadding: false, label: 'Tổng thanh lý' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add'] },
-		],
 
-		navBar : {
-			danhsachKP:{
-				route:"/danhmuc",
-				title: "Tất cả nguồn kinh phí",
-				// component: "DanhSachTaiSan"
-			},
+	constructor(props) {
+		let name = <FormattedMessage id="danhmuc.nguonkinhphi.table.name" defaulMesage="Tên nguồn kinh phí" />
+		let tongngansach = <FormattedMessage id="danhmuc.nguonkinhphi.table.tongngansach" defaulMesage="Tổng ngân sách" />
+		let tongchi = <FormattedMessage id="danhmuc.nguonkinhphi.table.tongchi" defaulMesage="Tổng chi" />
+		let tongthanhly = <FormattedMessage id="danhmuc.nguonkinhphi.table.tongthanhly" defaulMesage="Tổng thanh lý" />
+		let functions = <FormattedMessage id="danhmuc.nguonkinhphi.table.functions" defaulMesage="Chức năng" />
+
+		
+		
+		super(props);
+		this.state = {		
+			rows : [
+				{ id: 'id', numeric: false, disablePadding: false, label: 'Id' },
+				{ id: 'name', numeric: false, disablePadding: false, label: name },
+				{ id: 'tongngansach', numeric: false, disablePadding: false, label: tongngansach},
+				{ id: 'tongchi', numeric: false, disablePadding: false, label: tongchi },
+				{ id: 'tongthanhly', numeric: false, disablePadding: false, label: tongthanhly },
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:['edit', 'add'] },
+			],
+	
+			navBar : {
+				danhsachKP:{
+					route:"/danhmuc",
+					title: "Tất cả nguồn kinh phí",
+					messageId : "danhmuc.nguonkinhphi"
+					// component: "DanhSachTaiSan"
+				},
+			}
 		}
 	}
 
@@ -119,7 +131,7 @@ class NguonKinhPhi extends Component {
 								classes={classes}
 								parentKey={parentKey}
 								navBar={navBar}
-								title= {"Nguồn kinh phí"}
+								title= {"danhmuc.nguonkinhphi"}
 							/>
 							<KinhphiComponent 
 								rows={rows} 

@@ -8,7 +8,12 @@ import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { FormattedMessage } from "react-intl";
 // const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 import * as R from 'ramda'
 
@@ -31,7 +36,8 @@ class AddUserComponent extends Component {
 		id_donvi: 0,
 		id_role: 0,
 
-		userValidate: ''
+		userValidate: '',
+		showPassword: false,
 	};
 
 	handleChange = name => event => {
@@ -131,6 +137,10 @@ class AddUserComponent extends Component {
 		// 	}
 		// }
 	}
+
+	handleClickShowPassword = () => {
+		this.setState(state => ({ showPassword: !state.showPassword }));
+	}
 	
 	render(){
 		const { resource, classes } = this.props
@@ -168,9 +178,9 @@ class AddUserComponent extends Component {
 					<FormControl error aria-describedby="component-error-text">
 					<TextField
 						id="standard-name"
-						label="Username"
+						label={<FormattedMessage id="user.table.username" defaulMesage="Username" />}
 						value={username}
-						placeholder="Nhập username"
+						// placeholder="Nhập username"
 						onChange={this.handleChange('username')}
 						style={{ marginRight: 30 }}
 						margin="normal"
@@ -181,24 +191,40 @@ class AddUserComponent extends Component {
 					
 					{this.state.userValidate && <FormHelperText id="component-error-text">{this.state.userValidate}</FormHelperText>}
 					</FormControl>
+
 					<TextField
-						id="standard-name"
-						label="Password"
+						id="filled-adornment-password"
+						label={<FormattedMessage id="user.table.password" defaulMesage="Password" />}
+						// variant="filled"
+						type={this.state.showPassword ? 'text' : 'password'}
 						value={password}
-						placeholder="Nhập password"
 						onChange={this.handleChange('password')}
+						InputProps={{
+						endAdornment: (
+							<InputAdornment position="end">
+							<IconButton
+								edge="end"
+								aria-label="Toggle password visibility"
+								onClick={this.handleClickShowPassword}
+							>
+								{this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+							</IconButton>
+							</InputAdornment>
+						),
+						}}
 						style={{ marginRight: 30 }}
 						margin="normal"
 						InputLabelProps={{
 							shrink: true,
 						}}
 					/>
+
 					<br />
 					<TextField
 						id="standard-name"
-						label="Fullname"
+						label={<FormattedMessage id="user.table.fullname" defaulMesage="Fullname" />}
 						value={fullname}
-						placeholder="Nhập họ và tên"
+						// placeholder="Nhập họ và tên"
 						onChange={this.handleChange('fullname')}
 						style={{ marginRight: 30 }}
 						margin="normal"
@@ -209,9 +235,9 @@ class AddUserComponent extends Component {
 
 					<TextField
 						id="standard-name"
-						label="Phone"
+						label={<FormattedMessage id="user.table.phone" defaulMesage="Phone"  />}
 						value={phone}
-						placeholder="Nhập số điện thoại"
+						// placeholder="Nhập số điện thoại"
 						onChange={this.handleChange('phone')}
 						style={{ marginRight: 30 }}
 						margin="normal"
@@ -223,7 +249,7 @@ class AddUserComponent extends Component {
 					<TextField
 						id="standard-name"
 						select
-						label="Đơn vị"
+						label={<FormattedMessage id="user.table.donvi" defaulMesage="Don vi"  />}
 						value={id_donvi}
 						onChange={this.handleChange('id_donvi')}
 						SelectProps={{
@@ -248,7 +274,7 @@ class AddUserComponent extends Component {
 					<TextField
 						id="standard-name"
 						select
-						label="Chức vụ"
+						label={<FormattedMessage id="user.table.role" defaulMesage="Role" />}
 						value={id_role}
 						onChange={this.handleChange('id_role')}
 						SelectProps={{
@@ -285,7 +311,9 @@ class AddUserComponent extends Component {
 					<Button 
 						variant="contained" 
 					>
-						<Link button  to={`/user`} >Cancer</Link>
+						<Link button  to={`/user`} >
+							<FormattedMessage id="cancel.title" defaulMesage="Cancel"  />
+						</Link>
 					</Button>		
 					<Button 
 						variant="contained" color="primary"
@@ -303,7 +331,7 @@ class AddUserComponent extends Component {
 						)}
 						// href="http://localhost:3000/user"
 					>
-						Thêm
+						<FormattedMessage id="add.title" defaulMesage="Add"  />
 					</Button>
 					
 				</form>
@@ -335,6 +363,7 @@ class AddUser extends Component {
 			themnguoidung:{
 				route:"/user/add",
 				title: "",
+				messageId : "user.add.title"
 				// component: "DanhSachTaiSan"
 			},
 		}
@@ -352,7 +381,7 @@ class AddUser extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Thêm người dùng"}
+					title= {"user.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, addContextUser }) => 

@@ -16,11 +16,13 @@ import {
     Slide,
 } from "@material-ui/core";
 import {FileCopy, Close ,CloudDownload, Visibility} from "@material-ui/icons";
+import { FormattedMessage } from "react-intl";
 import BienBanBanGiao from '../Store/Mau_CSVC_BienBanBanGiao.doc';
 import BienBanKienTraThucTrangThietBi from '../Store/Mau_CSVC_BienBanKiemTraThucTrangThietBi.doc';
 import KeHoachMuaSamVatTu from '../Store/Mau_CSVC_KeHoachMuaSamVatTu.doc';
 import KeHoachSuaChuaNangCap from '../Store/Mau_CSVC_KeHoachSuaChuaNangCapCSVC.doc'
 import MauSoNhatKySuDungThietBi from '../Store/Mau_CSVC_Mau_So_nhat_ky_su_dung_thiet_bi.doc'
+
 
 const styles = {
     appBar: {
@@ -85,7 +87,7 @@ class ScreenDialogs extends React.Component {
                     <Avatar>
                         <FileCopy />
                     </Avatar>
-                    <ListItemText primary="Biểu Mẩu" />
+                    <ListItemText primary={<FormattedMessage  id="bieumau.title" defaulMesage="Biểu mẫu" />}/>
                 </ListItem>
 
                 <Dialog
@@ -100,7 +102,7 @@ class ScreenDialogs extends React.Component {
                                 <Close />
                             </IconButton>
                             <Typography variant="h6" color="inherit" className={classes.flex}>
-                                Biểu Mẩu
+								<FormattedMessage  id="bieumau.title" defaulMesage="Biểu mẫu" />
                             </Typography>
                         </Toolbar>
                     </AppBar>

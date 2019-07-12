@@ -7,6 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
+
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const itemsTinhtrang = [
@@ -28,6 +30,22 @@ const styles = theme => ({
 	  padding: theme.spacing.unit * 7,
 	},
 });
+
+
+const name_title = <FormattedMessage id="taisan.table.name" defaulMesage="Name" />
+const dongia_title = <FormattedMessage id="taisan.table.dongia" defaulMesage="Don gia" />
+const soluong_title = <FormattedMessage id="taisan.table.soluong" defaulMesage="so luong" />
+const ngaynhap_title = <FormattedMessage id="taisan.table.ngaynhap" defaulMesage="Ngay nnhap" />
+const loaitaisan_title = <FormattedMessage id="taisan.table.loaitaisan" defaulMesage="Loai tai san" />
+const donvi_title = <FormattedMessage id="taisan.table.donvi" defaulMesage="Don vi" />
+const nguoinhap_title = <FormattedMessage id="taisan.table.nguoinhap" defaulMesage="Nguoi nhap" />
+const ghichu_title = <FormattedMessage id="taisan.table.ghichu" defaulMesage="Ghi chú" />
+const tinhtrang_title = <FormattedMessage id="taisan.table.tinhtrang" defaulMesage="Tình trạng" />
+const nguonkinhphi_title = <FormattedMessage id="taisan.table.nguonkinhphi" defaulMesage="Nguồn kinh phí" />
+const phong_title = <FormattedMessage id="taisan.table.phong" defaulMesage="Phòng" />
+const hansudung_title = <FormattedMessage id="taisan.table.hansudung" defaulMesage="Hạn sử dụng" />
+const cancel = <FormattedMessage id="cancel.title" defaulMesage="Hủy" />
+const edit = <FormattedMessage id="edit.title" defaulMesage="Edit" />
 
 class Child extends Component {
 	state = this.props.itemTS || {
@@ -130,7 +148,7 @@ class Child extends Component {
 			>
 				<TextField
 					id="standard-name"
-					label="Tên tài sản"
+					label={name_title}
 					value={name}
 					placeholder="Nhập tên tài sản"
 					onChange={this.handleChange('name')}
@@ -143,7 +161,7 @@ class Child extends Component {
 				<TextField
 					id="standard-select-currency-native"
 					select
-					label="Tên người nhập"
+					label={nguoinhap_title}
 					value={id_user}
 					onChange={this.handleChange('id_user')}
 					SelectProps={{
@@ -155,7 +173,6 @@ class Child extends Component {
 						shrink: true,
 					}}
 					style={{ marginRight: 30 }}
-					helperText="Please select your name"
 					margin="normal"
 				>
 					{/* <option disabled="disabled" selected="true" value="">Chọn tên người nhập</option> */}
@@ -168,12 +185,11 @@ class Child extends Component {
 				<br />
 				<TextField
 					id="standard-name"
-					label="Đơn giá"
+					label={dongia_title}
 					value={dongia}
 					placeholder="Nhập đơn giá"
 					style={{ marginRight: 30 }}
 					// fullWidth
-					helperText="số tiền!"
 					onChange={this.handleChange('dongia')}
 					margin="normal"
 					InputLabelProps={{
@@ -182,13 +198,12 @@ class Child extends Component {
 				/>
 				<TextField
 					id="standard-name"
-					label="Số lượng"
+					label={soluong_title}
 					value={soluong}
 					style={{ marginRight: 30 }}
 					type="number"
 					placeholder="Nhập Số lượng"
 					// fullWidth
-					helperText="tổng số lượng!"
 					onChange={this.handleChange('soluong')}
 					margin="normal"
 					InputLabelProps={{
@@ -197,7 +212,7 @@ class Child extends Component {
 				/>
 				<TextField
 					id="date"
-					label="Ngày nhập"
+					label={ngaynhap_title}
 					type="date"
 					// defaultValue="1997-11-19"
 					value={ngaynhap}
@@ -211,7 +226,7 @@ class Child extends Component {
 				/>
 				<TextField
 					id="date"
-					label="Hạn sử dụng"
+					label={hansudung_title}
 					type="date"
 					// defaultValue="1997-11-19"
 					value={hansudung}
@@ -225,9 +240,8 @@ class Child extends Component {
 				<br />
 				<TextField
 					id="standard-name"
-					label="Ghi chú"
+					label={ghichu_title}
 					value={ghichu}
-					placeholder="Nhập tên Ghi chú"
 					onChange={this.handleChange('ghichu')}
 					// fullWidth
 					style={{ marginRight: 30 }}
@@ -239,7 +253,7 @@ class Child extends Component {
 				<TextField
 					id="standard-name"
 					select
-					label="Tình trạng"
+					label={tinhtrang_title}
 					value={status}
 					onChange={this.handleChange('status')}
 					SelectProps={{
@@ -247,7 +261,6 @@ class Child extends Component {
 						MenuProps: {
 						},
 					}}
-					helperText="Please select your currency"
 					margin="normal"
 				>
 					{itemsTinhtrang.map((option, i) => (
@@ -261,7 +274,7 @@ class Child extends Component {
 				<TextField
 					id="standard-select-currency-native"
 					select
-					label="Lọai tài sản"
+					label={loaitaisan_title}
 					value={id_loaitaisan}
 					onChange={this.handleChange('id_loaitaisan')}
 					SelectProps={{
@@ -273,7 +286,6 @@ class Child extends Component {
 						shrink: true,
 					}}
 					style={{ marginRight: 30 }}
-					helperText="Please select your currency"
 					margin="normal"
 				>
 					{resource.loaitaisan.map((item, i) => {
@@ -287,7 +299,7 @@ class Child extends Component {
 				<TextField
 					id="standard-select-currency-native"
 					select
-					label="Nguồn Kinh phí"
+					label={nguonkinhphi_title}
 					value={id_kinhphi}
 					onChange={this.handleChange('id_kinhphi')}
 					SelectProps={{
@@ -299,7 +311,6 @@ class Child extends Component {
 						shrink: true,
 					}}
 					style={{ marginRight: 30 }}
-					helperText="Please select your currency"
 					margin="normal"
 				>
 					{resource.nguonkinhphi.map((item, i) => (
@@ -311,7 +322,7 @@ class Child extends Component {
 				<TextField
 					id="standard-name"
 					select
-					label="Đơn vị"
+					label={donvi_title}
 					value={id_donvi}
 					onChange={this.handleChange('id_donvi')}
 					SelectProps={{
@@ -323,7 +334,6 @@ class Child extends Component {
 						shrink: true,
 					}}
 					style={{ marginRight: 30 }}
-					helperText="Please select your currency"
 					margin="normal"
 				>
 					{resource.donvi.map((item, i) => (
@@ -335,7 +345,7 @@ class Child extends Component {
 				<TextField
 					id="standard-name"
 					select
-					label="Phòng"
+					label={phong_title}
 					value={id_phong}
 					onChange={this.handleChange('id_phong')}
 					SelectProps={{
@@ -346,7 +356,6 @@ class Child extends Component {
 					InputLabelProps={{
 						shrink: true,
 					}}
-					helperText="Please select your currency"
 					margin="normal"
 				>
 					{resource.phong.map((item, i) => {
@@ -358,6 +367,13 @@ class Child extends Component {
 					})}
 				</TextField>
 				<br />
+				<Button 
+						variant="contained" 
+				>
+					<Link button  to={`/taisan`} >
+						{cancel}
+					</Link>
+				</Button>	
 				<Button variant="contained" color="primary"
 					onClick={(event) => this.handleSubmit(
 						resource.taisan,
@@ -377,7 +393,7 @@ class Child extends Component {
 						status
 					)}
 				>
-					<Link to="/taisan">Sửa</Link>
+					<Link to="/taisan">{edit}</Link>
 				</Button>
 			</form>
 		</Paper>
@@ -407,6 +423,7 @@ class EditTSWrap extends Component {
 				route:"/taisan/edit",
 				title: "",
 				// component: "DanhSachTaiSan"
+				messageId: "taisan.title"
 			},
 		}
 	}
@@ -421,7 +438,7 @@ class EditTSWrap extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Sửa tài sản"}
+					title= {"edit.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, editContextTS }) => <EditTS editTs={this.props.editTs} classes={classes} resource={resource} match={this.props.match} editContextTS={editContextTS} />}

@@ -11,6 +11,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { FormattedMessage, FormattedDate } from "react-intl";
 
 
 const styles = LeftNotification => ({
@@ -28,8 +29,6 @@ const styles = LeftNotification => ({
         flexGrow: 1,
         margin: 10,
         padding: 5,
-
-
     },
 });
 
@@ -101,13 +100,18 @@ class LeftNotification extends React.Component {
                                             {post.title}
                                         </Typography>
                                         <Typography variant="subtitle1" color="textSecondary">
-                                            {post.date}
+											<FormattedDate
+												value={post.date}
+												day="numeric"
+												month="long"
+												year="numeric" 
+											/>
                                         </Typography>
                                         <Typography  component="p">
                                             {post.description}
                                         </Typography>
                                         <Typography variant="subtitle2" color="primary">
-                                            Continue reading...
+											<FormattedMessage  id="xemthem.title" defaulMesage="Xem thêm" />
                                         </Typography>
                                     </CardContent>
                                 </div>

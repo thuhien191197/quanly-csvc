@@ -4,6 +4,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { addLocaleData } from 'react-intl';
+import ja from "react-intl/locale-data/ja";
+import vi from "react-intl/locale-data/vi";
+addLocaleData(ja)
+addLocaleData(vi)
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
