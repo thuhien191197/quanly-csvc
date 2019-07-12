@@ -3,6 +3,7 @@ import './MenuLink.css';
 
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { withRouter } from "react-router";
+import { FormattedMessage } from "react-intl";
 
 class MenuLink extends Component {
 	render() {
@@ -16,7 +17,8 @@ class MenuLink extends Component {
 				{/* {match ? "> " : ""} */}
 				<Link className={className} to={to}>
 					<i className={nameIcon}></i>
-					<em>{label}</em>
+					{/* <em>{label}</em> */}
+					<em><FormattedMessage id={label} defaulMesage={label} /></em>
 				</Link>
 			</div>
 		);

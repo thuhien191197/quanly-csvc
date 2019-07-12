@@ -4,7 +4,7 @@ import LeftPane from './LeftPane';
 import RightPane from './RightPane';
 import TopPanne from './TopPane';
 
-let imgUrl = 'http://dut.udn.vn/Images/Slides/Slider_HappyNewYear2019.jpg';
+let imgUrl = 'https://live.staticflickr.com/65535/48264342181_ec4cb54c31_k.jpg';
 const styles ={
     root: {
         width: '100%',
@@ -21,9 +21,10 @@ const styles ={
         margin: 10,
     },
     mainFeaturedPost: {
-        margin: 10,
-        marginBottom: -5,
-        padding: 60,
+		paddingLeft:0,
+		paddingRight: 60,
+		paddingTop: 260,
+		paddingBottom : 220,
         backgroundImage: 'url(' + imgUrl + ')',
         backgroundSize: 'cover',
         overflow: 'hidden',

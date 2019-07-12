@@ -107,7 +107,7 @@
 
  #style-4::-webkit-scrollbar-thumb
 {
-	background-color: rgba(0, 0, 0, 0.2)
+	background-color: #aaa;
 	
 	/* border: 2px solid #555555; */
 	
@@ -339,4 +339,8 @@
 .bell{
 	-webkit-animation: pulsate 1s ease-out;
 	-webkit-animation-iteration-count: infinite;
+}
+.lang{
+	margin-right: 40px;
+	margin-top: -13px;
 }

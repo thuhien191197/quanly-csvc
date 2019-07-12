@@ -23,7 +23,7 @@ export default props =>
                 <Toolbar>
                     <img width="65" height="65" alt="abc" src={Logo}/>
                    
-                      <Typography variant="h7" color="inherit" style={styles.grow}>
+                      	<Typography variant="h7" color="inherit" style={styles.grow}>
                             TRƯỜNG ĐẠI HỌC BÁCH KHOA <br/>
                             PHÒNG CƠ SỞ VẬT CHẤT
                         </Typography>

@@ -20,7 +20,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import axios from 'axios';
-
+import * as R from 'ramda';
 
 
 const styles = LeftNew => ({
@@ -34,21 +34,23 @@ const styles = LeftNew => ({
         flex: 1,
     },
     cardMedia: {
-        width: 160,
-
+		width: 110,
+		height: 110,
     },
     cardL: {
         display: 'flex',
         flexGrow: 1,
         margin: 10,
-        padding: 5,
-
-
+		padding: 5,
+		height: 300
     },
     posrt: {
         maxWidth:  250,
         // margin: `${LeftNew.spacing.unit}px auto`,
         // padding: LeftNew.spacing.unit * 2,
+	},
+	whiteSpace: {
+        whiteSpace:  ' pre-line', //https://hocwebchuan.com/reference/cssSection/pr_white-space.php
     }
 });
 
@@ -59,23 +61,37 @@ class LeftNew extends React.Component {
         super(props);
 
         this.state = {
-            data: [],
+			data: [],
+			dataDonvi: [],
+			dataRole: [],
             order: 'asc',
             orderBy: 'calories',
             selected: [],
             page: 0,
-            rowsPerPage: 6,
+            rowsPerPage: 8,
             value: -1
-        }
-        this.apiUrl = `http://localhost:5500/user`
+		}
+		
+		this.apiUrl = `http://localhost:5500/user`
+		this.apiUrlDonvi = `http://localhost:5500/donvi`
+		this.apiUrlRole = `http://localhost:5500/role`
     }
 
     componentDidMount(){
         axios.get(this.apiUrl)
             .then((res) => {
-
                 this.setState({data:res.data});
-            });
+			});
+			
+		axios.get(this.apiUrlDonvi)
+			.then((res) => {
+				this.setState({dataDonvi:res.data});
+			});
+
+		axios.get(this.apiUrlRole)
+			.then((res) => {
+				this.setState({dataRole:res.data});
+			});
     }
     handleClose = () => {
         this.setState({ open: false });
@@ -90,12 +106,44 @@ class LeftNew extends React.Component {
 
     };
     handleClick =(id) => {
-                axios.get(this.apiUrl+'/'+ id)
-                    .then(res => {
-                        this.setState({ selected: res.data });
-                    });
-                console.log(id);
-    };
+		axios.get(this.apiUrl+'/'+ id)
+			.then(res => {
+				this.setState({ selected: res.data });
+			});
+		console.log(id);
+	};
+	
+	handleShowDonvi = (id) => {
+		var getNameDonvi = R.filter(R.propEq("id", id))
+		var donvi = R.path([0,'name'],getNameDonvi(this.state.dataDonvi))
+		return (
+			<span>
+				{donvi}
+			</span>
+		)
+	}
+
+	handleShowRole = (id) => {
+		var getNameRole = R.filter(R.propEq("id", id))
+		var role = R.path([0,'name'],getNameRole(this.state.dataRole))
+		var mission = R.path([0,'mission'],getNameRole(this.state.dataRole))
+		// console.log(">>mission: "+mission);
+		return (
+			<span>
+				{role}
+			</span>
+		)
+	}
+	handleShowMission = (id) => {
+		var getNameRole = R.filter(R.propEq("id", id))
+		var mission = R.path([0,'mission'],getNameRole(this.state.dataRole))
+		return (
+			<span>
+				{mission}
+			</span>
+		)
+	}
+
 
 
     handleChangeRowsPerPage = event => {
@@ -119,12 +167,21 @@ class LeftNew extends React.Component {
                             <div className={classes.cardDetails}>
                                 <CardContent>
                                     <Typography component="h2" variant="h6" >
-                                        {user.fullname}
+                                        Cán bộ: {user.fullname}
                                     </Typography>
                                    
                                     <Typography  component="p" gutterBottom noWrap className={classes.posrt}>
-                                        {user.phone}
+                                        DĐ: {user.phone}
                                     </Typography>
+									<Typography  component="p" gutterBottom noWrap className={classes.posrt}>
+										Đơn vị: {this.handleShowDonvi(user.id_donvi)}
+									</Typography>
+									<Typography  component="p" gutterBottom noWrap className={classes.posrt}>
+										Chức vụ: {this.handleShowRole(user.id_role)}
+									</Typography>
+									<Typography  component="p" gutterBottom noWrap className={classes.whiteSpace}>
+										Nhiệm vụ: {this.handleShowMission(user.id_role)}
+									</Typography>
                                     <Typography variant="subtitle2" color="primary">
                                         Continue reading...
                                     </Typography>
@@ -169,7 +226,7 @@ class LeftNew extends React.Component {
             </Grid>
             <Paper style={{ flexGrow: 1, margin: 10, padding: 0, marginTop: -5, marginBottom: 2}}>
                 <TablePagination
-                    rowsPerPageOptions={[6, 12]}
+                    rowsPerPageOptions={[8, 16]}
                     component="div"
                     count={data.length}
                     rowsPerPage={rowsPerPage}

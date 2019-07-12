@@ -7,6 +7,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import NavBar from '../../../../general/NavBar/NavBar';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { FormattedMessage } from "react-intl";
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[3]
 
 const styles = theme => ({
@@ -29,6 +34,8 @@ class EditUserComponent extends Component {
 		phone: '',
 		id_donvi: 0,
 		id_role: 0,
+
+		showPassword: false,
 	};
 
 	handleChange = name => event => {
@@ -92,6 +99,10 @@ class EditUserComponent extends Component {
 		reader.readAsDataURL(file);    
 	}
 
+	handleClickShowPassword = () => {
+		this.setState(state => ({ showPassword: !state.showPassword }));
+	}
+
 	render(){
 		const { resource, classes } = this.props
 		const {
@@ -116,9 +127,9 @@ class EditUserComponent extends Component {
 					className={classes.form}
 					noValidate autoComplete="off"
 				>
-				<TextField
+					<TextField
 						id="standard-name"
-						label="Username"
+						label={<FormattedMessage id="user.table.username" defaulMesage="Username" />}
 						value={username}
 						placeholder="Nhập username"
 						onChange={this.handleChange('username')}
@@ -130,11 +141,25 @@ class EditUserComponent extends Component {
 					/>
 
 					<TextField
-						id="standard-name"
-						label="Password"
+						id="filled-adornment-password"
+						label={<FormattedMessage id="user.table.password" defaulMesage="Password" />}
+						// variant="filled"
+						type={this.state.showPassword ? 'text' : 'password'}
 						value={password}
-						placeholder="Nhập password"
 						onChange={this.handleChange('password')}
+						InputProps={{
+						endAdornment: (
+							<InputAdornment position="end">
+							<IconButton
+								edge="end"
+								aria-label="Toggle password visibility"
+								onClick={this.handleClickShowPassword}
+							>
+								{this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+							</IconButton>
+							</InputAdornment>
+						),
+						}}
 						style={{ marginRight: 30 }}
 						margin="normal"
 						InputLabelProps={{
@@ -144,7 +169,7 @@ class EditUserComponent extends Component {
 					<br />
 					<TextField
 						id="standard-name"
-						label="Fullname"
+						label={<FormattedMessage id="user.table.fullname" defaulMesage="Fullname" />}
 						value={fullname}
 						placeholder="Nhập họ và tên"
 						onChange={this.handleChange('fullname')}
@@ -157,7 +182,7 @@ class EditUserComponent extends Component {
 
 					<TextField
 						id="standard-name"
-						label="Phone"
+						label={<FormattedMessage id="user.table.phone" defaulMesage="Phone"  />}
 						value={phone}
 						placeholder="Nhập số điện thoại"
 						onChange={this.handleChange('phone')}
@@ -171,7 +196,7 @@ class EditUserComponent extends Component {
 					<TextField
 						id="standard-name"
 						select
-						label="Đơn vị"
+						label={<FormattedMessage id="user.table.donvi" defaulMesage="Don vi"  />}
 						value={id_donvi}
 						onChange={this.handleChange('id_donvi')}
 						SelectProps={{
@@ -196,7 +221,7 @@ class EditUserComponent extends Component {
 					<TextField
 						id="standard-name"
 						select
-						label="Chức vụ"
+						label={<FormattedMessage id="user.table.role" defaulMesage="Role" />}
 						value={id_role}
 						onChange={this.handleChange('id_role')}
 						SelectProps={{
@@ -233,7 +258,9 @@ class EditUserComponent extends Component {
 					<Button 
 						variant="contained" 
 					>
-						<Link button  to={`/user`} >Cancer</Link>
+						<Link button  to={`/user`} >
+							<FormattedMessage id="cancel.title" defaulMesage="Cancel"  />
+						</Link>
 					</Button>		
 					<Button variant="contained" color="primary"
 						onClick={(event) => this.handleSubmit(
@@ -250,7 +277,7 @@ class EditUserComponent extends Component {
 						)}
 						href="http://csvc.com/user"
 					>
-						Sửa
+						<FormattedMessage id="edit.title" defaulMesage="Edit"  />
 					</Button>
 				</form>
 			</Paper>
@@ -284,6 +311,7 @@ class EditUser extends Component {
 			suanguoidung:{
 				route:"/user/edit/:id",
 				title: "",
+				messageId : "user.edit.title"
 				// component: "DanhSachTaiSan"
 			},
 		}
@@ -299,7 +327,7 @@ class EditUser extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Sửa người dùng"}
+					title= {"user.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource, editContextUser }) => <Edit 

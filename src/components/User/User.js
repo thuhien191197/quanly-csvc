@@ -11,6 +11,7 @@ import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import NavBar from '../../general/NavBar/NavBar';
+import { FormattedMessage } from "react-intl";
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
 const toolbarStyles = theme => ({
@@ -121,26 +122,38 @@ class UserComponent extends Component {
 
 
 class User extends Component {
-	state = {
-		rows : [
-			{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
-			{ id: 'username', numeric: false, disablePadding: false, label: 'Tên đăng nhập' },
-			{ id: 'fullname', numeric: false, disablePadding: false, label: 'Họ và tên' },
-			{ id: 'avatar', numeric: false, disablePadding: true, label: 'Avatar' },
-			{ id: 'phone', numeric: false, disablePadding: false, label: 'Số điện thoại' },
-			{ id: 'id_donvi', numeric: false, disablePadding: false, label: 'Đơn vị' },
-			{ id: 'id_role', numeric: false, disablePadding: false, label: 'Chức vụ' },
-			{ id: 'function', numeric: false, disablePadding: false, label: 'Chức năng', function:['edit', 'add','del'] },
-		],
+	constructor(props) {
+		let username = <FormattedMessage id="user.table.username" defaulMesage="title" />
+		let fullname = <FormattedMessage id="user.table.fullname" defaulMesage="title" />
+		let avatar = <FormattedMessage id="user.table.avatar" defaulMesage="title" />
+		let phone = <FormattedMessage id="user.table.phone" defaulMesage="title"  />
+		let donvi = <FormattedMessage id="user.table.donvi" defaulMesage="title"  />
+		let role = <FormattedMessage id="user.table.role" defaulMesage="title"  />
+		let functions = <FormattedMessage id="user.table.functions" defaulMesage="title"  />
 
-		navBar : {
-			danhsachTS:{
-				// route:"/user",
-				title: "Danh sách người dùng",
-				// component: "DanhSachTaiSan"
-			},
+		super(props);
+		this.state = {		
+			rows : [
+				{ id: 'id', numeric: true, disablePadding: false, label: 'Id' },
+				{ id: 'username', numeric: false, disablePadding: false, label: username },
+				{ id: 'fullname', numeric: false, disablePadding: false, label: fullname },
+				{ id: 'avatar', numeric: false, disablePadding: true, label: avatar },
+				{ id: 'phone', numeric: false, disablePadding: false, label: phone },
+				{ id: 'id_donvi', numeric: false, disablePadding: false, label: donvi},
+				{ id: 'id_role', numeric: false, disablePadding: false, label: role},
+				{ id: 'function', numeric: false, disablePadding: false, label: functions, function:['edit', 'add','del'] },
+			],
+
+			navBar : {
+				danhsachTS:{
+					// route:"/user",
+					title: "Danh sách người dùng",
+					messageId : "user.navBar"
+				},
+			}
 		}
 	}
+
 	renderUser = () => {
 		const { match, classes } = this.props
 		const { rows, navBar } = this.state
@@ -158,7 +171,7 @@ class User extends Component {
 								classes={classes}
 								parentKey={parentKey}
 								navBar={navBar}
-								title= {"Users"}
+								title= {"user.title"}
 							/>
 							<UserComponent 
 								rows={rows} 

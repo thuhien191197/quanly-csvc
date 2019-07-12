@@ -6,8 +6,6 @@ import axios from 'axios'
 import Content from "../Content/Content";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import MenuLink from "../../general/MenuLink";
-// import MenuItem from '@material-ui/core/MenuItem';
-// import MenuItemAvatar from '@material-ui/core/MenuItemAvatar';
 import IconButton from '@material-ui/core/IconButton';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Badge from '@material-ui/core/Badge';
@@ -17,13 +15,14 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import MenuList from '@material-ui/core/MenuList';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
-import Taisan from '../Taisan/Taisan/Taisan';
+
+import { IntlProvider } from 'react-intl';
+import { FormattedMessage } from "react-intl";
+
 
 const getParentPath = (path) => path.split('/').length > 0 && path.split('/')[1]
 
@@ -44,15 +43,10 @@ const styles = theme => ({
 		width: '100%',
 		maxWidth: 360,
 		backgroundColor: theme.palette.background.paper,
-		// position: 'relative',
 		overflowX: 'auto',
 		wordBreak: "break-word",
 		maxHeight: 300,
-		// marginLeft: '-70px'
-		width: '100%',
-		maxWidth: 360,
 		opacity: "1",
-		backgroundColor: theme.palette.background.paper,
 	},
 	popperNoti:{
 		marginLeft: '-144px'
@@ -62,7 +56,7 @@ const styles = theme => ({
 	},
 	popperUser:{
 		marginLeft: '-80px'
-	},
+	}
 });
 
 export const resource = {
@@ -152,6 +146,7 @@ class Main extends Component {
 				route: '/home',
 				isOpen: false,
 				icon:'fa fa-home',
+				messageID:'home.title',
 				children: {}
 			},
 			user:{
@@ -160,6 +155,7 @@ class Main extends Component {
 				route: '/user',
 				isOpen: false,
 				icon:'fa fa-user',
+				messageID:'user.title',
 				children: {}
 			},
 			donvi:{
@@ -168,6 +164,7 @@ class Main extends Component {
 				route: '/donvi',
 				isOpen: false,
 				icon:'fas fa-landmark',
+				messageID:'donvi.title',
 				children: {
 					icon:'fas fa-angle-right',
 				}
@@ -178,15 +175,16 @@ class Main extends Component {
 				route: '/danhmuc',
 				isOpen: false,
 				icon:'fas fa-list-ul',
+				messageID:'danhmuc.title',
 				children: {
 					icon:'fas fa-angle-right',
 					quanlydanhmuc:{
 						name: 'Danh mục',
-						// route: '/danhmuc',
+						messageID:'danhmuc.title',
 					},
 					nguonkinhphi:{
 						name: 'Nguồn Kinh Phí',
-						// route: '/nguonkinhphi',
+						messageID:'danhmuc.nguonkinhphi',
 					},
 				}
 			},
@@ -196,19 +194,23 @@ class Main extends Component {
 				route: '/taisan',
 				isOpen: false,
 				icon:'fas fa-warehouse',
+				messageID:'taisan.title',
 				children: {
 					icon:'fas fa-angle-right',
 					taisan:{
 						name: 'Tài Sản',
 						route: 'taisan',
+						messageID:'taisan.title',
 					},
 					dieuchinhtaisan:{
 						name: 'Danh sách điều chuyển',
 						route: 'Danh sách điều chuyển',
+						messageID:'taisan.dieuchuyen',
 					},
 					thanhly:{
 						name: 'Danh sách thanh lý',
 						route: 'Danh sách thanh lý',
+						messageID:'taisan.thanhly',
 					},
 				}
 			},
@@ -218,6 +220,7 @@ class Main extends Component {
 				route: 'kehoach',
 				isOpen: false,
 				icon:'fas fa-book',
+				messageID:'kehoach.title',
 				children: {
 					icon:'fas fa-angle-right',
 					vanbanmau:{
@@ -228,8 +231,97 @@ class Main extends Component {
 			}
 		},
 		open: false,
-		openUserProfile: false
+		openUserProfile: false,
 
+		lang:"vi",
+		message: {
+			vi: {
+				'project.title' : "Quản lý cơ sở vật chất",
+				'home.title' : "Trang chủ",
+				'home.navBar' : "Thống kê trang quản lý",
+				'user.title' : "Người dùng",
+				'user.navBar' : "Người có quyền trong CSVC",
+				'user.table.username' : "Tên người dùng",
+				'user.table.fullname' : "Họ và tên",
+				'user.table.password' : "Mật khẩu",
+				'user.table.avatar' : "Avatar",
+				'user.table.phone' : "Số điện thoại",
+				'user.table.donvi' : "Đơn vị",
+				'user.table.role' : "Chức vụ",
+				'user.table.functions' : "Chức năng",
+				'user.add.title' : "Thêm người dùng",
+				'user.edit.title' : "Sửa người dùng",
+				'donvi.title' : "Đơn vị",
+				'donvi.navBar' : "Đơn vị trong trường",
+				'danhmuc.title' : "Danh mục",
+				'danhmuc.nguonkinhphi': "Nguồn kinh phí",
+				'taisan.title' : "Tài sản",
+				'taisan.navBar' : "Tài sản của trường",
+				'taisan.filter' : "Lọc loại tài sản",
+				'taisan.filter.all' : "Tất cả loại tài sản",
+
+				'taisan.table.name' : "Tên tài sản",
+				'taisan.table.dongia' : "Đơn giá",
+				'taisan.table.soluong' : "Số lượng",
+				'taisan.table.ngaynhap' : "Ngày nhập",
+				'taisan.table.loaitaisan' : "Loại tài sản",
+				'taisan.table.donvi' : "Đơn vị",
+				'taisan.table.nguoinhap' : "Người nhập",
+				'taisan.table.functions' : "Chức năng",
+
+				'taisan.soluong' : "Số tài sản được thêm",
+				'taisan.dieuchuyen' : "Điều chuyển", 
+				'taisan.thanhly' : "Thanh lý",
+				'kehoach.title' : "Kế hoạch",
+				'add.title' : "Thêm",
+				'edit.title' : "Sửa",
+				'cancel.title' : "Hủy",
+				'search.title' : "Search",
+			},
+			ja: {
+				'project.title' : "ダナン工科大学の施設管理",
+				'home.title' : "ホーム",
+				'home.navBar' : "管理ページの統計",
+				'user.title' : "ユーザー",
+				'user.navBar' : "施設管理ページのユーザー",
+				'user.table.username' : "ユーザー名",
+				'user.table.fullname' : "フルネーム",
+				'user.table.password' : "パスワード",
+				'user.table.avatar' : "アバター",
+				'user.table.phone' : "電話番号",
+				'user.table.donvi' : "ユニット",
+				'user.table.role' : "役割",
+				'user.table.functions' : "関数",
+				'user.add.title' : "ユーザーを追加する",
+				'user.edit.title' : "ユーザーを編集する",
+				'donvi.title' : "ユニット",
+				'donvi.navBar' : "ダナン工科大学のユニット",
+				'danhmuc.title' : "カテゴリー",
+				'danhmuc.nguonkinhphi': "資金",
+				'taisan.title' : "施設",
+				'taisan.navBar' : "ダナン工科大学の施設",
+				'taisan.filter' : "施設タイプのフィルター",
+				'taisan.filter.all' : "すべての施設タイプ",
+
+				'taisan.table.name' : "施設の名",
+				'taisan.table.dongia' : "単価",
+				'taisan.table.soluong' : "数量",
+				'taisan.table.ngaynhap' : "入力した日付",
+				'taisan.table.loaitaisan' : "施設のタイプ",
+				'taisan.table.donvi' : "ユニット",
+				'taisan.table.nguoinhap' : "入力した人",
+				'taisan.table.functions' : "関数",
+
+				'taisan.soluong' : "追加された施設の数",
+				'taisan.dieuchuyen' : "移転",
+				'taisan.thanhly' : "清算",
+				'kehoach.title' : "計画",
+				'add.title' : "追加",
+				'edit.title' : "編集",
+				'cancel.title' : "キャンセル",
+				'search.title' : "検索",
+			}
+		}
 	};
 }
 	// -------------- TÀI SẢN 
@@ -603,6 +695,10 @@ class Main extends Component {
 		}
 		this.setState({ openUserProfile: false });
 	};
+
+	handleLang = (text) => {
+		this.setState(state => ({ lang: text}));
+	};
 	
 	render() {
 		var {sidebar} = this.state;
@@ -614,12 +710,20 @@ class Main extends Component {
 		const linkLogOut = props => <Link to={`${this.props.match.url}/api/logout`} {...props} />
 
 		return (
+			<IntlProvider 
+				locale={this.state.lang} 
+				messages={this.state.message[this.state.lang]}	
+			>
 			<div className="s-layout">
 				<div className="s-layout__sidebar">
 					<div className="s-sidebar__trigger" href="#0">
 						<i className="fa fa-bars"></i>
 						<ul className="pull-right">
 							{/* Thông báo và avatar */}
+							<li className="rad-dropdown lang" >
+								<a role="button" onClick={ ()=> this.handleLang('ja')}> JA </a> |
+								<a role="button" onClick={ ()=> this.handleLang('vi')}> VI </a> <br />
+							</li>
 							<li className="rad-dropdown no-color bell">
 								<IconButton aria-label="4 pending messages" 
 									className={classes.margin}
@@ -731,7 +835,9 @@ class Main extends Component {
 						<div className="s-sidebar__nav-avartar">
 							<img className="s-sidebar__nav-avartar-image" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Logo_dhbkdn.jpg"  />
 							{/* style={{width:'55px', height:'55px' }} */}
-							<span className="s-sidebar__nav-avartar-csvc">Quản Lý Cơ sở vật chất</span>
+							<span className="s-sidebar__nav-avartar-csvc">
+								<FormattedMessage id="project.title" defaulMesage="Quản lý cơ sở vật chất" />
+							</span>
 							
 						</div>
 						{/* List SideBar */}
@@ -746,7 +852,8 @@ class Main extends Component {
 										''
 										:
 										<div onClick={() => this.toggleDropdown(key)}>
-											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} />
+											{/* <MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].name}`} nameIcon={`${sidebar[key].icon}`} /> */}
+											<MenuLink className="s-sidebar__nav-link" to={`/${key}`} label={`${sidebar[key].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 										</div>
 										}
 										
@@ -770,7 +877,7 @@ class Main extends Component {
 																		?
 																			<MenuLink className="s-sidebar__nav-linksub" to={{
 																				pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																			}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																			}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																		:	
 																			// Nếu Role != 3 thì cho show Nguon khi phí
 																			key === 'danhmuc' && this.state.sessionUser.role !== 3
@@ -779,12 +886,12 @@ class Main extends Component {
 																				?
 																					<MenuLink className="s-sidebar__nav-linksub" to={{
 																						pathname: '/'+ key + '/loaitaisan/' + sidebar[key].children[keyChild].name,
-																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																					}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																					
 																				:
 																					<MenuLink className="s-sidebar__nav-linksub" to={{
 																						pathname: '/'+ key + '/' + sidebar[key].children[keyChild].name,
-																					}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																					}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																			:
 																			''
 																	:
@@ -795,7 +902,7 @@ class Main extends Component {
 																	
 																	<MenuLink className="s-sidebar__nav-linksub" to={{
 																		pathname: '/'+ key,
-																	}} label={`${sidebar[key].children[keyChild].name}`} nameIcon={`${sidebar[key].icon}`} />
+																	}} label={`${sidebar[key].children[keyChild].messageID}`} nameIcon={`${sidebar[key].icon}`} />
 																}
 															</li>
 															:
@@ -842,10 +949,11 @@ class Main extends Component {
 					}}
 				>
 					<main className="s-layout__content">
-						<Content />
+						<Content lang={this.state.lang}/>
 					</main>
 				</QLCSVCContext.Provider>
 			</div>
+			</IntlProvider>
 			
 		);
 	}

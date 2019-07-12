@@ -342,7 +342,7 @@ class SelectThanhLyNhieuComponent extends Component {
 								// component={DieuChuyenTS}
 								id="teo"
 							>
-								Chuyển
+								Thanh Lý
 							</Button>
 							<Button onClick={this.props.handleCloseThanhLyNhieu} color="primary">
 								Cancel

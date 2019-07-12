@@ -13,15 +13,16 @@ import NavBar from '../../general/NavBar/NavBar';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { withRouter } from "react-router";
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import StarIcon from '@material-ui/icons/StarBorder';
+import Calendar from 'react-calendar';
+import { FormattedMessage } from "react-intl";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+
 const styles = theme => ({
 	root: {
 	  display: 'flex',
@@ -97,7 +98,20 @@ class HomeComponent extends Component {
 		const data = this.handleDataChart(props.resource || []);
 		this.state = {
 			data,
-			lengthTaiSan : 0	
+			lengthTaiSan : 0,
+			date: new Date(),
+
+			lang:"vi",
+			message: {
+				vi: {
+					'home.title' : "Trang chủ",
+					'home.detail' : "Thống kê trang quản lý"
+				},
+				ja: {
+					'home.title' : "ホーム",
+					'home.detail' : "管理ページの統計"
+				}
+			}
 		}
 	}
 		
@@ -141,13 +155,13 @@ class HomeComponent extends Component {
 		let length = itemsTaiSan.length
 		for(let i =0; i < length; i++){
 			let item = itemsTaiSan[i]
-			console.log("[Home] item:" ,item.ngaynhap)
+			// console.log("[Home] item:" ,item.ngaynhap)
 			var date = []
 			date = item.ngaynhap.split('-')
 			year.push(date[0])
 		}
 		const yearFilter = this.deduplicate(year)
-		console.log("[Home] yearFilter:" ,yearFilter)
+		// console.log("[Home] yearFilter:" ,yearFilter)
 		for(var i = 0; i < yearFilter.length; i++){
 			var countSoLuong = 0
 			for(var j = 0; j < year.length; j++){
@@ -157,30 +171,41 @@ class HomeComponent extends Component {
 			}
 			const newData = {
 				'YEAR': yearFilter[i], 
-				'Số đợt thêm tài sản': countSoLuong
+				'number': countSoLuong
 			};
 			data.push(newData)
 		}
 		
-		console.log("[Home] data:" ,data);
+		// console.log("[Home] data:" ,data);
 		return data.reverse()
 	}
+
+	onChangeDate = date => this.setState({ date })
 
 	render(){
 		const { data } = this.state
 		const { resource, classes } = this.props
+		console.log("[HOME] LANG: " + this.props.lang)
 		return(
 			<Paper className={classes.root}>
 				<Grid container spacing={40} alignItems="flex-end" className={classes.grid}>
+					<Grid item key="Calendar" xs={12} sm={6} md={3}>
+						<Calendar
+							locale={this.props.lang}
+							onChange={this.onChange}
+							value={this.state.date}
+						/>
+					</Grid>
 				{tiers.map(tier => (
 					// Enterprise card is full width at sm breakpoint
 					
-					<Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
+					<Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={3}>
 					<Card className={classes.card}>
 						<Link to={`/${tier.link}`} >
+					
 						<CardHeader
-						title={tier.title}
-						subheader={tier.subheader}
+						title={<FormattedMessage id={`${tier.link}.title`} defaulMesage="title" className={classes.tabs} />}	
+						subheader={<FormattedMessage id={`${tier.link}.navBar`} defaulMesage="NavBar" className={classes.tabs} />}
 						titleTypographyProps={{ align: 'center' }}
 						subheaderTypographyProps={{ align: 'center' }}
 						action={tier.title === 'Tài Sản' ? <StarIcon /> : null}
@@ -190,18 +215,12 @@ class HomeComponent extends Component {
 						<CardContent>
 						{tier.title === 'Tài Sản'
 						?
-						
 						<div className={classes.cardPricing}>
 							<Typography component="h2" variant="h3" color="textPrimary">
-							{tier.title === 'Tài Sản'
-							?	
-								resource.taisan.length.toString()
-							:
-							''
-							}
+								{resource.taisan.length.toString()}
 							</Typography>
 							<Typography variant="h6" color="textSecondary">
-							/tài sản
+							/<FormattedMessage id={`${tier.link}.title`} defaulMesage="NavBar" className={classes.tabs} />
 							</Typography>
 						</div>
 						
@@ -210,15 +229,10 @@ class HomeComponent extends Component {
 						?
 						<div className={classes.cardPricing}>
 							<Typography component="h2" variant="h3" color="textPrimary">
-							{tier.title === 'Người dùng'
-							?
-								resource.user.length.toString()
-							:
-							''
-							}
+								{resource.user.length.toString()}
 							</Typography>
 							<Typography variant="h6" color="textSecondary">
-							/người
+							/<FormattedMessage id={`${tier.link}.title`} defaulMesage="NavBar" className={classes.tabs} />
 							</Typography>
 						</div>
 						: ''}
@@ -226,15 +240,10 @@ class HomeComponent extends Component {
 						?
 						<div className={classes.cardPricing}>
 							<Typography component="h2" variant="h3" color="textPrimary">
-							{tier.title === 'Đơn vị'
-							?
-								resource.donvi.length.toString()
-							:
-							''
-							}
+								{resource.donvi.length.toString()}
 							</Typography>
 							<Typography variant="h6" color="textSecondary">
-							/đơn vị
+							/<FormattedMessage id={`${tier.link}.title`} defaulMesage="NavBar" className={classes.tabs} />
 							</Typography>
 						</div>
 						: ''}
@@ -255,6 +264,7 @@ class HomeComponent extends Component {
 					</Grid>
 				))}
 				</Grid>
+				<FormattedMessage id="taisan.soluong" defaulMesage="title" />
 				<ResponsiveContainer width="100%" height={200}>
 					<LineChart data={data}>
 						<XAxis dataKey="YEAR" />
@@ -263,9 +273,14 @@ class HomeComponent extends Component {
 						<Tooltip />
 						<Legend />
 						{/* <Line type="monotone" dataKey="YEAR" stroke="#82ca9d" /> */}
-						<Line type="monotone" dataKey="Số đợt thêm tài sản" stroke="#8884d8" activeDot={{ r: 8 }} />
+						<Line type="monotone" 
+							dataKey="number"
+							stroke="#8884d8" activeDot={{ r: 8 }} />
 					</LineChart>
+					
 				</ResponsiveContainer>
+
+				
 			</Paper>
 		)
 	}
@@ -277,7 +292,7 @@ class Home extends Component {
 			home:{
 				route:"/home",
 				title: "Thống kê trang quản lý",
-				// component: "DanhSachTaiSan"
+				messageId : "home.navBar"
 			},
 		}
 	}
@@ -292,7 +307,7 @@ class Home extends Component {
 					classes={classes}
 					parentKey={parentKey}
 					navBar={navBar}
-					title= {"Home"}
+					title= {"home.title"}
 				/>
 				<QLCSVCContext.Consumer>
 					{({ resource}) => {
@@ -301,6 +316,7 @@ class Home extends Component {
 								<HomeComponent
 									resource= {resource}
 									classes={classes}
+									lang={this.props.lang}
 								/>
 							</div>
 						)

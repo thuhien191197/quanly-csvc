@@ -29,7 +29,7 @@ class ThanhLyComponent extends Component {
 				'lydo': item.lydo,
 				'soluong': item.soluong,
 				'image': item.image,
-				'id_taisan': item.id_taisan?getNameTaiSan(itemsTaisan)[0].name:'',
+				// 'id_taisan': item.id_taisan?getNameTaiSan(itemsTaisan)[0].name:'',
 			};
 			b.push(a);
 		})

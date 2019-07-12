@@ -228,7 +228,7 @@ class Table1 extends Component {
 						:
 						(
 							<Typography variant="h10" id="tableTitle">
-							Chức năng
+							Functions
 							</Typography>
 						)
 						}
@@ -472,7 +472,7 @@ class Table1 extends Component {
 																			component={Edit}
 																		>
 																			
-																			Del
+																			<DeleteIcon />
 																		</Button>
 																		:
 																		''
